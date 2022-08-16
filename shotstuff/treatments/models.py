@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, date
 import calendar
 
 from shotstuff.database import db
+# from shotstuff.injection_regimens.models import InjectionRegimen
 
 
 class Treatment(db.Model):

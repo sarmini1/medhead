@@ -1,14 +1,16 @@
 """Models for injection tracker app."""
 from datetime import datetime, timedelta
 # import calendar
+from flask_login import UserMixin
 
 from flask_bcrypt import Bcrypt
 
 from shotstuff.database import db
+# from shotstuff.treatments.models import Treatment
 
 bcrypt = Bcrypt()
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """User."""
 
     __tablename__ = "users"

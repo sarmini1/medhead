@@ -1,0 +1,115 @@
+/* Note: overriding some classes from the theme */
+body {
+  margin: 0;
+  font-family: var(--bs-body-font-family);
+  font-size: var(--bs-body-font-size);
+  font-weight: var(--bs-body-font-weight);
+  line-height: var(--bs-body-line-height);
+  color: rgb(76, 75, 75);
+  text-align: var(--bs-body-text-align);
+  background-color: #f9f5ef;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: 0.5rem 1rem;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  background-color: #f7c7d8;
+  border: 1px solid #c2c1c1;
+  border-radius: 10px;
+}
+
+.treatment-listing-card {
+  padding-bottom:5px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.treatment-detail-card {
+    position: relative;
+    display: block;
+    padding: 0.5rem 1rem;
+    color: rgb(76, 75, 75);
+    text-decoration: none;
+    background-color: #ffffff;
+    border: 2px solid #e8b8e5e6;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.form-card {
+  position: relative;
+  display: block;
+  padding: 0.5rem 1rem;
+  color: rgb(76, 75, 75);
+  text-decoration: none;
+  background-color: #f7c7d8;
+  border: 2px solid #e8b8e5e6;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.back-button {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.lab-card{
+  position: absolute;
+  right: 0;
+  padding: 0.5rem 1rem;
+  color: rgb(76, 75, 75);
+  background-color: #f9f5ef;
+  border: 2px solid #f9f5ef;
+  border-radius: 10px;
+  margin-right: 0.5rem;
+}
+
+.treatment-description {
+  border: 1px solid white;
+  display: block;
+  max-width: 50%;
+  padding: 0.5rem 1rem;
+  color: rgb(76, 75, 75);
+  background-color: #f9f5ef;
+  border: 2px solid #f9f5ef;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  padding-top: 0.5rem;
+}
+
+.logout-button {
+  position: absolute;
+  right:0;
+  margin-right: 0.5rem;
+}
+
+.dash-item {
+  border: 1px solid rgb(252, 196, 244);
+  background-color: #ffffff;
+  border-radius:10px;
+  padding: 0.5rem 1rem;
+}
+
+.add-treatment-button {
+  /* position: absolute; */
+  right:0;
+  margin-right: 0.5rem;
+}
+/* .treatment-buttons {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: 0.5rem;
+} */
+
+/*
+possible navbar purple, at least starting point: #964bacba
+*/
