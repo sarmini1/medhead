@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from shotstuff.config import DATABASE_URL
 from shotstuff.database import connect_db
 from shotstuff.root.routes import root
+from shotstuff.users.routes import users
 from shotstuff.users.models import User
 from shotstuff.treatments.models import Treatment
 from shotstuff.injection_regimens.models import InjectionRegimen
@@ -29,21 +30,6 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-# CURR_USER_KEY = "username"
-
-breakpoint()
-#### Before request actions
-# @app.before_request
-# def add_user_to_g():
-#     """If we're logged in, add curr user to Flask global."""
-
-#     if CURR_USER_KEY in session:
-#         g.user = User.query.get(session[CURR_USER_KEY])
-
-#     else:
-#         g.user = None
-
-
 # @app.before_request
 # def add_csrf_only_form():
 #     """Add a CSRF-only form so that every route can use it"""
@@ -51,5 +37,6 @@ breakpoint()
 #     g.csrf_form = CSRFProtection()
 
 app.register_blueprint(root)
+app.register_blueprint(users, url_prefix='/users')
 
 connect_db(app)

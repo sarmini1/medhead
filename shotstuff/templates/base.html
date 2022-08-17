@@ -33,12 +33,12 @@
                 Dashboard
               </a>
             </li>
-            {% if g.user %}
+            {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="/users/treatments/{{g.user.id}}">Your Treatments</a>
+              <a class="nav-link" href="/users/treatments/{{current_user.id}}">Your Treatments</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/users/{{g.user.id}}/labs">Your Labs</a>
+              <a class="nav-link" href="/users/{{current_user.id}}/labs">Your Labs</a>
             </li>
             <!-- <ul class="nav navbar-nav navbar-right"> -->
               <li>

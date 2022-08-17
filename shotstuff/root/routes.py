@@ -1,14 +1,13 @@
 from flask import (
     Blueprint,
     render_template,
-    g,
     redirect,
     flash,
     request,
     url_for,
-    abort
+    abort,
 )
-from flask_login import login_user
+from flask_login import login_user, current_user
 from is_safe_url import is_safe_url
 
 from shotstuff.users.models import User
@@ -20,11 +19,19 @@ root = Blueprint(
     template_folder='templates'
 )
 
-# @root.get('/')
-# def home_page():
-#     """ Test """
+#
+#### Before request actions
+# @root.before_request
+# def add_user_to_g():
+#     """If we're logged in, add curr user to Flask global."""
+#     breakpoint()
+#     if current_user.is_authenticated:
 
-#     return render_template("root/test.html")
+#     if CURR_USER_KEY in session:
+#         g.user = User.query.get(session[CURR_USER_KEY])
+
+#     else:
+#         g.user = None
 
 @root.get('/')
 def homepage():
@@ -33,10 +40,12 @@ def homepage():
     - anon users: some sort of welcome page w/ buttons to login/signup
     - logged in: that user's dashboard
     """
-    if g.user:
+    # Note to self: we get this current_user object from flask-login, which seems
+    # to be accessible in every template and in every subsequent request??
+    if current_user.is_authenticated:
         #returning a redirect for now but ideally should consolidate the
         # treatment listing page to this?
-        return redirect(f"/dashboard")
+        return redirect(f"/users/dashboard")
 
     else:
         return render_template('home-anon.html')
