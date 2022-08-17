@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <!-- <div class="row"> -->
+  <!-- <div class="col-6"> -->
+  <h1 class="mb-3 title">All labs for {{ user.first_name }}</h1>
+  <!-- </div> -->
+  <div class="mb-3 add-treatment-button">
+    <a class="btn btn-outline-primary" href="/labs/">
+      Add new lab
+    </a>
+  </div>
+
+  <h2 class="mb-3 title">Upcoming</h2>
+  {% for lab in user.upcoming_labs %}
+  <div class="row treatments-list">
+    <div class="treatment-listing-card">
+      <li class="list-group-item">
+        <div class="pt-1 col-xs-12">
+          <h3>Lab {{lab.id}}</h3>
+          <div class="treatment-description">
+            {% if lab.is_routine_lab %}
+            <h4>**Routine Lab**</h4>
+            <hr width="50%">
+            {% endif %}
+            <p><b>For treatment:</b> {{ lab.treatment.injection_regimen.title }}</p>
+            <p><b>Point in cycle due:</b> {{ lab.treatment.lab_point_in_cycle }}</p>
+            <p>
+              <b>Due date:</b>
+              {{ lab.treatment.generate_friendly_date_time(lab.treatment.next_lab_due_date).full_date_time }}
+            </p>
+            <a class="btn btn-outline-primary"
+              href="/users/{{current_user.id}}/labs/{{lab.id}}">
+              Update
+            </a>
+          </div>
+        </div>
+      </li>
+    </div>
+  </div>
+  {% endfor %}
+
+  <h2 class="mb-3 title">Past</h2>
+  {% for lab in user.past_labs %}
+  <div class="row treatments-list">
+    <div class="treatment-listing-card">
+      <li class="list-group-item">
+        <div class="pt-1 col-xs-12">
+          <h3>Lab {{lab.id}}</h3>
+          <div class="treatment-description">
+            {% if lab.is_routine_lab %}
+            <h4>**Routine Lab**</h4>
+            <hr width="50%">
+            {% endif %}
+            <p><b>For treatment:</b> {{ lab.treatment.injection_regimen.title }}</p>
+            <p><b>Point in cycle due:</b> {{ lab.treatment.lab_point_in_cycle }}</p>
+            <p><b>Point in cycle occurred:</b> {{ lab.point_in_cycle_occurred }}</p>
+            <p><b>Date occurred:</b> {{ lab.occurred_at }}</p>
+            <p>
+              <b>Due date:</b>
+              {{ lab.treatment.generate_friendly_date_time(lab.treatment.next_lab_due_date).full_date_time }}
+            </p>
+          </div>
+        </div>
+      </li>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}

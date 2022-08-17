@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <!-- <div class="row"> -->
+  <!-- <div class="col-6"> -->
+  <h1 class="mb-3 title">All active treatments for {{ user.first_name }}</h1>
+  <!-- </div> -->
+  <div class="mb-3 add-treatment-button">
+    <a class="btn btn-outline-primary" href="/treatments/">
+      Add new treatment
+    </a>
+  </div>
+  <!-- </div> -->
+  <div class="row treatments-list">
+
+  <!-- <ul id="treatments-list"> -->
+    {% for treatment in user.treatments %}
+      {% if treatment.currently_active %}
+        <div class="treatment-listing-card">
+          <li class="list-group-item">
+            <h3>
+              <a href="/treatments/{{ treatment.id }}">{{ treatment.injection_regimen.title }}</a>
+            </h3>
+            <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/injections">
+              Add an injection
+            </a>
+            <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/update">
+              Update treatment detail
+            </a>
+            {% if treatment.requires_labs and treatment.injections|length > 0 %}
+            <div class="lab-card col-xs-12">
+              <p>
+                <b>
+                  Labs every:
+                </b>
+                {{ treatment.lab_frequency_in_months }} months
+              </p>
+              <p>
+                <b>
+                  Lab point in cycle:
+                </b>
+                <!-- {{ treatment.lab_point_in_cycle }} -->
+              </p>
+              <p>
+                <b>
+                  Next labs due:
+                </b>
+                {{ treatment.generate_friendly_date_time(treatment.next_lab_due_date).full_date_time }}
+              </p>
+            </div>
+            {% endif %}
+            <div class="pt-1 col-xs-12">
+              {% if treatment.injections|length > 0 %}
+              <div class="treatment-description">
+                {% if treatment.last_injection_details.injection.notes %}
+                <p>
+                  <b>Notes from last injection:</b>
+                  {{ treatment.last_injection_details.injection.notes }}
+                </p>
+                {% endif %}
+                <hr width="50%">
+                </hr>
+                <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.full_date_time }}</p>
+                <p><b>Next injection date:</b> {{ treatment.next_injection_time.full_date_time }}</p>
+                <p><b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days </p>
+                <p>
+                  <b>Total injections:</b> {{ treatment.injections|length }}
+                </p>
+                <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.full_date_time }}</p>
+                {% else %}
+                <h2> No injections yet!</h2>
+                {% endif %}
+              </div>
+            </div>
+          </li>
+        </div>
+      {% endif %}
+    {% endfor %}
+  <!-- </ul> -->
+</div>
+</div>
+
+
+{% endblock %}

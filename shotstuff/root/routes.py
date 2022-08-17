@@ -7,31 +7,18 @@ from flask import (
     url_for,
     abort,
 )
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, login_required, logout_user
 from is_safe_url import is_safe_url
 
 from shotstuff.users.models import User
 from shotstuff.root.forms import LoginForm
+from shotstuff.generic_forms import CSRFProtection
 
 root = Blueprint(
     "root",
     __name__,
     template_folder='templates'
 )
-
-#
-#### Before request actions
-# @root.before_request
-# def add_user_to_g():
-#     """If we're logged in, add curr user to Flask global."""
-#     breakpoint()
-#     if current_user.is_authenticated:
-
-#     if CURR_USER_KEY in session:
-#         g.user = User.query.get(session[CURR_USER_KEY])
-
-#     else:
-#         g.user = None
 
 @root.get('/')
 def homepage():
@@ -75,3 +62,18 @@ def login():
         flash("Invalid credentials.", 'danger')
 
     return render_template('users/login.html', form=form)
+
+@root.route("/logout", methods=["POST"])
+@login_required
+def logout():
+
+    form = CSRFProtection()
+
+    if form.validate_on_submit():
+        logout_user()
+        flash("Successfully logged out!")
+        return redirect('/login')
+
+    else:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")

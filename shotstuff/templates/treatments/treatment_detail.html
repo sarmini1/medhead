@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="treatment-detail-card">
+  <h1 class="pb-3">Details for {{treatment.injection_regimen.title}}</h1>
+  <p>
+    <a href="/treatments/{{treatment.id}}/injections">
+      <button class="btn btn-outline-primary">
+        Add an injection
+      </button>
+    </a>
+  </p>
+
+  <div class="treatment-description">
+    <p>Start date: {{ treatment.friendly_start_date.full_date_time }}</p>
+    <p>Frequency: every {{ treatment.frequency_in_seconds / 86400 }} days </p>
+    <p>Next injection date: {{ next_injection_dow }}, {{ next_injection_date.full_date_time }}</p>
+    <p>Injections:</p>
+    {% for injection in treatment.injections %}
+    <ul id="treatment-injections-list">
+      <li>
+        <p>Region: {{ injection.body_region.name }}</p>
+        <p>Position: {{injection.position.horizontal_position }}, {{injection.position.vertical_position }}</p>
+        <p>Method: {{ injection.method }}</p>
+        <p>Time: {{ injection.generate_friendly_date_time().full_date_time }}</p>
+        <p>Notes: {{ injection.notes }}</p>
+      </li>
+    </ul>
+    {% endfor %}
+  </div>
+  </div>
+    <a href="/treatments/users/{{treatment.user_id}}" class="btn btn-primary back-button">Back to my treatments</a>
+</div>
+
+
+{% endblock %}
