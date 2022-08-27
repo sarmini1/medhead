@@ -32,7 +32,7 @@
               {{ lab.treatment.generate_friendly_date_time(lab.treatment.next_lab_due_date).full_date_time }}
             </p>
             <a class="btn btn-outline-primary"
-              href="/users/{{current_user.id}}/labs/{{lab.id}}">
+              href="/labs/users/{{current_user.id}}/{{lab.id}}">
               Update
             </a>
           </div>

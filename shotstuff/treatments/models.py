@@ -18,14 +18,19 @@ class Treatment(db.Model):
         db.ForeignKey("users.id", ondelete="cascade"),
         nullable=False
     )
-    is_for_injectable = db.Column(
-        db.Boolean,
-        nullable=False,
-        default=True
-    )
+    # is_for_injectable = db.Column(
+    #     db.Boolean,
+    #     nullable=False,
+    #     default=True
+    # )
     injection_regimen_id = db.Column(
         db.Integer,
         db.ForeignKey("injection_regimens.id"),
+        nullable=True
+    )
+    medication_regimen_id = db.Column(
+        db.Integer,
+        db.ForeignKey("medication_regimens.id"),
         nullable=True
     )
     currently_active = db.Column(
@@ -44,6 +49,8 @@ class Treatment(db.Model):
         nullable=False
     )
     injection_regimen = db.relationship('InjectionRegimen')
+    medication_regimen = db.relationship('MedicationRegimen')
+
     injections = db.relationship('Injection',
                                   backref="treatment")
     requires_labs = db.Column(
@@ -89,6 +96,8 @@ class Treatment(db.Model):
             occurred_at: {year, month, day, time, full_date_time }
          }
         """
+        # TODO: consider adding error handling if we try to call this method
+        # for a non-injectable treatment. Same for other injection method below.
 
         num_injections_occurred = len(self.injections)
         if num_injections_occurred == 0:

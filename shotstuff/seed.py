@@ -6,6 +6,7 @@ from shotstuff.injections.models import Injection
 from shotstuff.labs.models import Lab
 from shotstuff.medications.models import Medication
 from shotstuff.injection_regimens.models import InjectionRegimen
+from shotstuff.medication_regimens.models import MedicationRegimen
 from shotstuff.positions.models import Position
 from shotstuff.body_regions.models import BodyRegion
 
@@ -69,7 +70,19 @@ ir2 = InjectionRegimen(
     medication_id = med.id
 )
 
-db.session.add_all([ir1, ir2])
+mr1 = MedicationRegimen(
+    title = "first medication regimen title",
+    is_for_injectable=True,
+    medication_id = med.id
+)
+
+mr2 = MedicationRegimen(
+    title = "second medication regimen title",
+    is_for_injectable=False,
+    medication_id = med.id
+)
+
+db.session.add_all([ir1, ir2, mr1, mr2])
 db.session.commit()
 
 first_regimen = InjectionRegimen.query.first()
@@ -104,7 +117,23 @@ t3 = Treatment(
     clinic_supervising = "Foresight"
 )
 
-db.session.add_all([t1, t2, t3])
+mt4 = Treatment(
+    user_id = u1.id,
+    medication_regimen_id = mr1.id,
+    frequency_in_seconds= 777600,
+    requires_labs = False,
+    clinic_supervising = "Foresight"
+)
+
+mt5 = Treatment(
+    user_id = u1.id,
+    medication_regimen_id = mr2.id,
+    frequency_in_seconds= 777600,
+    requires_labs = True,
+    clinic_supervising = "Foresight"
+)
+
+db.session.add_all([t1, t2, t3, mt4, mt5])
 db.session.commit()
 
 # lab that has already occurred that was done correctly
