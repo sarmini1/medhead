@@ -67,3 +67,35 @@ def mark_lab_complete(user_id, lab_id):
         form=form,
         lab=lab
     )
+
+# TODO: consider adding add lab form and route, below is just copied from the add injection stuff
+
+# @treatments.route("/<int:treatment_id>/injections", methods=['GET', 'POST'])
+# def add_injection(treatment_id):
+#     """Add an injection. Display form if GET, otherwise validate and add message."""
+
+#     form = InjectionAddForm()
+#     treatment = Treatment.query.get_or_404(treatment_id)
+
+#     if form.validate_on_submit():
+#         injection = Injection(
+#             treatment_id = treatment_id,
+#             medication_id = treatment.medication_regimen.medication_id,
+#             method = form.method.data,
+#             body_region_id = form.body_region.data,
+#             position_id = form.position.data,
+#             occurred_at = form.occurred_at.data,
+#             notes = form.notes.data
+#         )
+#         db.session.add(injection)
+#         db.session.commit()
+
+#         flash("Nice job taking care of yourself!")
+
+#         return redirect(f"/treatments/{treatment_id}")
+
+#     return render_template(
+#         "injections/add_injection_form.html",
+#         form=form,
+#         treatment=treatment
+#         )

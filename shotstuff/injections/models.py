@@ -13,11 +13,6 @@ class Injection(db.Model):
         db.ForeignKey("treatments.id", ondelete="cascade"),
         nullable=False
     )
-    # medication_id = db.Column(
-    #     db.Integer,
-    #     db.ForeignKey("medications.id", ondelete="cascade"),
-    #     nullable=False
-    # )
     method = db.Column(db.Text, nullable=False)
     body_region_id = db.Column(
         db.Integer,

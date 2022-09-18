@@ -1,4 +1,4 @@
-{% extends 'bootstrap/base.html' %}
+{% extends 'base.html' %}
 
 {% block scripts %}
   {{ super() }}
@@ -10,9 +10,9 @@
 
 <div class="row justify-content-center">
   <div class="col-md-6 form-card">
-    <h2 class="pb-2">Edit lab detail for {{ lab.id }}</h2>
+    <h2 class="pb-2">Add lab for {{ treatment.medication_regimen.title }}</h2>
 
-    <form id="treatment-edit-form" class="p-1 verticalform" method="POST">
+    <form id="inj-add-form" class="p-1" method="POST">
       {{ form.hidden_tag() }}
       <!--add type=hidden form fields -->
 
@@ -22,9 +22,13 @@
       <p>
         {{ field.label }}
 
-        {% if field.type == "DateField" %}
+        {% if field.type == "BooleanField" %}
 
-        {{ field(class="form-control dp") }}
+        {{ field(class="form-check-input") }}
+
+        {% elif field.type == "SelectField" %}
+
+        {{ field(class="form-select") }}
 
         {% else %}
 

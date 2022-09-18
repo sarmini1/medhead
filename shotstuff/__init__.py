@@ -1,6 +1,8 @@
 import os
 from flask import Flask, g
 from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
+from flask_datepicker import datepicker
 
 from shotstuff.config import DATABASE_URL
 from shotstuff.database import connect_db
@@ -23,6 +25,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+
+Bootstrap(app)
+datepicker(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
