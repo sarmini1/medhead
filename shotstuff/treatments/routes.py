@@ -28,7 +28,7 @@ def add_treatment():
         treatment = Treatment(
             user_id = g.user.id,
             is_for_injectable = form.is_for_injectable.data,
-            injection_regimen_id = form.injection_regimen_id.data,
+            medication_regimen_id = form.medication_regimen_id.data,
             currently_active = form.currently_active.data,
             start_date = form.start_date.data,
             frequency_in_seconds = int(form.frequency.data) * 86400,
@@ -128,7 +128,7 @@ def add_injection(treatment_id):
     if form.validate_on_submit():
         injection = Injection(
             treatment_id = treatment_id,
-            medication_id = treatment.injection_regimen.medication_id,
+            medication_id = treatment.medication_regimen.medication_id,
             method = form.method.data,
             body_region_id = form.body_region.data,
             position_id = form.position.data,

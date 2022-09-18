@@ -19,7 +19,7 @@
       {% for inj in current_user.upcoming_injection_times %}
       <li class="list-group-item">
         <p>Due: {{ inj.full_date }}</p>
-        <p>For treatment {{ inj.treatment.injection_regimen.title }}</p>
+        <p>For treatment {{ inj.treatment.medication_regimen.title }}</p>
       </li>
       {% endfor %}
     </div>
@@ -29,7 +29,7 @@
       {% for lab in current_user.labs %}
       <li class="list-group-item">
         <p>Due: {{ lab.treatment.next_lab_due_date }}</p>
-        <p>For treatment {{ lab.treatment.injection_regimen.title }}</p>
+        <p>For treatment {{ lab.treatment.medication_regimen.title }}</p>
         Routine? {{ lab.is_routine_lab }}
         <br />
         Requires fasting? {{ lab.requires_fasting }}

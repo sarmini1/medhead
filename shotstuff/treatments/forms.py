@@ -15,10 +15,12 @@ class TreatmentAddForm(FlaskForm):
     """Form for adding a treatment."""
 
 
-    injection_regimen_id = SelectField(
+    medication_regimen_id = SelectField(
       'Medication',
       choices=[('1', 'test med1'), ('2','test med2')]
     )
+    # TODO: consider removing this field from the form since that should be
+    # stored within the med regimen now
     is_for_injectable = BooleanField(
       'Treatment is for an injectable medication',
       validators=[DataRequired()]

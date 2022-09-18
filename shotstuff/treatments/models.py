@@ -23,11 +23,11 @@ class Treatment(db.Model):
     #     nullable=False,
     #     default=True
     # )
-    injection_regimen_id = db.Column(
-        db.Integer,
-        db.ForeignKey("injection_regimens.id"),
-        nullable=True
-    )
+    # injection_regimen_id = db.Column(
+    #     db.Integer,
+    #     db.ForeignKey("injection_regimens.id"),
+    #     nullable=True
+    # )
     medication_regimen_id = db.Column(
         db.Integer,
         db.ForeignKey("medication_regimens.id"),
@@ -48,7 +48,7 @@ class Treatment(db.Model):
         db.CheckConstraint("frequency_in_seconds > 0"),
         nullable=False
     )
-    injection_regimen = db.relationship('InjectionRegimen')
+    # injection_regimen = db.relationship('InjectionRegimen')
     medication_regimen = db.relationship('MedicationRegimen')
 
     injections = db.relationship('Injection',
@@ -140,7 +140,7 @@ class Treatment(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "injection_regimen_id": self.injection_regimen_id,
+            "medication_regimen_id": self.medication_regimen_id,
         }
 
     def generate_friendly_date_time(self, date):

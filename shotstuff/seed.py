@@ -5,7 +5,6 @@ from shotstuff.treatments.models import Treatment
 from shotstuff.injections.models import Injection
 from shotstuff.labs.models import Lab
 from shotstuff.medications.models import Medication
-from shotstuff.injection_regimens.models import InjectionRegimen
 from shotstuff.medication_regimens.models import MedicationRegimen
 from shotstuff.positions.models import Position
 from shotstuff.body_regions.models import BodyRegion
@@ -60,15 +59,15 @@ med = Medication.query.first()
 body_region = BodyRegion.query.first()
 position = Position.query.first()
 
-ir1 = InjectionRegimen(
-    title = "first injection regimen title",
-    medication_id = med.id
-)
+# mr1 = InjectionRegimen(
+#     title = "first injection regimen title",
+#     medication_id = med.id
+# )
 
-ir2 = InjectionRegimen(
-    title = "second injection regimen title",
-    medication_id = med.id
-)
+# mr2 = InjectionRegimen(
+#     title = "second injection regimen title",
+#     medication_id = med.id
+# )
 
 mr1 = MedicationRegimen(
     title = "first medication regimen title",
@@ -82,14 +81,14 @@ mr2 = MedicationRegimen(
     medication_id = med.id
 )
 
-db.session.add_all([ir1, ir2, mr1, mr2])
+db.session.add_all([mr1, mr2])
 db.session.commit()
 
-first_regimen = InjectionRegimen.query.first()
+first_regimen = MedicationRegimen.query.first()
 
 t1 = Treatment(
     user_id = u1.id,
-    injection_regimen_id = ir1.id,
+    medication_regimen_id = mr1.id,
     frequency_in_seconds = 864000,
     requires_labs = True,
     lab_frequency_in_months = 3,
@@ -100,7 +99,7 @@ t1 = Treatment(
 
 t2 = Treatment(
     user_id = u1.id,
-    injection_regimen_id = ir2.id,
+    medication_regimen_id = mr2.id,
     frequency_in_seconds = 86400,
     requires_labs = True,
     lab_frequency_in_months = 3,
@@ -111,7 +110,7 @@ t2 = Treatment(
 
 t3 = Treatment(
     user_id = u2.id,
-    injection_regimen_id = ir2.id,
+    medication_regimen_id = mr2.id,
     frequency_in_seconds= 777600,
     requires_labs = False,
     clinic_supervising = "Foresight"
@@ -167,7 +166,7 @@ db.session.commit()
 
 i1 = Injection(
     treatment_id = t1.id,
-    medication_id = ir1.medication_id,
+    # medication_id = mr1.medication_id,
     method = "subcutaneous",
     body_region_id = br1.id,
     position_id = p1.id
@@ -175,7 +174,7 @@ i1 = Injection(
 
 i2 = Injection(
     treatment_id = t1.id,
-    medication_id = ir1.medication_id,
+    # medication_id = mr1.medication_id,
     method = "subcutaenous",
     body_region_id = br1.id,
     position_id = p2.id,
@@ -184,7 +183,7 @@ i2 = Injection(
 
 i3 = Injection(
     treatment_id = t2.id,
-    medication_id = ir2.medication_id,
+    # medication_id = mr2.medication_id,
     method = "intramuscular",
     body_region_id = br2.id,
     position_id = p2.id

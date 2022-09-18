@@ -25,7 +25,7 @@
             <h4>**Routine Lab**</h4>
             <hr width="50%">
             {% endif %}
-            <p><b>For treatment:</b> {{ lab.treatment.injection_regimen.title }}</p>
+            <p><b>For treatment:</b> {{ lab.treatment.medication_regimen.title }}</p>
             <p><b>Point in cycle due:</b> {{ lab.treatment.lab_point_in_cycle }}</p>
             <p>
               <b>Due date:</b>
@@ -54,7 +54,7 @@
             <h4>**Routine Lab**</h4>
             <hr width="50%">
             {% endif %}
-            <p><b>For treatment:</b> {{ lab.treatment.injection_regimen.title }}</p>
+            <p><b>For treatment:</b> {{ lab.treatment.medication_regimen.title }}</p>
             <p><b>Point in cycle due:</b> {{ lab.treatment.lab_point_in_cycle }}</p>
             <p><b>Point in cycle occurred:</b> {{ lab.point_in_cycle_occurred }}</p>
             <p><b>Date occurred:</b> {{ lab.occurred_at }}</p>
