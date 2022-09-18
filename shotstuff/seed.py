@@ -59,16 +59,6 @@ med = Medication.query.first()
 body_region = BodyRegion.query.first()
 position = Position.query.first()
 
-# mr1 = InjectionRegimen(
-#     title = "first injection regimen title",
-#     medication_id = med.id
-# )
-
-# mr2 = InjectionRegimen(
-#     title = "second injection regimen title",
-#     medication_id = med.id
-# )
-
 mr1 = MedicationRegimen(
     title = "first medication regimen title",
     is_for_injectable=True,
@@ -166,7 +156,6 @@ db.session.commit()
 
 i1 = Injection(
     treatment_id = t1.id,
-    # medication_id = mr1.medication_id,
     method = "subcutaneous",
     body_region_id = br1.id,
     position_id = p1.id
@@ -174,7 +163,6 @@ i1 = Injection(
 
 i2 = Injection(
     treatment_id = t1.id,
-    # medication_id = mr1.medication_id,
     method = "subcutaenous",
     body_region_id = br1.id,
     position_id = p2.id,
@@ -183,7 +171,6 @@ i2 = Injection(
 
 i3 = Injection(
     treatment_id = t2.id,
-    # medication_id = mr2.medication_id,
     method = "intramuscular",
     body_region_id = br2.id,
     position_id = p2.id

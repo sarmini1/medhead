@@ -10,7 +10,6 @@ from shotstuff.treatments.routes import treatments
 from shotstuff.labs.routes import labs
 from shotstuff.users.models import User
 from shotstuff.treatments.models import Treatment
-# from shotstuff.injection_regimens.models import InjectionRegimen
 from shotstuff.medication_regimens.models import MedicationRegimen
 from shotstuff.injections.models import Injection
 from shotstuff.labs.models import Lab

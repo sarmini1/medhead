@@ -9,6 +9,16 @@
         You're currently on {{ current_user.active_treatments|length }} active
         treatments.
       </p>
+      {% for t in current_user.active_treatments %}
+      <li class="list-group-item">
+        <a href="/treatments/{{ t.id }}">
+          <h5>
+            {{ t.medication_regimen.title }}
+          </h5>
+        </a>
+        <p>Frequency: every {{ t.frequency_in_seconds / 86400 }} days </p>
+      </li>
+      {% endfor %}
     </div>
     <div class="col-6 col-sm-4 col-md-3 dash-item">
       <h3><b>Upcoming Injections</b></h3>
