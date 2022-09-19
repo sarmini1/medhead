@@ -26,5 +26,5 @@ class InjectionAddForm(FlaskForm):
       'Injection position',
       choices=[('1', 'Left, upper'), ('2','Right, lower')]
     )
-    occurred_at = DateTimeField('Date of Injection')
+    occurred_at = DateField('Date of Injection')
     notes = StringField("Notes?")

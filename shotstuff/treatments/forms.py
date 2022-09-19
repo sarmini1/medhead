@@ -17,7 +17,7 @@ class TreatmentAddForm(FlaskForm):
 
     medication_regimen_id = SelectField(
       'Medication',
-      choices=[('1', 'test med1'), ('2','test med2')]
+      choices=[('1', 'testosterone cypionate'), ('2','truvada')]
     )
     # TODO: consider removing this field from the form since that should be
     # stored within the med regimen now
@@ -25,10 +25,7 @@ class TreatmentAddForm(FlaskForm):
       'Treatment is for an injectable medication',
       validators=[DataRequired()]
     )
-    currently_active = BooleanField(
-      'Treatment is currently active',
-      validators=[DataRequired()]
-    )
+    start_date = DateField('Start date')
     frequency = IntegerField(
       'In days, how often will you take this medication?',
       validators=[DataRequired()]
@@ -38,7 +35,10 @@ class TreatmentAddForm(FlaskForm):
       validators=[DataRequired()]
     )
     lab_frequency_in_months = IntegerField(
-      'If labs are required, roughly how frequently, in months, are they?',
+      '''
+      If labs are required, roughly how frequently, in months, are they?
+      Ex: Enter 7 if you will take the medication weekly.'''
+      ,
       validators=[NumberRange(0, None, "Please provide a valid number.")]
     )
     # lab_point_in_cycle = SelectField(
@@ -49,7 +49,6 @@ class TreatmentAddForm(FlaskForm):
     #   """,
     #   choices=[('1', 'N/A'), ('2', 'Peak'), ('3','Trough'), ('4', 'Middle')]
     # )
-    start_date = DateField('Start date')
     next_lab_due_date = DateField(
       'If labs are required, when are they next due?'
     )

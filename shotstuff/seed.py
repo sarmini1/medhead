@@ -25,12 +25,20 @@ u2 = User.signup(
     password="password"
 )
 
-m1 = Medication(
-    name = "test med1"
+med_t = Medication(
+    name = "testosterone cypionate"
 )
 
-m2 = Medication(
-    name = "test med2"
+med_prep = Medication(
+    name = "truvada"
+)
+
+med_finast = Medication(
+    name = "finasteride"
+)
+
+med_estro = Medication(
+    name = "estradiol alsdkfjsld"
 )
 
 br1 = BodyRegion(
@@ -51,43 +59,54 @@ p2 = Position(
     vertical_position = "lower"
 )
 
-db.session.add_all([u1, u2, m1, m2, br1, br2, p1, p2])
+db.session.add_all(
+    [u1, u2, med_t, med_prep, med_estro, med_finast, br1, br2, p1, p2]
+)
 db.session.commit()
 
 first_user = User.query.first()
-med = Medication.query.first()
+# med = Medication.query.first()
 body_region = BodyRegion.query.first()
 position = Position.query.first()
 
-mr1 = MedicationRegimen(
+inj_test_mr = MedicationRegimen(
     title = "testosterone for hrt",
     is_for_injectable=True,
     route="subcutaneous",
-    medication_id = med.id
+    medication_id = med_t.id
 )
 
-mr2 = MedicationRegimen(
+prep_mr = MedicationRegimen(
     title = "truvada for prep",
     is_for_injectable=False,
     route="oral",
-    medication_id = med.id
+    medication_id = med_prep.id
 )
 
-mr3 = MedicationRegimen(
+finasteride_mr = MedicationRegimen(
     title = "finasteride for hair",
     is_for_injectable=False,
     route="oral",
-    medication_id = med.id
+    medication_id = med_finast.id
+)
+inj_estra_mr = MedicationRegimen(
+    title = "estradiol for fun",
+    is_for_injectable=True,
+    route="intramuscular",
+    medication_id = med_estro.id
 )
 
-db.session.add_all([mr1, mr2, mr3])
+db.session.add_all(
+    [inj_test_mr, prep_mr, finasteride_mr, inj_estra_mr]
+)
 db.session.commit()
 
 first_regimen = MedicationRegimen.query.first()
 
-t1 = Treatment(
+# test injectable testosterone treatment
+t1_inj = Treatment(
     user_id = u1.id,
-    medication_regimen_id = mr1.id,
+    medication_regimen_id = inj_test_mr.id,
     frequency_in_seconds = 864000,
     requires_labs = True,
     lab_frequency_in_months = 3,
@@ -97,9 +116,10 @@ t1 = Treatment(
     start_date = "2022-02-16"
 )
 
+# prep
 t2 = Treatment(
     user_id = u1.id,
-    medication_regimen_id = mr2.id,
+    medication_regimen_id = prep_mr.id,
     frequency_in_seconds = 86400,
     requires_labs = True,
     lab_frequency_in_months = 3,
@@ -109,38 +129,53 @@ t2 = Treatment(
     start_date = "2022-08-27"
 )
 
+# prep for second user
 t3 = Treatment(
     user_id = u2.id,
-    medication_regimen_id = mr2.id,
+    medication_regimen_id = prep_mr.id,
     frequency_in_seconds= 777600,
     requires_labs = False,
     clinic_supervising = "Foresight"
 )
 
+# finasteride
 mt4 = Treatment(
     user_id = u1.id,
-    medication_regimen_id = mr3.id,
+    medication_regimen_id = finasteride_mr.id,
     frequency_in_seconds= 86400,
     requires_labs = False,
     clinic_supervising = "Foresight",
     start_date = None
 )
 
-mt5 = Treatment(
+#estradiol
+t5_inj = Treatment(
     user_id = u1.id,
-    medication_regimen_id = mr2.id,
-    frequency_in_seconds= 777600,
+    medication_regimen_id = inj_estra_mr.id,
+    frequency_in_seconds = 864000,
     requires_labs = True,
-    clinic_supervising = "Foresight",
-    start_date = None
+    lab_frequency_in_months = 3,
+    lab_point_in_cycle = "peak",
+    next_lab_due_date = "2022-06-16",
+    clinic_supervising = "UCSF",
+    start_date = "2022-02-16"
 )
 
-db.session.add_all([t1, t2, t3, mt4, mt5])
+db.session.add_all([t1_inj, t2, t3, mt4, t5_inj])
 db.session.commit()
 
 # lab that has already occurred that was done correctly
-correct_past_lab = Lab(
-    treatment_id = t1.id,
+correct_past_lab_t1_inj = Lab(
+    treatment_id = t1_inj.id,
+    # user_id = u1.id,
+    occurred_at = None,
+    point_in_cycle_occurred = "peak",
+    # is_upcoming = False,
+    requires_fasting = True
+)
+
+correct_past_lab_t5_inj = Lab(
+    treatment_id = t5_inj.id,
     # user_id = u1.id,
     occurred_at = None,
     point_in_cycle_occurred = "peak",
@@ -157,25 +192,32 @@ upcoming_lab = Lab(
 )
 
 incorrect_past_lab = Lab(
-    treatment_id = t1.id,
+    treatment_id = t1_inj.id,
     occurred_at = None,
     point_in_cycle_occurred = "trough",
     # is_upcoming = False,
     requires_fasting = False
 )
 
-db.session.add_all([correct_past_lab, upcoming_lab, incorrect_past_lab])
+db.session.add_all(
+    [
+        correct_past_lab_t1_inj,
+        correct_past_lab_t5_inj,
+        upcoming_lab,
+        incorrect_past_lab
+    ]
+)
 db.session.commit()
 
 i1 = Injection(
-    treatment_id = t1.id,
+    treatment_id = t1_inj.id,
     method = "subcutaneous",
     body_region_id = br1.id,
     position_id = p1.id
 )
 
 i2 = Injection(
-    treatment_id = t1.id,
+    treatment_id = t1_inj.id,
     method = "subcutaenous",
     body_region_id = br1.id,
     position_id = p2.id,
@@ -183,7 +225,7 @@ i2 = Injection(
 )
 
 i3 = Injection(
-    treatment_id = t2.id,
+    treatment_id = t5_inj.id,
     method = "intramuscular",
     body_region_id = br2.id,
     position_id = p2.id

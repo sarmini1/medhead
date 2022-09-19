@@ -128,7 +128,6 @@ def add_injection(treatment_id):
     if form.validate_on_submit():
         injection = Injection(
             treatment_id = treatment_id,
-            medication_id = treatment.medication_regimen.medication_id,
             method = form.method.data,
             body_region_id = form.body_region.data,
             position_id = form.position.data,

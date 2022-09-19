@@ -18,16 +18,6 @@ class Treatment(db.Model):
         db.ForeignKey("users.id", ondelete="cascade"),
         nullable=False
     )
-    # is_for_injectable = db.Column(
-    #     db.Boolean,
-    #     nullable=False,
-    #     default=True
-    # )
-    # injection_regimen_id = db.Column(
-    #     db.Integer,
-    #     db.ForeignKey("injection_regimens.id"),
-    #     nullable=True
-    # )
     medication_regimen_id = db.Column(
         db.Integer,
         db.ForeignKey("medication_regimens.id"),
@@ -48,9 +38,7 @@ class Treatment(db.Model):
         db.CheckConstraint("frequency_in_seconds > 0"),
         nullable=False
     )
-    # injection_regimen = db.relationship('InjectionRegimen')
     medication_regimen = db.relationship('MedicationRegimen')
-
     injections = db.relationship('Injection',
                                   backref="treatment")
     requires_labs = db.Column(
