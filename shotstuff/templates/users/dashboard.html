@@ -16,7 +16,11 @@
             {{ t.medication_regimen.title }}
           </h5>
         </a>
-        <p>Frequency: every {{ t.frequency_in_seconds / 86400 }} days </p>
+        <p>
+          Frequency: every {{ t.frequency_in_seconds / 86400 }} days
+          <br/>
+          Route: {{ t.medication_regimen.route }}
+        </p>
       </li>
       {% endfor %}
     </div>

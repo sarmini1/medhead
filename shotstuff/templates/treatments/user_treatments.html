@@ -17,19 +17,21 @@
 
   <!-- <ul id="treatments-list"> -->
     {% for treatment in user.treatments %}
-      {% if treatment.currently_active %}
+      {% if treatment.start_date %}
         <div class="treatment-listing-card">
           <li class="list-group-item">
             <h3>
               <a href="/treatments/{{ treatment.id }}">{{ treatment.medication_regimen.title }}</a>
             </h3>
+            {% if treatment.medication_regimen.is_for_injectable %}
             <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/injections">
               Add an injection
             </a>
+            {% endif %}
             <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/update">
               Update treatment detail
             </a>
-            {% if treatment.requires_labs and treatment.injections|length > 0 %}
+            {% if treatment.requires_labs %}
             <div class="lab-card col-xs-12">
               <p>
                 <b>
@@ -69,8 +71,17 @@
                   <b>Total injections:</b> {{ treatment.injections|length }}
                 </p>
                 <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.full_date_time }}</p>
-                {% else %}
+                {% elif treatment.medication_regimen.is_for_injectable %}
                 <h2> No injections yet!</h2>
+                {%else %}
+                <div class="treatment-description">
+                  <p>
+                    <b>Route:</b> {{ treatment.medication_regimen.route }}
+                    <br>
+                    <b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days
+                    <b>Since: {{ treatment.start_date }}</b>
+                  </p>
+                </div>
                 {% endif %}
               </div>
             </div>

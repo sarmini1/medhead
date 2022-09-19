@@ -60,18 +60,27 @@ body_region = BodyRegion.query.first()
 position = Position.query.first()
 
 mr1 = MedicationRegimen(
-    title = "first medication regimen title",
+    title = "testosterone for hrt",
     is_for_injectable=True,
+    route="subcutaneous",
     medication_id = med.id
 )
 
 mr2 = MedicationRegimen(
-    title = "second medication regimen title",
+    title = "truvada for prep",
     is_for_injectable=False,
+    route="oral",
     medication_id = med.id
 )
 
-db.session.add_all([mr1, mr2])
+mr3 = MedicationRegimen(
+    title = "finasteride for hair",
+    is_for_injectable=False,
+    route="oral",
+    medication_id = med.id
+)
+
+db.session.add_all([mr1, mr2, mr3])
 db.session.commit()
 
 first_regimen = MedicationRegimen.query.first()
@@ -84,7 +93,8 @@ t1 = Treatment(
     lab_frequency_in_months = 3,
     lab_point_in_cycle = "peak",
     next_lab_due_date = "2022-06-16",
-    clinic_supervising = "UCSF"
+    clinic_supervising = "UCSF",
+    start_date = "2022-02-16"
 )
 
 t2 = Treatment(
@@ -95,7 +105,8 @@ t2 = Treatment(
     lab_frequency_in_months = 3,
     lab_point_in_cycle = "trough",
     next_lab_due_date = "2022-06-16",
-    clinic_supervising = "One Medical"
+    clinic_supervising = "One Medical",
+    start_date = "2022-08-27"
 )
 
 t3 = Treatment(
@@ -108,10 +119,11 @@ t3 = Treatment(
 
 mt4 = Treatment(
     user_id = u1.id,
-    medication_regimen_id = mr1.id,
-    frequency_in_seconds= 777600,
+    medication_regimen_id = mr3.id,
+    frequency_in_seconds= 86400,
     requires_labs = False,
-    clinic_supervising = "Foresight"
+    clinic_supervising = "Foresight",
+    start_date = None
 )
 
 mt5 = Treatment(
@@ -119,7 +131,8 @@ mt5 = Treatment(
     medication_regimen_id = mr2.id,
     frequency_in_seconds= 777600,
     requires_labs = True,
-    clinic_supervising = "Foresight"
+    clinic_supervising = "Foresight",
+    start_date = None
 )
 
 db.session.add_all([t1, t2, t3, mt4, mt5])
@@ -136,7 +149,7 @@ correct_past_lab = Lab(
 )
 
 upcoming_lab = Lab(
-    treatment_id = t1.id,
+    treatment_id = t2.id,
     # occurred_at = None,
     # point_in_cycle_occurred = "peak",
     # is_upcoming = True,

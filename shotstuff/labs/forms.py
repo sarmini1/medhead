@@ -15,7 +15,7 @@ from wtforms.validators import DataRequired, NumberRange
 class LabEditForm(FlaskForm):
     """Form for editing a lab. """
 
-    occurred_at = DateTimeField('Date labs completed')
+    occurred_at = DateField('Date labs completed')
     point_in_cycle_occurred = SelectField(
       'What point did the lab occur in your cycle?',
       choices=[

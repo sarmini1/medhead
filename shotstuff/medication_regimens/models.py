@@ -15,6 +15,7 @@ class MedicationRegimen(db.Model):
         nullable=False,
         default=True
     )
+    route = db.Column(db.Text, nullable=False)
     medication_id = db.Column(
         db.Integer,
         db.ForeignKey("medications.id", ondelete="cascade"),

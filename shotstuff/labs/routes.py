@@ -60,7 +60,7 @@ def mark_lab_complete(user_id, lab_id):
 
         flash("Thanks for your updates!")
 
-        return redirect(f"users/{logged_in_user_id}/labs")
+        return redirect(f"/labs/users/{logged_in_user_id}")
 
     return render_template(
         "labs/edit_lab_form.html",

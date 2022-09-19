@@ -33,15 +33,15 @@ class Treatment(db.Model):
         db.ForeignKey("medication_regimens.id"),
         nullable=True
     )
-    currently_active = db.Column(
-        db.Boolean,
-        nullable=False,
-        default=True
-    )
+    # currently_active = db.Column(
+    #     db.Boolean,
+    #     nullable=False,
+    #     default=True
+    # )
     start_date = db.Column(
         db.Date,
-        nullable=False,
-        default=date.today()
+        nullable=True,
+        # default=date.today()
     )
     frequency_in_seconds = db.Column(
         db.Integer,
