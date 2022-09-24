@@ -23,24 +23,26 @@ class Treatment(db.Model):
         db.ForeignKey("medication_regimens.id"),
         nullable=True
     )
-    # currently_active = db.Column(
-    #     db.Boolean,
-    #     nullable=False,
-    #     default=True
-    # )
+    # storing currently_active status so that we can store deprecated
+    # treatments
+    currently_active = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=True
+    )
     start_date = db.Column(
         db.Date,
         nullable=True,
-        # default=date.today()
+    )
+    end_date = db.Column(
+        db.Date,
+        nullable=True,
     )
     frequency_in_seconds = db.Column(
         db.Integer,
         db.CheckConstraint("frequency_in_seconds > 0"),
         nullable=False
     )
-    medication_regimen = db.relationship('MedicationRegimen')
-    injections = db.relationship('Injection',
-                                  backref="treatment")
     requires_labs = db.Column(
         db.Boolean,
         nullable=False,
@@ -67,6 +69,11 @@ class Treatment(db.Model):
     clinic_supervising = db.Column(
         db.Text,
         nullable=True
+    )
+    medication_regimen = db.relationship('MedicationRegimen')
+    injections = db.relationship(
+        'Injection',
+        backref="treatment"
     )
 
     @property

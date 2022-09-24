@@ -29,7 +29,7 @@ class User(UserMixin, db.Model):
     @property
     def active_treatments(self):
         """Return list of treatments marked currently active."""
-        return [t for t in self.treatments if t.start_date]
+        return [t for t in self.treatments if t.currently_active]
 
     @property
     def upcoming_labs(self):

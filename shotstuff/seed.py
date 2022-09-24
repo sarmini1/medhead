@@ -113,7 +113,8 @@ t1_inj = Treatment(
     lab_point_in_cycle = "peak",
     next_lab_due_date = "2022-06-16",
     clinic_supervising = "UCSF",
-    start_date = "2022-02-16"
+    start_date = "2022-02-16",
+    currently_active = True
 )
 
 # prep
@@ -126,7 +127,8 @@ t2 = Treatment(
     lab_point_in_cycle = "trough",
     next_lab_due_date = "2022-06-16",
     clinic_supervising = "One Medical",
-    start_date = "2022-08-27"
+    start_date = "2022-08-27",
+    currently_active = True
 )
 
 # prep for second user
@@ -145,7 +147,8 @@ mt4 = Treatment(
     frequency_in_seconds= 86400,
     requires_labs = False,
     clinic_supervising = "Foresight",
-    start_date = None
+    start_date = None,
+    currently_active = False
 )
 
 #estradiol
@@ -158,7 +161,9 @@ t5_inj = Treatment(
     lab_point_in_cycle = "peak",
     next_lab_due_date = "2022-06-16",
     clinic_supervising = "UCSF",
-    start_date = "2022-02-16"
+    start_date = "2022-02-16",
+    currently_active = True
+
 )
 
 db.session.add_all([t1_inj, t2, t3, mt4, t5_inj])
