@@ -15,82 +15,81 @@
   <!-- </div> -->
   <div class="row treatments-list">
 
-  <!-- <ul id="treatments-list"> -->
-    {% for treatment in user.treatments %}
-      {% if treatment.currently_active %}
-        <div class="treatment-listing-card">
-          <li class="list-group-item">
-            <h3>
-              <a href="/treatments/{{ treatment.id }}">{{ treatment.medication_regimen.title }}</a>
-            </h3>
-            {% if treatment.medication_regimen.is_for_injectable %}
-            <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/injections">
-              Add an injection
-            </a>
-            {% endif %}
-            <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/update">
-              Update treatment detail
-            </a>
-            {% if treatment.requires_labs %}
-            <div class="lab-card col-xs-12">
-              <p>
-                <b>
-                  Labs every:
-                </b>
-                {{ treatment.lab_frequency_in_months }} months
-              </p>
-              <p>
-                <b>
-                  Lab point in cycle:
-                </b>
-                <!-- {{ treatment.lab_point_in_cycle }} -->
-              </p>
-              <p>
-                <b>
-                  Next labs due:
-                </b>
-                {{ treatment.generate_friendly_date_time(treatment.next_lab_due_date).full_date_time }}
-              </p>
-            </div>
-            {% endif %}
-            <div class="pt-1 col-xs-12">
-              {% if treatment.injections|length > 0 %}
-              <div class="treatment-description">
-                {% if treatment.last_injection_details.injection.notes %}
-                <p>
-                  <b>Notes from last injection:</b>
-                  {{ treatment.last_injection_details.injection.notes }}
-                </p>
-                {% endif %}
-                <hr width="50%">
-                </hr>
-                <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.full_date_time }}</p>
-                <p><b>Next injection date:</b> {{ treatment.next_injection_time.full_date_time }}</p>
-                <p><b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days </p>
-                <p>
-                  <b>Total injections:</b> {{ treatment.injections|length }}
-                </p>
-                <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.full_date_time }}</p>
-                {% elif treatment.medication_regimen.is_for_injectable %}
-                <h2> No injections yet!</h2>
-                {%else %}
-                <div class="treatment-description">
-                  <p>
-                    <b>Route:</b> {{ treatment.medication_regimen.route }}
-                    <br>
-                    <b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days
-                    <b>Since: {{ treatment.start_date }}</b>
-                  </p>
-                </div>
-                {% endif %}
-              </div>
-            </div>
-          </li>
+    <!-- <ul id="treatments-list"> -->
+    {% for treatment in user.active_treatments %}
+    <div class="treatment-listing-card">
+      <li class="list-group-item">
+        <h3>
+          <a href="/treatments/{{ treatment.id }}">{{ treatment.medication_regimen.title }}</a>
+        </h3>
+        {% if treatment.medication_regimen.is_for_injectable %}
+        <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/injections">
+          Add an injection
+        </a>
+        {% endif %}
+        <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/update">
+          Update treatment detail
+        </a>
+        {% if treatment.requires_labs %}
+        <div class="lab-card col-xs-12">
+          <p>
+            <b>
+              Labs every:
+            </b>
+            {{ treatment.lab_frequency_in_months }} months
+          </p>
+          <p>
+            <b>
+              Lab point in cycle:
+            </b>
+            <!-- {{ treatment.lab_point_in_cycle }} -->
+          </p>
+          <p>
+            <b>
+              Next labs due:
+            </b>
+            {{ treatment.generate_friendly_date_time(treatment.next_lab_due_date).full_date_time }}
+          </p>
         </div>
-      {% endif %}
+        {% endif %}
+        <div class="pt-1 col-xs-12">
+          {% if treatment.injections|length > 0 %}
+          <div class="treatment-description">
+            {% if treatment.last_injection_details.injection.notes %}
+            <p>
+              <b>Notes from last injection:</b>
+              {{ treatment.last_injection_details.injection.notes }}
+            </p>
+            {% endif %}
+            <hr width="50%">
+            </hr>
+            <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.full_date_time }}</p>
+            <p><b>Next injection date:</b> {{ treatment.next_injection_time.full_date_time }}</p>
+            <p><b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days </p>
+            <p>
+              <b>Total injections:</b> {{ treatment.injections|length }}
+            </p>
+            <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.full_date_time }}</p>
+            {% elif treatment.medication_regimen.is_for_injectable %}
+            <h2> No injections yet!</h2>
+            {% else %}
+            <div class="treatment-description">
+              <hr width="50%"></hr>
+              <p>
+                <b>Route:</b> {{ treatment.medication_regimen.route }}
+                <br>
+                <b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days
+                <b>Since: {{ treatment.start_date }}</b>
+              </p>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+    </div>
     {% endfor %}
-  <!-- </ul> -->
-</div>
+    <!-- </ul> -->
+  </div>
 </div>
 
 

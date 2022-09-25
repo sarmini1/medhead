@@ -8,7 +8,7 @@ from wtforms import (
   FloatField,
   DateField
 )
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import DataRequired, NumberRange, Optional
 
 
 class TreatmentAddForm(FlaskForm):
@@ -58,4 +58,8 @@ class TreatmentEditForm(FlaskForm):
     """Form for editing a user treatment. """
 
     frequency = IntegerField('Frequency (days)', validators=[DataRequired()])
+    end_date = DateField(
+      'Has this treatment ended? If so, what date? If not, leave default value.',
+      validators=[Optional()]
+    )
 
