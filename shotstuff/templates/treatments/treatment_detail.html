@@ -22,6 +22,7 @@
       <p>Route: {{ treatment.medication_regimen.route }}</p>
       {% if treatment.medication_regimen.is_for_injectable %}
       <p>Next injection date: {{ next_injection_dow }}, {{ next_injection_date.full_date_time }}</p>
+      <p>Next injection position: {{ treatment.next_injection_detail.position[0] }} side, {{treatment.next_injection_detail.position[1]}} quadrant</p>
       <p>Injections:</p>
       {% for injection in treatment.injections %}
       <ul id="treatment-injections-list">

@@ -22,7 +22,6 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.Text, nullable=False)
     treatments = db.relationship('Treatment',
                                   backref='user')
-    # uncertain if the below relationship is necessary
     labs = db.relationship('Lab',
                             secondary="treatments",
                             backref='user')
@@ -51,7 +50,7 @@ class User(UserMixin, db.Model):
 
         for t in self.treatments:
             if len(t.injections) > 0:
-                full_date = t.next_injection_time["full_date_time"].split(",")[0]
+                full_date = t.next_injection_detail["time_due"]["full_date_time"].split(",")[0]
                 date = datetime.strptime(full_date, '%m/%d/%Y')
                 if date < two_weeks_time:
                     upcoming_injection_times.append(

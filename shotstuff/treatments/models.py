@@ -108,7 +108,7 @@ class Treatment(db.Model):
         }
 
     @property
-    def next_injection_time(self):
+    def next_injection_detail(self):
         """
         Based on the date of their most recent injection and the injection
         frequency of their treatment, return the date when their next injection
@@ -126,8 +126,37 @@ class Treatment(db.Model):
         frequency = self.frequency_in_seconds
 
         next_inj_date = last_injection.occurred_at + timedelta(seconds=frequency)
+        next_inj_position = self._find_next_injection_position(last_injection)
 
-        return self.generate_friendly_date_time(next_inj_date)
+        return {
+            "time_due": self.generate_friendly_date_time(next_inj_date),
+            "position": next_inj_position
+        }
+
+    def _find_next_injection_position(self, inj):
+        """
+        Accepts an injection instance and returns the placement where the
+        next injection is due. Assumes clockwise rotation.
+        """
+        # Assumes we'll move clockwise so we don't hit the same area for a cycle of
+        # 4 injections
+        # left lower, right lower, right upper, left upper
+
+        ordered_positions = [
+            ("left", "lower"),
+            ("right", "lower"),
+            ("right", "upper"),
+            ("left", "upper"),
+        ]
+
+        position = (inj.position.horizontal, inj.position.vertical)
+        next_position_idx = ordered_positions.index(position) + 1
+        if next_position_idx >= len(ordered_positions):
+            next_position_idx = 0
+
+        next_position = ordered_positions[next_position_idx]
+        return next_position
+
 
     def to_dict(self):
         """Serialize to a dict of regimen info."""

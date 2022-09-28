@@ -50,17 +50,27 @@ br2 = BodyRegion(
 )
 
 p1 = Position(
-    horizontal_position = "left",
-    vertical_position = "upper"
+    horizontal = "left",
+    vertical = "upper"
 )
 
 p2 = Position(
-    horizontal_position = "right",
-    vertical_position = "lower"
+    horizontal = "right",
+    vertical = "lower"
+)
+
+p3 = Position(
+    horizontal = "right",
+    vertical = "upper"
+)
+
+p4 = Position(
+    horizontal = "left",
+    vertical = "lower"
 )
 
 db.session.add_all(
-    [u1, u2, med_t, med_prep, med_estro, med_finast, br1, br2, p1, p2]
+    [u1, u2, med_t, med_prep, med_estro, med_finast, br1, br2, p1, p2, p3, p4]
 )
 db.session.commit()
 

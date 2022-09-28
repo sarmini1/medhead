@@ -75,7 +75,7 @@ def display_treatment_detail(treatment_id):
     """TBD"""
 
     treatment = Treatment.query.get_or_404(treatment_id)
-    next_injection_date = treatment.next_injection_time
+    next_injection_date = treatment.next_injection_detail["time_due"]
     next_injection_dow = next_injection_date["weekday"]
     # total_injections = len(treatment.injections)
 
