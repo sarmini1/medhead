@@ -8,7 +8,7 @@
   <h1 class="mb-3 title">All active treatments for {{ user.first_name }}</h1>
   <!-- </div> -->
   <div class="mb-3 add-treatment-button">
-    <a class="btn btn-outline-primary" href="/treatments/">
+    <a class="btn btn-outline-primary rounded-button" href="/treatments/">
       Add new treatment
       <i class="fa-solid fa-house-medical"></i>
     </a>
@@ -24,12 +24,12 @@
           <a href="/treatments/{{ treatment.id }}">{{ treatment.medication_regimen.title }}</a>
         </h3>
         {% if treatment.medication_regimen.is_for_injectable %}
-        <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/injections">
+        <a class="btn btn-outline-primary rounded-button" href="/treatments/{{treatment.id}}/injections">
           Add an injection
           <i class="fa-solid fa-plus"></i>
         </a>
         {% endif %}
-        <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/update">
+        <a class="btn btn-outline-primary rounded-button" href="/treatments/{{treatment.id}}/update">
           Update treatment detail
           <i class="fa-solid fa-pencil"></i>
         </a>

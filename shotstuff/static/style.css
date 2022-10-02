@@ -113,6 +113,10 @@ body {
   right:0;
   margin-right: 0.5rem;
 }
+
+.rounded-button {
+  border-radius: 10px;
+}
 /* .treatment-buttons {
   position: absolute;
   right: 0;

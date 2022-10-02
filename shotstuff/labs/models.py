@@ -41,5 +41,11 @@ class Lab(db.Model):
         db.Text,
         nullable=True
     )
+    # below to be updated only upon updating an upcoming lab
+    completed_on_time = db.Column(
+        db.Boolean,
+        nullable=True,
+        default=None
+    )
 
     treatment = db.relationship('Treatment')

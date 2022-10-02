@@ -41,6 +41,13 @@ class User(UserMixin, db.Model):
         return [l for l in self.labs if l.occurred_at]
 
     @property
+    def on_time_labs(self):
+        """Return stats on completed labs marked on-time."""
+        on_time_labs = [l for l in self.labs if l.completed_on_time]
+        percentage = (len(on_time_labs)/len(self.labs)) * 100
+        return f"{percentage}%"
+
+    @property
     def upcoming_injection_times(self):
         """Return list of injections occuring in the next 14 days."""
 

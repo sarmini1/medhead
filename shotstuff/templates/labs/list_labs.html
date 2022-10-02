@@ -8,7 +8,7 @@
   <h1 class="mb-3 title">All labs for {{ user.first_name }}</h1>
   <!-- </div> -->
   <div class="mb-3 add-treatment-button">
-    <a class="btn btn-outline-primary" href="/labs/">
+    <a class="btn btn-outline-primary rounded-button" href="/labs/">
       Add new lab
     </a>
   </div>
@@ -31,7 +31,7 @@
               <b>Due date:</b>
               {{ lab.treatment.generate_friendly_date_time(lab.treatment.next_lab_due_date).full_date_time }}
             </p>
-            <a class="btn btn-outline-primary"
+            <a class="btn btn-outline-primary rounded-button"
               href="/labs/users/{{current_user.id}}/{{lab.id}}">
               Update
             </a>
@@ -58,6 +58,7 @@
             <p><b>Point in cycle due:</b> {{ lab.treatment.lab_point_in_cycle }}</p>
             <p><b>Point in cycle occurred:</b> {{ lab.point_in_cycle_occurred }}</p>
             <p><b>Date occurred:</b> {{ lab.occurred_at }}</p>
+            <p><b>Completed on time:</b> {{lab.completed_on_time }}</p>
           </div>
         </div>
       </li>
