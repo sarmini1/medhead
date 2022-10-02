@@ -10,10 +10,11 @@
   <div class="mb-3 add-treatment-button">
     <a class="btn btn-outline-primary" href="/treatments/">
       Add new treatment
+      <i class="fa-solid fa-house-medical"></i>
     </a>
   </div>
   <!-- </div> -->
-  <div class="row treatments-list">
+  <div class="treatments-list">
 
     <!-- <ul id="treatments-list"> -->
     {% for treatment in user.active_treatments %}
@@ -25,13 +26,18 @@
         {% if treatment.medication_regimen.is_for_injectable %}
         <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/injections">
           Add an injection
+          <i class="fa-solid fa-plus"></i>
         </a>
         {% endif %}
         <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/update">
           Update treatment detail
+          <i class="fa-solid fa-pencil"></i>
         </a>
         {% if treatment.requires_labs %}
-        <div class="lab-card col-xs-12">
+        <div class="lab-card">
+          <p>
+            Treatment id for dev purposes: {{treatment.id}}
+          </p>
           <p>
             <b>
               Labs every:
@@ -50,9 +56,15 @@
             </b>
             {{ treatment.generate_friendly_date_time(treatment.next_lab_due_date).full_date_time }}
           </p>
+          <p>
+            <b>
+              Provider:
+            </b>
+            {{ treatment.clinic_supervising }}
+          </p>
         </div>
         {% endif %}
-        <div class="pt-1 col-xs-12">
+        <div class="pt-1">
           {% if treatment.injections|length > 0 %}
           <div class="treatment-description">
             {% if treatment.last_injection_details.injection.notes %}
@@ -80,7 +92,8 @@
                 <b>Route:</b> {{ treatment.medication_regimen.route }}
                 <br>
                 <b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days
-                <b>Since: {{ treatment.start_date }}</b>
+                <br>
+                <b>Since:</b> {{ treatment.start_date }}
               </p>
             </div>
             {% endif %}

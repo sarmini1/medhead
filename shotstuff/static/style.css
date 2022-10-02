@@ -79,13 +79,14 @@ body {
 .treatment-description {
   border: 1px solid white;
   display: block;
-  max-width: 50%;
+  /* max-width: 50%; */
   padding: 0.5rem 1rem;
   color: rgb(76, 75, 75);
   background-color: #f9f5ef;
   border: 2px solid #f9f5ef;
   border-radius: 10px;
   margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .title {
@@ -96,6 +97,7 @@ body {
   position: absolute;
   right:0;
   margin-right: 0.5rem;
+  /* border-radius:25%; */
 }
 
 .dash-item {
