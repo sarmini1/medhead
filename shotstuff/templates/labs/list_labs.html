@@ -58,10 +58,6 @@
             <p><b>Point in cycle due:</b> {{ lab.treatment.lab_point_in_cycle }}</p>
             <p><b>Point in cycle occurred:</b> {{ lab.point_in_cycle_occurred }}</p>
             <p><b>Date occurred:</b> {{ lab.occurred_at }}</p>
-            <p>
-              <b>Due date:</b>
-              {{ lab.treatment.generate_friendly_date_time(lab.treatment.next_lab_due_date).full_date_time }}
-            </p>
           </div>
         </div>
       </li>

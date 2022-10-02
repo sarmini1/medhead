@@ -54,11 +54,15 @@ def mark_lab_complete(user_id, lab_id):
     form = LabEditForm()
 
     if form.validate_on_submit():
+        # update existing lab record with form data
         lab.point_in_cycle_occurred = form.point_in_cycle_occurred.data
         lab.occurred_at = form.occurred_at.data
+
+        # update treatment to store next lab due date and create new upcoming lab
+        lab.treatment.update_next_lab_due_date()
         db.session.commit()
 
-        flash("Thanks for your updates!")
+        flash("Thanks for your updates! Next routine lab added.")
 
         return redirect(f"/labs/users/{logged_in_user_id}")
 

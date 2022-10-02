@@ -4,7 +4,9 @@
   <h1 class="title">{{ current_user.first_name }}'s Dashboard</h1>
   <div class="row">
     <div class="col-12 col-sm-12 col-md-6 dash-item">
-      <h3><b>Overview</b></h3>
+      <h3>
+        <b>Overview</b>
+      </h3>
       <p>
         You're currently on {{ current_user.active_treatments|length }} active
         treatments.
@@ -25,7 +27,10 @@
       {% endfor %}
     </div>
     <div class="col-6 col-sm-4 col-md-4 dash-item">
-      <h3><b>Upcoming Injections</b></h3>
+      <h3>
+        <b>Upcoming Injections</b>
+        <i class="fa-solid fa-syringe"></i>
+      </h3>
       <p>
         You have {{ current_user.upcoming_injection_times|length }} upcoming
         injections.
@@ -46,7 +51,10 @@
       {% endfor %}
     </div>
     <div class="col-6 col-sm-4 col-md-4 dash-item">
-      <h3><b>Upcoming Labs</b></h3>
+      <h3>
+        <b>Upcoming Labs</b>
+        <i class="fa-solid fa-vials"></i>
+      </h3>
       <p>You have {{ current_user.labs|length }} upcoming labs.</p>
       {% for lab in current_user.labs %}
       <li class="list-group-item">
@@ -61,7 +69,7 @@
       {% endfor %}
     </div>
     <div class="col-6 col-sm-4 col-md-4 dash-item">
-      <p><b>Milestones</b></p>
+      <h3><b>Milestones</b></h3>
     </div>
   </div>
 </section>

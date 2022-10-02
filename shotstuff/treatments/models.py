@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, date
 import calendar
 
 from shotstuff.database import db
+from shotstuff.labs.models import Lab
 # from shotstuff.injection_regimens.models import InjectionRegimen
 
 
@@ -132,6 +133,29 @@ class Treatment(db.Model):
             "time_due": self.generate_friendly_date_time(next_inj_date),
             "position": next_inj_position
         }
+
+    def update_next_lab_due_date(self):
+        """
+        Looks on current instance's next_lab_due_date time and updates
+        according to routine lab frequency. Generates new upcoming lab instance
+        for current instance. Returns None.
+        """
+
+        #TODO: consider better way of converting month frequency to seconds,
+        # considering that months have varying lengths. Being on the more conservative
+        # side for now and just assuming 30 days per month.
+        lab_frequency_in_seconds = self.lab_frequency_in_months * ((60*60)*24)*30
+        self.next_lab_due_date = self.next_lab_due_date + timedelta(
+            seconds=lab_frequency_in_seconds
+        )
+        upcoming_lab = Lab(
+            treatment_id = self.id,
+            requires_fasting = False,
+            occurred_at = None,
+            point_in_cycle_occurred = None
+        )
+        db.session.add(upcoming_lab)
+
 
     def _find_next_injection_position(self, inj):
         """
