@@ -21,6 +21,7 @@ class MedicationRegimen(db.Model):
         db.ForeignKey("medications.id", ondelete="cascade"),
         nullable=False
     )
+    medication = db.relationship('Medication', backref="used_in_regimens")
 
     def to_dict(self):
         """Serialize to a dict of regimen info."""

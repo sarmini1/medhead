@@ -55,7 +55,8 @@ body {
   padding: 0.5rem 1rem;
   color: rgb(76, 75, 75);
   text-decoration: none;
-  background-color: #f7c7d8;
+  /* background-color: #f7c7d8; */
+  background-color: #dbeefb;
   border: 2px solid #e8b8e5e6;
   margin-top: 10px;
   border-radius: 10px;
@@ -74,7 +75,8 @@ body {
   /* background-color: #f9f5ef; */
   border: 2px solid #f9f5ef;
   border-radius: 10px;
-  margin-right: 0.5rem;
+  /* margin-right: 0.5rem; */
+  margin-top: 0.75rem;
 }
 
 .treatment-description {
@@ -103,7 +105,7 @@ body {
 
 .dash-item {
   border: 1px solid rgb(87, 80, 94);
-  background-color: rgb(224, 167, 224);
+  background-color: rgb(231, 174, 231);
   /* background-color: #f9f5ef; */
   border-radius:10px;
   padding: 0.5rem 1rem;

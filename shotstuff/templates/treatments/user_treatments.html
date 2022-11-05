@@ -34,7 +34,7 @@
           <i class="fa-solid fa-pencil"></i>
         </a>
         {% if treatment.requires_labs %}
-        <div class="lab-card">
+        <div class="lab-card col-6">
           <p>
             Treatment id for dev purposes: {{treatment.id}}
           </p>
@@ -66,7 +66,7 @@
         {% endif %}
         <div class="pt-1">
           {% if treatment.injections|length > 0 %}
-          <div class="treatment-description">
+          <div class="treatment-description col-6">
             {% if treatment.last_injection_details.injection.notes %}
             <p>
               <b>Notes from last injection:</b>
@@ -86,7 +86,7 @@
             {% elif treatment.medication_regimen.is_for_injectable %}
             <h2> No injections yet!</h2>
             {% else %}
-            <div class="treatment-description">
+            <div class="treatment-description col-6">
               <hr width="50%"></hr>
               <p>
                 <b>Route:</b> {{ treatment.medication_regimen.route }}

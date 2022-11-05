@@ -18,6 +18,9 @@ from shotstuff.positions.models import Position
 from shotstuff.medications.models import Medication
 from shotstuff.generic_forms import CSRFProtection
 
+# NOTE: should investigate why we get an error when removing seemingly unused
+# classes from imports
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

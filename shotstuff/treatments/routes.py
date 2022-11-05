@@ -1,11 +1,13 @@
 from flask import Blueprint, flash, render_template, redirect
 from flask_login import current_user, login_required
+from datetime import date
 
 from shotstuff.database import db
 from shotstuff.treatments.models import Treatment
 from shotstuff.injections.models import Injection
 from shotstuff.treatments.forms import TreatmentAddForm, TreatmentEditForm
 from shotstuff.injections.forms import InjectionAddForm
+from shotstuff.medication_regimens.models import MedicationRegimen
 
 treatments = Blueprint(
     "treatments",
@@ -24,17 +26,21 @@ def add_treatment():
 
     form = TreatmentAddForm()
 
+    all_med_regimens = MedicationRegimen.query.all()
+    #TODO: consider putting the med regimen title in the tuple instead of med name
+    med_reg_tuples = [(med.id, med.medication.name) for med in all_med_regimens]
+    form.medication_regimen_id.choices = med_reg_tuples
+
     if form.validate_on_submit():
         treatment = Treatment(
-            user_id = g.user.id,
-            is_for_injectable = form.is_for_injectable.data,
+            user_id = current_user.id,
             medication_regimen_id = form.medication_regimen_id.data,
-            currently_active = form.currently_active.data,
             start_date = form.start_date.data,
+            currently_active = form.start_date.data <= date.today(),
             frequency_in_seconds = int(form.frequency.data) * 86400,
             requires_labs = form.requires_labs.data,
             lab_frequency_in_months = form.lab_frequency_in_months.data,
-            # lab_point_in_cycle = form.lab_point_in_cycle.data,
+            lab_point_in_cycle = form.lab_point_in_cycle.data,
             next_lab_due_date = form.next_lab_due_date.data,
         )
         db.session.add(treatment)
@@ -42,7 +48,7 @@ def add_treatment():
 
         flash("New treatment added!")
 
-        return redirect(f"/users/treatments/{current_user.get_id()}")
+        return redirect(f"/treatments/users/{current_user.get_id()}")
 
     return render_template(
         "treatments/add_treatment_form.html",
@@ -84,7 +90,7 @@ def display_treatment_detail(treatment_id):
         treatment=treatment,
         next_injection_date=next_injection_date,
         next_injection_dow=next_injection_dow
-        )
+    )
 
 
 @treatments.route("/<int:treatment_id>/update", methods=['GET', 'POST'])
@@ -117,7 +123,8 @@ def edit_treatment(treatment_id):
     return render_template(
         "treatments/edit_treatment_form.html",
         form=form,
-        treatment=treatment)
+        treatment=treatment
+    )
 
 
 @treatments.route("/<int:treatment_id>/injections", methods=['GET', 'POST'])
@@ -147,4 +154,4 @@ def add_injection(treatment_id):
         "injections/add_injection_form.html",
         form=form,
         treatment=treatment
-        )
+    )

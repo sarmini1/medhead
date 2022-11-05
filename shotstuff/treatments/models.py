@@ -159,8 +159,9 @@ class Treatment(db.Model):
 
     def _find_next_injection_position(self, inj):
         """
-        Accepts an injection instance and returns the placement where the
-        next injection is due. Assumes clockwise rotation.
+        Accepts an injection instance and returns the placement, a tuple like
+        ("left", "lower"), where the next injection is due. Assumes clockwise
+        rotation.
         """
         # Assumes we'll move clockwise so we don't hit the same area for a cycle of
         # 4 injections
