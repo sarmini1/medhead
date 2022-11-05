@@ -81,15 +81,23 @@ def display_treatment_detail(treatment_id):
     """TBD"""
 
     treatment = Treatment.query.get_or_404(treatment_id)
-    next_injection_date = treatment.next_injection_detail["time_due"]
-    next_injection_dow = next_injection_date["weekday"]
-    # total_injections = len(treatment.injections)
 
+    if treatment.medication_regimen.is_for_injectable:
+        next_injection_date = treatment.next_injection_detail["time_due"]
+        next_injection_dow = next_injection_date["weekday"]
+        # total_injections = len(treatment.injections)
+
+        return render_template(
+            "treatments/treatment_detail.html",
+            treatment=treatment,
+            next_injection_date=next_injection_date,
+            next_injection_dow=next_injection_dow
+        )
+
+    #TODO: rendering the same template with slightly different stuff is ugly-- fix this
     return render_template(
-        "treatments/treatment_detail.html",
-        treatment=treatment,
-        next_injection_date=next_injection_date,
-        next_injection_dow=next_injection_dow
+            "treatments/treatment_detail.html",
+            treatment=treatment,
     )
 
 

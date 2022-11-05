@@ -23,3 +23,6 @@ class LabEditForm(FlaskForm):
         ('trough','Trough'),
       ]
     )
+
+class LabAddForm(FlaskForm):
+    """Form for adding a lab."""
