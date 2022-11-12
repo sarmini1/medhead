@@ -49,8 +49,11 @@
           <p>Position: {{ inj.treatment.next_injection_detail.position[0] }} side,
             {{inj.treatment.next_injection_detail.position[1]}} quadrant</p>
           <p>For treatment {{ inj.treatment.medication_regimen.title }}</p>
-          <a href="/treatments/{{inj.treatment.id}}/injections" class="btn btn-primary dash-inj-btn">
-            Mark complete
+          <a href="/treatments/{{inj.treatment.id}}/injections">
+            <!-- <i class="bi bi-check2-square"></i> -->
+            <button class="btn btn-primary dash-inj-btn">
+              Mark complete
+            </button>
           </a>
         </div>
       </li>

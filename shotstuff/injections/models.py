@@ -35,6 +35,7 @@ class Injection(db.Model):
         db.DateTime,
         nullable=False,
         default=datetime.utcnow()
+        #TODO: remove this defaulting to now
     )
     notes = db.Column(
         db.Text,

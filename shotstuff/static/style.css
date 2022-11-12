@@ -121,8 +121,9 @@ body {
 }
 
 .dash-inj-btn {
-  position:absolute;
+  /* position: absolute;
   right:0;
+  margin-right: 0.5rem; */
 }
 
 .rounded-button {

@@ -51,7 +51,7 @@ br2 = BodyRegion(
 
 p1 = Position(
     horizontal = "left",
-    vertical = "upper"
+    vertical = "lower"
 )
 
 p2 = Position(
@@ -66,7 +66,7 @@ p3 = Position(
 
 p4 = Position(
     horizontal = "left",
-    vertical = "lower"
+    vertical = "upper"
 )
 
 db.session.add_all(
