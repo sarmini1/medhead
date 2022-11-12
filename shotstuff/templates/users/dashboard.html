@@ -20,7 +20,7 @@
         </a>
         <p>
           Frequency: every {{ t.frequency_in_seconds / 86400 }} days
-          <br/>
+          <br />
           Route: {{ t.medication_regimen.route }}
         </p>
       </li>
@@ -37,16 +37,22 @@
       </p>
       {% for inj in current_user.upcoming_injection_times %}
       <li class="list-group-item">
-        {% if inj.treatment.last_injection_details.injection.notes %}
-        <p>
-          <b>Notes from last injection:</b>
-          {{ inj.treatment.last_injection_details.injection.notes }}
-        </p>
-        <hr/>
-        {% endif %}
-        <p>Due: {{ inj.full_date }}</p>
-        <p>Position: {{ inj.treatment.next_injection_detail.position[0] }} side, {{inj.treatment.next_injection_detail.position[1]}} quadrant</p>
-        <p>For treatment {{ inj.treatment.medication_regimen.title }}</p>
+        <div>
+          {% if inj.treatment.last_injection_details.injection.notes %}
+          <p>
+            <b>Notes from last injection:</b>
+            {{ inj.treatment.last_injection_details.injection.notes }}
+          </p>
+          <hr />
+          {% endif %}
+          <p>Due: {{ inj.full_date }}</p>
+          <p>Position: {{ inj.treatment.next_injection_detail.position[0] }} side,
+            {{inj.treatment.next_injection_detail.position[1]}} quadrant</p>
+          <p>For treatment {{ inj.treatment.medication_regimen.title }}</p>
+          <a href="/treatments/{{inj.treatment.id}}/injections" class="btn btn-primary dash-inj-btn">
+            Mark complete
+          </a>
+        </div>
       </li>
       {% endfor %}
     </div>
@@ -63,7 +69,7 @@
         Routine? {{ lab.is_routine_lab }}
         <br />
         Requires fasting? {{ lab.requires_fasting }}
-        <br/>
+        <br />
         Location: {{ lab.treatment.clinic_supervising }}
       </li>
       {% endfor %}

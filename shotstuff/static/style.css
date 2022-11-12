@@ -37,17 +37,17 @@ body {
 }
 
 .treatment-detail-card {
-    position: relative;
-    display: block;
-    padding: 0.5rem 1rem;
-    color: rgb(76, 75, 75);
-    text-decoration: none;
-    /* background-color: #ffffff;*/
-    /* background-color: #f9f5ef; */
-    background-color: #dbeefb;
-    border: 2px solid #e8b8e5e6;
-    margin-top: 10px;
-    border-radius: 10px;
+  position: relative;
+  display: block;
+  padding: 0.5rem 1rem;
+  color: rgb(76, 75, 75);
+  text-decoration: none;
+  /* background-color: #ffffff;*/
+  /* background-color: #f9f5ef; */
+  background-color: #dbeefb;
+  border: 2px solid #e8b8e5e6;
+  margin-top: 10px;
+  border-radius: 10px;
 }
 
 .form-card {
@@ -118,6 +118,11 @@ body {
   /* position: absolute; */
   right:0;
   margin-right: 0.5rem;
+}
+
+.dash-inj-btn {
+  position:absolute;
+  right:0;
 }
 
 .rounded-button {
