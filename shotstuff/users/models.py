@@ -28,21 +28,25 @@ class User(UserMixin, db.Model):
     @property
     def active_treatments(self):
         """Return list of treatments marked currently active."""
+
         return [t for t in self.treatments if t.currently_active]
 
     @property
     def upcoming_labs(self):
         """Return list of labs marked as upcoming."""
+
         return [l for l in self.labs if not l.occurred_at]
 
     @property
     def past_labs(self):
         """Return list of labs not marked as upcoming."""
+
         return [l for l in self.labs if l.occurred_at]
 
     @property
     def on_time_labs(self):
         """Return stats on completed labs marked on-time."""
+
         on_time_labs = [l for l in self.labs if l.completed_on_time]
         percentage = (len(on_time_labs)/len(self.labs)) * 100
         return f"{percentage}%"
