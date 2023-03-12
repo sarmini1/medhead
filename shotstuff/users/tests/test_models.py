@@ -65,6 +65,7 @@ class UserModelTestCase(BaseModelTestCase):
     def test_active_treatments(self):
         """Test active treatments property."""
 
+        # make inactive treatment
         self.t2 = Treatment(
             user_id = self.u1.id,
             medication_regimen_id = self.mr2.id,
