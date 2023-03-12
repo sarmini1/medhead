@@ -1,8 +1,9 @@
-from unittest import TestCase
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.config import DATABASE_URL_TEST
+from shotstuff.testing_seed import BaseModelTestCase
 from shotstuff.users.models import User
+from shotstuff.treatments.models import Treatment
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL_TEST
 app.config["TESTING"] = True
@@ -12,24 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.drop_all()
 db.create_all()
 
-class UserModelTestCase(TestCase):
-    def setUp(self):
-        """Set up test data here"""
-
-        User.query.delete()
-
-        self.u1 = User.signup(
-            first_name="test first1",
-            username="test_user1",
-            password="password",
-        )
-
-        # db.session.add(self.u1)
-        db.session.commit()
-
-    def tearDown(self):
-        """Clean up any fouled transaction."""
-        db.session.rollback()
+class UserModelTestCase(BaseModelTestCase):
 
     def test_setup(self):
         """Test to make sure tests are set up correctly"""
@@ -77,3 +61,31 @@ class UserModelTestCase(TestCase):
             auth_user,
             False
         )
+
+    def test_active_treatments(self):
+        """Test active treatments property."""
+
+        self.t2 = Treatment(
+            user_id = self.u1.id,
+            medication_regimen_id = self.mr2.id,
+            frequency_in_seconds = 864000,
+            requires_labs = True,
+            lab_frequency_in_months = 3,
+            lab_point_in_cycle = "peak",
+            next_lab_due_date = "2022-06-16",
+            clinic_supervising = "UCSF",
+            start_date = "2022-02-16",
+            currently_active = False
+        )
+
+        db.session.add(self.t2)
+        db.session.commit()
+
+        self.assertEqual(
+            self.u1.active_treatments,
+            Treatment.query.filter_by(
+                user_id=self.u1.id,
+                currently_active=True
+            ).all()
+        )
+        self.assertNotIn(self.t2, self.u1.active_treatments)

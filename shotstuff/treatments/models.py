@@ -156,7 +156,6 @@ class Treatment(db.Model):
         )
         db.session.add(upcoming_lab)
 
-
     def _find_next_injection_position(self, inj):
         """
         Accepts an injection instance and returns the placement, a tuple like
@@ -181,7 +180,6 @@ class Treatment(db.Model):
 
         next_position = ordered_positions[next_position_idx]
         return next_position
-
 
     def to_dict(self):
         """Serialize to a dict of regimen info."""
