@@ -99,13 +99,13 @@ class Treatment(db.Model):
         if num_injections_occurred == 0:
             return None
         last_injection = self.injections[num_injections_occurred - 1]
-
+        friendly_occurred_at = self.generate_friendly_date_time(
+                last_injection.occurred_at
+        )
         # breakpoint()
         return {
             "injection": last_injection,
-            "occurred_at": self.generate_friendly_date_time(
-                last_injection.occurred_at
-                )
+            "occurred_at": friendly_occurred_at
         }
 
     @property
