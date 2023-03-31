@@ -31,7 +31,7 @@ class TreatmentAddForm(FlaskForm):
     lab_frequency_in_months = IntegerField(
       '''
       If labs are required, roughly how frequently, in months, are they?
-      Ex: Enter 7 if you will take the medication weekly.'''
+      Ex: Enter 3 if you need labs done every 3 months.'''
       ,
       validators=[
         NumberRange(0, None, "Please provide a valid number."),
