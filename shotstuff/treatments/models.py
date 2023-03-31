@@ -111,9 +111,15 @@ class Treatment(db.Model):
     @property
     def next_injection_detail(self):
         """
-        Based on the date of their most recent injection and the injection
-        frequency of their treatment, return the date when their next injection
-        is due.
+        Based on the date and position of their most recent injection and
+        the injection frequency of their treatment, return the dict of
+        date/time info and position tuple for their next injection.
+        Returns dictionary like:
+
+        {
+            "time_due": {year, month, day, time, ... },
+            "position": ("left", "lower")
+        }
         """
 
         num_injections_occurred = len(self.injections)

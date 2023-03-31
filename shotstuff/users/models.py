@@ -25,6 +25,20 @@ class User(UserMixin, db.Model):
     labs = db.relationship('Lab',
                             secondary="treatments",
                             backref='user')
+
+    @property
+    def num_injections(self):
+        """
+        Returns the total integer number of injections this user has completed.
+        """
+
+        count = 0
+
+        for t in self.treatments:
+            count += len(t.injections)
+
+        return count
+
     @property
     def active_treatments(self):
         """Return list of treatments marked currently active."""
