@@ -22,6 +22,8 @@
           Frequency: every {{ t.frequency_in_seconds / 86400 }} days
           <br />
           Route: {{ t.medication_regimen.route }}
+          <!-- <br />
+          Started: {{t.friendly_start_date.full_date_time}} -->
         </p>
       </li>
       {% endfor %}

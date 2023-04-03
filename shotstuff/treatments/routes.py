@@ -83,6 +83,7 @@ def display_treatment_detail(treatment_id):
     treatment = Treatment.query.get_or_404(treatment_id)
 
     if treatment.medication_regimen.is_for_injectable:
+        # if len(treatment.injections) > 0:
         next_injection_date = treatment.next_injection_detail["time_due"]
         next_injection_dow = next_injection_date["weekday"]
         # total_injections = len(treatment.injections)
