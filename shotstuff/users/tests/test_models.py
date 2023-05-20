@@ -1,9 +1,12 @@
+import datetime
+
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.config import DATABASE_URL_TEST
 from shotstuff.testing_seed import BaseModelTestCase
 from shotstuff.users.models import User
 from shotstuff.treatments.models import Treatment
+from shotstuff.utils import calculate_date
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL_TEST
 app.config["TESTING"] = True
@@ -82,11 +85,35 @@ class UserModelTestCase(BaseModelTestCase):
         db.session.add(self.t2)
         db.session.commit()
 
-        self.assertEqual(
-            self.u1.active_treatments,
-            Treatment.query.filter_by(
+        u1_active_treatments = (
+            Treatment
+            .query
+            .filter_by(
                 user_id=self.u1.id,
                 currently_active=True
-            ).all()
+            )
+            .all()
+        )
+
+        self.assertEqual(
+            self.u1.active_treatments,
+            u1_active_treatments
         )
         self.assertNotIn(self.t2, self.u1.active_treatments)
+
+    def test_upcoming_injection_times(self):
+        """Test upcoming injection times method works in positive case"""
+
+        u1_upcoming_injections = self.u1.upcoming_injection_times
+        inj_days = self.t1.frequency_in_seconds/86400
+        inj_date = self.i1.occurred_at + datetime.timedelta(days=inj_days)
+
+        self.assertEqual(
+            u1_upcoming_injections,
+            [
+                {
+                    "full_date": inj_date.strftime('%m/%d/%Y'),
+                    "treatment": self.t1
+                }
+            ]
+        )

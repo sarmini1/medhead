@@ -1,4 +1,7 @@
 from unittest import TestCase
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
+
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.config import DATABASE_URL_TEST
@@ -10,6 +13,7 @@ from shotstuff.labs.models import Lab
 from shotstuff.injections.models import Injection
 from shotstuff.body_regions.models import BodyRegion
 from shotstuff.positions.models import Position
+from shotstuff.utils import calculate_date
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL_TEST
 app.config["TESTING"] = True
@@ -18,6 +22,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.drop_all()
 db.create_all()
+
 
 class BaseModelTestCase(TestCase):
     """
@@ -115,9 +120,9 @@ class BaseModelTestCase(TestCase):
             requires_labs = True,
             lab_frequency_in_months = 3,
             lab_point_in_cycle = "peak",
-            next_lab_due_date = "2022-06-16",
+            next_lab_due_date = calculate_date(date.today(), 3),
             clinic_supervising = "UCSF",
-            start_date = "2022-02-16",
+            start_date = calculate_date(),
             currently_active = True
         )
 
