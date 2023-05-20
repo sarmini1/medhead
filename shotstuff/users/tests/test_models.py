@@ -6,6 +6,7 @@ from shotstuff.config import DATABASE_URL_TEST
 from shotstuff.testing_seed import BaseModelTestCase
 from shotstuff.users.models import User
 from shotstuff.treatments.models import Treatment
+from shotstuff.injections.models import Injection
 from shotstuff.utils import calculate_date
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL_TEST
@@ -101,8 +102,56 @@ class UserModelTestCase(BaseModelTestCase):
         )
         self.assertNotIn(self.t2, self.u1.active_treatments)
 
-    def test_upcoming_injection_times(self):
+    def test_upcoming_injection_times_all_soon(self):
         """Test upcoming injection times method works in positive case"""
+
+        u1_upcoming_injections = self.u1.upcoming_injection_times
+        inj_days = self.t1.frequency_in_seconds/86400
+        inj_date = self.i1.occurred_at + datetime.timedelta(days=inj_days)
+
+        self.assertEqual(
+            u1_upcoming_injections,
+            [
+                {
+                    "full_date": inj_date.strftime('%m/%d/%Y'),
+                    "treatment": self.t1
+                }
+            ]
+        )
+
+    def test_upcoming_injection_times_not_all_soon(self):
+        """
+        Test upcoming injection times method only shows injections coming
+        up in the next 2 weeks.
+        """
+
+        # Create new treatment where injections are every 20 days, too far
+        # in advance
+        self.t2 = Treatment(
+            user_id = self.u1.id,
+            medication_regimen_id = self.mr2.id,
+            frequency_in_seconds = 1728000,
+            requires_labs = True,
+            lab_frequency_in_months = 6,
+            lab_point_in_cycle = "peak",
+            next_lab_due_date = calculate_date(months_in_future=6),
+            clinic_supervising = "UCSF",
+            start_date = calculate_date(),
+            currently_active = False
+        )
+
+        db.session.add(self.t2)
+        db.session.commit()
+
+        self.i2 = Injection(
+            treatment_id = self.t2.id,
+            method = "subcutaneous",
+            body_region_id = self.br1.id,
+            position_id = self.p1.id
+        )
+
+        db.session.add(self.i2)
+        db.session.commit()
 
         u1_upcoming_injections = self.u1.upcoming_injection_times
         inj_days = self.t1.frequency_in_seconds/86400
