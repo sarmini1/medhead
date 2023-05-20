@@ -67,13 +67,16 @@ class User(UserMixin, db.Model):
 
     @property
     def upcoming_injection_times(self):
-        """Return list of injections occuring in the next 14 days."""
+        """
+        Return list of injections occuring in the next 14 days for all active
+        treatments.
+        """
 
         two_weeks_in_seconds = 1209600
         two_weeks_time = datetime.utcnow() + timedelta(seconds=two_weeks_in_seconds)
         upcoming_injection_times = []
 
-        for t in self.treatments:
+        for t in self.active_treatments:
             if len(t.injections) > 0:
                 full_date = t.next_injection_detail["time_due"]["full_date_time"].split(",")[0]
                 date = datetime.strptime(full_date, '%m/%d/%Y')

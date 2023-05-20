@@ -120,7 +120,7 @@ def edit_treatment(treatment_id):
     form = TreatmentEditForm()
 
     if form.validate_on_submit():
-        treatment.frequency_in_seconds = form.frequency.data*86400
+        treatment.frequency_in_seconds = form.frequency.data*86400 if form.frequency.data else treatment.frequency_in_seconds
         treatment.end_date = form.end_date.data if form.end_date.data else None
         treatment.currently_active = False if form.end_date.data else True
         db.session.commit()

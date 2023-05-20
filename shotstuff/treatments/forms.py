@@ -59,7 +59,7 @@ class TreatmentAddForm(FlaskForm):
 class TreatmentEditForm(FlaskForm):
     """Form for editing a user treatment. """
 
-    frequency = IntegerField('Frequency (days)', validators=[DataRequired()])
+    frequency = IntegerField('Frequency (days)', validators=[Optional()])
     end_date = DateField(
       'Has this treatment ended? If so, what date? If not, leave default value.',
       validators=[Optional()]
