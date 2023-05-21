@@ -102,7 +102,7 @@ class UserModelTestCase(BaseModelTestCase):
         )
         self.assertNotIn(self.t2, self.u1.active_treatments)
 
-    def test_upcoming_injection_times_all_soon(self):
+    def test_upcoming_injection_times_all_within_2_weeks(self):
         """Test upcoming injection times method works in positive case"""
 
         u1_upcoming_injections = self.u1.upcoming_injection_times
@@ -119,7 +119,7 @@ class UserModelTestCase(BaseModelTestCase):
             ]
         )
 
-    def test_upcoming_injection_times_not_all_soon(self):
+    def test_upcoming_injection_times_not_all_within_2_weeks(self):
         """
         Test upcoming injection times method only shows injections coming
         up in the next 2 weeks.
