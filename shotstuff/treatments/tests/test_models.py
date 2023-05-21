@@ -3,8 +3,9 @@ import unittest
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.config import DATABASE_URL_TEST
+from shotstuff.treatments.factories import TreatmentFactory
 from shotstuff.medication_regimens.factories import MedicationRegimenFactory
-from shotstuff.medication_regimens.models import MedicationRegimen
+from shotstuff.treatments.models import Treatment
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL_TEST
 app.config["TESTING"] = True
@@ -14,23 +15,22 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.drop_all()
 db.create_all()
 
-class MedicationRegimenModelTestCase(unittest.TestCase):
+class TreatmentModelTestCase(unittest.TestCase):
 
     def setUp(self):
-        # Prepare a new, clean session
-        # self.session = test_session.Session()
-        self.mr1 = MedicationRegimenFactory()
+        self.t1 = TreatmentFactory()
 
     def tearDown(self):
         # Rollback the session => no changes to the database
         db.session.rollback()
-        # Remove it, so that the next test gets a new Session()
-        # test_session.Session.remove()
 
-    def test_creating_med_regimens(self):
+    def test_creating_treatments(self):
         """TODO: Not sure if keeping this"""
-        mr2 = MedicationRegimenFactory(id=2, title='fuck')
+        t2 = TreatmentFactory(
+            id=2,
+            medication_regimen=MedicationRegimenFactory(id=2)
+        )
         self.assertEqual(
-            [self.mr1, mr2],
-            db.session.query(MedicationRegimen).all()
+            [self.t1, t2],
+            db.session.query(Treatment).all()
         )

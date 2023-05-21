@@ -2,9 +2,17 @@ import unittest
 
 from shotstuff import app
 from shotstuff.database import db
+from shotstuff.config import DATABASE_URL_TEST
 from shotstuff.users.factories import UserFactory
 from shotstuff.users.models import User
-# from shotstuff import test_session
+
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL_TEST
+app.config["TESTING"] = True
+app.config["SQLALCHEMY_ECHO"] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.drop_all()
+db.create_all()
 
 class UserModelTestCase(unittest.TestCase):
 

@@ -14,11 +14,13 @@ class Treatment(db.Model):
     __tablename__ = "treatments"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # TODO: figure out why i have this when i have user also?
     user_id = db.Column(
         db.Integer,
         db.ForeignKey("users.id", ondelete="cascade"),
         nullable=False
     )
+    # User model has 'treatments' property with 'user' backref
     medication_regimen_id = db.Column(
         db.Integer,
         db.ForeignKey("medication_regimens.id"),
@@ -72,6 +74,7 @@ class Treatment(db.Model):
         nullable=True
     )
     medication_regimen = db.relationship('MedicationRegimen')
+
     injections = db.relationship(
         'Injection',
         backref="treatment"
