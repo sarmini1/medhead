@@ -2,7 +2,6 @@
 from datetime import datetime, timedelta
 # import calendar
 from flask_login import UserMixin
-
 from flask_bcrypt import Bcrypt
 
 from shotstuff.database import db
