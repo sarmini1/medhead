@@ -9,6 +9,7 @@ from shotstuff.users.models import User
 from shotstuff.treatments.factories import TreatmentFactory
 from shotstuff.treatments.models import Treatment
 from shotstuff.medication_regimens.models import MedicationRegimen
+from shotstuff.injections.factories import InjectionFactory
 from shotstuff.injections.models import Injection
 from shotstuff.body_regions.models import BodyRegion
 from shotstuff.body_regions.factories import BodyRegionFactory
@@ -32,6 +33,7 @@ class UserModelTestCase(unittest.TestCase):
 
         # Position.query.delete()
         # BodyRegion.query.delete()
+        Injection.query.delete()
         Treatment.query.delete()
         MedicationRegimen.query.delete()
         Injection.query.delete()
@@ -41,11 +43,13 @@ class UserModelTestCase(unittest.TestCase):
         t1 = TreatmentFactory()
         br1 = BodyRegionFactory()
         p1 = PositionFactory()
+        i1 = InjectionFactory()
 
         self.u1 = u1
         self.t1 = t1
         self.br1 = br1
         self.p1 = p1
+        self.i1 = i1
 
     def tearDown(self):
         # Rollback the session => no changes to the database
@@ -130,20 +134,9 @@ class UserModelTestCase(unittest.TestCase):
     def test_upcoming_injection_times_all_within_2_weeks(self):
         """Test upcoming injection times method works in positive case"""
 
-        # TODO make injection factory
-        i1 = Injection(
-            treatment_id = self.t1.id,
-            method = "subcutaneous",
-            body_region_id = self.br1.id,
-            position_id = self.p1.id
-        )
-
-        db.session.add(i1)
-        db.session.commit()
-
         u1_upcoming_injections = self.u1.upcoming_injection_times
         inj_days = self.t1.frequency_in_seconds/86400
-        inj_date = i1.occurred_at + datetime.timedelta(days=inj_days)
+        inj_date = self.i1.occurred_at + datetime.timedelta(days=inj_days)
 
         self.assertEqual(
             u1_upcoming_injections,
@@ -169,19 +162,9 @@ class UserModelTestCase(unittest.TestCase):
             currently_active = True
         )
 
-        db.session.add(t2)
-        db.session.commit()
-
-        # TODO injection factory
-        i2 = Injection(
+        i2 = InjectionFactory(
             treatment_id = t2.id,
-            method = "subcutaneous",
-            body_region_id = self.br1.id,
-            position_id = self.p1.id
         )
-
-        db.session.add(i2)
-        db.session.commit()
 
         u1_upcoming_injections = self.u1.upcoming_injection_times
         inj_days = self.t1.frequency_in_seconds/86400
