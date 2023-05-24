@@ -7,6 +7,7 @@ from shotstuff.medication_regimens.factories import MedicationRegimenFactory
 from shotstuff.users.factories import UserFactory
 from shotstuff.utils import calculate_date
 
+
 class TreatmentFactory(factory.alchemy.SQLAlchemyModelFactory):
     """Factory to create a Treatment instance for testing."""
 
@@ -18,7 +19,7 @@ class TreatmentFactory(factory.alchemy.SQLAlchemyModelFactory):
         )
 
     id = 1
-    user_id = 1
+    user_id = 101
     medication_regimen_id = 1
     currently_active = True
     start_date = calculate_date()
