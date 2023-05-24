@@ -7,7 +7,7 @@ from shotstuff.injections.models import Injection
 from shotstuff.treatments.factories import TreatmentFactory
 from shotstuff.body_regions.factories import BodyRegionFactory
 from shotstuff.positions.factories import PositionFactory
-from shotstuff.utils import calculate_date
+# from shotstuff.utils import calculate_date
 
 
 class InjectionFactory(factory.alchemy.SQLAlchemyModelFactory):

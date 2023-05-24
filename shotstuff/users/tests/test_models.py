@@ -11,6 +11,8 @@ from shotstuff.treatments.models import Treatment
 from shotstuff.medication_regimens.models import MedicationRegimen
 from shotstuff.injections.factories import InjectionFactory
 from shotstuff.injections.models import Injection
+from shotstuff.labs.models import Lab
+from shotstuff.labs.factories import LabFactory
 from shotstuff.body_regions.models import BodyRegion
 from shotstuff.body_regions.factories import BodyRegionFactory
 from shotstuff.positions.models import Position
@@ -31,8 +33,7 @@ class UserModelTestCase(unittest.TestCase):
     def setUp(self):
         """Create test data. """
 
-        # Position.query.delete()
-        # BodyRegion.query.delete()
+        Lab.query.delete()
         Injection.query.delete()
         Treatment.query.delete()
         MedicationRegimen.query.delete()
@@ -44,17 +45,18 @@ class UserModelTestCase(unittest.TestCase):
         br1 = BodyRegionFactory()
         p1 = PositionFactory()
         i1 = InjectionFactory()
+        l1 = LabFactory()
 
         self.u1 = u1
         self.t1 = t1
         self.br1 = br1
         self.p1 = p1
         self.i1 = i1
+        self.l1 = l1
 
     def tearDown(self):
-        # Rollback the session => no changes to the database
+        # Rollback the session to clean up any fouled transactions
         db.session.rollback()
-        # Remove it, so that the next test gets a new Session()
 
     def test_creating_users(self):
         """TODO: Not sure if keeping this"""
@@ -178,4 +180,19 @@ class UserModelTestCase(unittest.TestCase):
                     "treatment": self.t1
                 }
             ]
+        )
+
+    def test_on_time_labs(self):
+        """Test that this property returns the correct percentage. """
+
+        # TODO shouldn't have to set the id here?????
+        LabFactory(
+            id=2,
+            completed_on_time=False
+        )
+
+        percentage = self.u1.on_time_lab_percentage
+        self.assertEqual(
+            percentage,
+            "50.0%"
         )

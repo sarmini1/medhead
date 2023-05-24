@@ -57,7 +57,7 @@ class User(UserMixin, db.Model):
         return [l for l in self.labs if l.occurred_at]
 
     @property
-    def on_time_labs(self):
+    def on_time_lab_percentage(self):
         """Return stats on completed labs marked on-time."""
 
         on_time_labs = [l for l in self.labs if l.completed_on_time]
