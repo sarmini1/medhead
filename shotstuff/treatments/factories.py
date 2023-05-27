@@ -18,7 +18,7 @@ class TreatmentFactory(factory.alchemy.SQLAlchemyModelFactory):
             'id',
         )
 
-    id = 1
+    id = 101
     user_id = 101
     medication_regimen_id = 1
     currently_active = True

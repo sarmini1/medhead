@@ -17,8 +17,8 @@ class LabFactory(factory.alchemy.SQLAlchemyModelFactory):
             'id',
         )
 
-    id = 1
-    treatment_id = 1
+    id = 101
+    treatment_id = 101
     treatment = factory.SubFactory(TreatmentFactory)
     is_routine_lab = True
     is_supplemental_lab = False

@@ -20,12 +20,12 @@ class InjectionFactory(factory.alchemy.SQLAlchemyModelFactory):
             'id',
         )
 
-    id = 1
-    treatment_id = 1
+    id = factory.Sequence(lambda n: n) #TODO: decide when this is appropriate in other factories, too
+    treatment_id = 101
     method = "subcutaneous"
     body_region_id = 1
     body_region = factory.SubFactory(BodyRegionFactory)
     position_id = 1
     position = factory.SubFactory(PositionFactory)
-    occurred_at = datetime.datetime.utcnow()
+    occurred_at = datetime.datetime.now()
     notes = "pretty smooth"

@@ -31,7 +31,7 @@
           <p>Region: {{ injection.body_region.name }}</p>
           <p>Position: {{injection.position.horizontal }}, {{injection.position.vertical }}</p>
           <p>Method: {{ injection.method }}</p>
-          <p>Time: {{ injection.generate_friendly_date_time().full_date_time }}</p>
+          <p>Time: {{ injection.generate_friendly_injection_time().full_date_time }}</p>
           <p>Notes: {{ injection.notes }}</p>
         </li>
       </ul>

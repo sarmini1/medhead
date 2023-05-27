@@ -55,7 +55,7 @@ class Injection(db.Model):
             "occurred_at": self.occurred_at
         }
 
-    def generate_friendly_date_time(self):
+    def generate_friendly_injection_time(self):
         """
         Returns dictionary with year, month, day, time, date and time formatted
         in a friendly way.

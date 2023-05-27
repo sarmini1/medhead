@@ -10,10 +10,7 @@ class BodyRegionFactory(factory.alchemy.SQLAlchemyModelFactory):
     class Meta:
         model = BodyRegion
         sqlalchemy_session = db.session
-        sqlalchemy_get_or_create = (
-            'id',
-            'name'
-        )
+        sqlalchemy_get_or_create = ('id',)
 
-    id = 1
+    id = factory.Sequence(lambda n: n)
     name = 'abdomen'
