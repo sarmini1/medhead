@@ -40,19 +40,12 @@ class UserModelTestCase(unittest.TestCase):
         Injection.query.delete()
         User.query.delete()
 
-        u1 = UserFactory()
-        t1 = TreatmentFactory()
-        br1 = BodyRegionFactory()
-        p1 = PositionFactory()
-        i1 = InjectionFactory()
-        l1 = LabFactory()
-
-        self.u1 = u1
-        self.t1 = t1
-        self.br1 = br1
-        self.p1 = p1
-        self.i1 = i1
-        self.l1 = l1
+        self.u1 = UserFactory()
+        self.t1 = TreatmentFactory()
+        self.br1 = BodyRegionFactory()
+        self.p1 = PositionFactory()
+        self.i1 = InjectionFactory()
+        self.l1 = LabFactory()
 
     def tearDown(self):
         # Rollback the session to clean up any fouled transactions
