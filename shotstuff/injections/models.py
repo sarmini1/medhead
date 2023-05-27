@@ -2,6 +2,7 @@ from datetime import datetime
 
 from shotstuff.database import db
 
+
 class Injection(db.Model):
     """Injection."""
 
@@ -13,11 +14,15 @@ class Injection(db.Model):
         db.ForeignKey("treatments.id", ondelete="cascade"),
         nullable=False
     )
+
+    # Treatment model has a 'treatment' backref
+
     # medication_id = db.Column(
     #     db.Integer,
     #     db.ForeignKey("medications.id", ondelete="cascade"),
     #     nullable=False
     # )
+
     method = db.Column(db.Text, nullable=False)
     body_region_id = db.Column(
         db.Integer,

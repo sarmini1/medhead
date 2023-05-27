@@ -22,6 +22,7 @@ class InjectionFactory(factory.alchemy.SQLAlchemyModelFactory):
 
     id = factory.Sequence(lambda n: n) #TODO: decide when this is appropriate in other factories, too
     treatment_id = 101
+    treatment = factory.SubFactory(TreatmentFactory)
     method = "subcutaneous"
     body_region_id = 1
     body_region = factory.SubFactory(BodyRegionFactory)

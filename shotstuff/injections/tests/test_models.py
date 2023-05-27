@@ -1,17 +1,12 @@
 from freezegun import freeze_time
 import unittest
-# from unittest.mock import patch
 import datetime
 
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.config import DATABASE_URL_TEST
 
-from shotstuff.users.factories import UserFactory
-from shotstuff.treatments.factories import TreatmentFactory
 from shotstuff.injections.factories import InjectionFactory
-from shotstuff.positions.factories import PositionFactory
-from shotstuff.body_regions.factories import BodyRegionFactory
 
 from shotstuff.users.models import User
 from shotstuff.treatments.models import Treatment
@@ -39,10 +34,6 @@ class InjectionModelTestCase(unittest.TestCase):
         Injection.query.delete()
         User.query.delete()
 
-        self.u1 = UserFactory()
-        self.t1 = TreatmentFactory()
-        self.br1 = BodyRegionFactory()
-        self.p1 = PositionFactory()
         self.i1 = InjectionFactory()
 
     def tearDown(self):
@@ -60,7 +51,8 @@ class InjectionModelTestCase(unittest.TestCase):
 
     @freeze_time("2023-05-26 10:30:01")
     def test_generate_friendly_injection_time(self):
-        """Test that an injection instance can hand """
+        """Test that an injection instance can hand back nice time data."""
+
         i2 = InjectionFactory(occurred_at = datetime.datetime.now())
         generated = i2.generate_friendly_injection_time()
 

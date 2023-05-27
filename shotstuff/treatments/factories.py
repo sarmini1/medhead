@@ -32,4 +32,3 @@ class TreatmentFactory(factory.alchemy.SQLAlchemyModelFactory):
     # clinic_supervising
     medication_regimen = factory.SubFactory(MedicationRegimenFactory)
     user = factory.SubFactory(UserFactory)
-    # injections?????

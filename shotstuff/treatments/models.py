@@ -3,7 +3,6 @@ import calendar
 
 from shotstuff.database import db
 from shotstuff.labs.models import Lab
-# from shotstuff.injection_regimens.models import InjectionRegimen
 
 
 class Treatment(db.Model):
@@ -14,13 +13,15 @@ class Treatment(db.Model):
     __tablename__ = "treatments"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # TODO: figure out why i have this when i have user also?
+
     user_id = db.Column(
         db.Integer,
         db.ForeignKey("users.id", ondelete="cascade"),
         nullable=False
     )
+
     # User model has 'treatments' property with 'user' backref
+
     medication_regimen_id = db.Column(
         db.Integer,
         db.ForeignKey("medication_regimens.id"),
@@ -136,7 +137,7 @@ class Treatment(db.Model):
         frequency = self.frequency_in_seconds
 
         next_inj_date = last_injection.occurred_at + timedelta(seconds=frequency)
-        next_inj_position = self._find_next_injection_position(last_injection)
+        next_inj_position = self._find_next_injection_position()
 
         return {
             "time_due": self.generate_friendly_date_time(next_inj_date),
@@ -165,25 +166,25 @@ class Treatment(db.Model):
         )
         db.session.add(upcoming_lab)
 
-    def _find_next_injection_position(self, inj):
+    def _find_next_injection_position(self):
         """
-        Accepts an injection instance and returns the placement, a tuple like
-        ("left", "lower"), where the next injection is due. Assumes clockwise
-        rotation.
+        Looks at the most recent injection and returns the placement, a tuple like
+        ("left", "lower"), where the next injection is due.
         """
-        # Assumes we'll move clockwise so we don't hit the same area for a cycle of
-        # 4 injections
-        # left lower, right lower, right upper, left upper
 
         ordered_positions = [
             ("left", "lower"),
-            ("right", "lower"),
             ("right", "upper"),
             ("left", "upper"),
+            ("right", "lower"),
         ]
+        last_inj = self.last_injection_details["injection"]
 
-        position = (inj.position.horizontal, inj.position.vertical)
-        next_position_idx = ordered_positions.index(position) + 1
+        last_inj_position = (
+            last_inj.position.horizontal,
+            last_inj.position.vertical
+        )
+        next_position_idx = ordered_positions.index(last_inj_position) + 1
         if next_position_idx >= len(ordered_positions):
             next_position_idx = 0
 
@@ -199,6 +200,7 @@ class Treatment(db.Model):
             "medication_regimen_id": self.medication_regimen_id,
         }
 
+    # TODO: assess how to break this method out to be more generic
     def generate_friendly_date_time(self, date):
         """ Returns dictionary with year, month, day, time, date and time formatted
             in a friendly way.
