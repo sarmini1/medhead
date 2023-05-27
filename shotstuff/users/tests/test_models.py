@@ -1,23 +1,26 @@
 import unittest
 import datetime
+from sqlalchemy.exc import IntegrityError
 
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.config import DATABASE_URL_TEST
+from shotstuff.utils import calculate_date
+
 from shotstuff.users.factories import UserFactory
-from shotstuff.users.models import User
 from shotstuff.treatments.factories import TreatmentFactory
+from shotstuff.injections.factories import InjectionFactory
+from shotstuff.labs.factories import LabFactory
+from shotstuff.positions.factories import PositionFactory
+from shotstuff.body_regions.factories import BodyRegionFactory
+
+from shotstuff.users.models import User
 from shotstuff.treatments.models import Treatment
 from shotstuff.medication_regimens.models import MedicationRegimen
-from shotstuff.injections.factories import InjectionFactory
 from shotstuff.injections.models import Injection
 from shotstuff.labs.models import Lab
-from shotstuff.labs.factories import LabFactory
 from shotstuff.body_regions.models import BodyRegion
-from shotstuff.body_regions.factories import BodyRegionFactory
 from shotstuff.positions.models import Position
-from shotstuff.positions.factories import PositionFactory
-from shotstuff.utils import calculate_date
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL_TEST
 app.config["TESTING"] = True
@@ -26,6 +29,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.drop_all()
 db.create_all()
+
 
 class UserModelTestCase(unittest.TestCase):
     """Tests User model."""
@@ -52,11 +56,11 @@ class UserModelTestCase(unittest.TestCase):
         db.session.rollback()
 
     def test_creating_users(self):
-        """TODO: Not sure if keeping this"""
+        """Simple test that we can create a new user. """
         u2 = UserFactory(id=2)
         self.assertEqual([self.u1, u2], db.session.query(User).all())
 
-    def test_signup(self):
+    def test_signup_valid_data(self):
         """Test User.signup method works successfully with good data."""
 
         User.signup(
@@ -70,6 +74,24 @@ class UserModelTestCase(unittest.TestCase):
         self.assertEqual(
             len(User.query.filter_by(username="signup_username").all()),
             1
+        )
+
+    def test_signup_invalid_data(self):
+        """Test User.signup method fails with bad data. """
+
+        with self.assertRaises(IntegrityError):
+            # Create a user with no username
+            User.signup(
+                first_name="baduser_firstname",
+                username=None,
+                password="some_password"
+            )
+            db.session.commit()
+
+        db.session.rollback()
+        self.assertEqual(
+            0,
+            User.query.filter_by(first_name="baduser_firstname").count()
         )
 
     def test_authenticate_valid_credentials(self):
