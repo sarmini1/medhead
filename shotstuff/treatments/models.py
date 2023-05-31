@@ -98,16 +98,17 @@ class Treatment(db.Model):
          }
         """
         # TODO: consider adding error handling if we try to call this method
-        # for a non-injectable treatment. Same for other injection method below.
+        # for a non-injectable treatment to match other method below.
 
         num_injections_occurred = len(self.injections)
+
         if num_injections_occurred == 0:
             return None
         last_injection = self.injections[num_injections_occurred - 1]
         friendly_occurred_at = self.generate_friendly_date_time(
                 last_injection.occurred_at
         )
-        # breakpoint()
+
         return {
             "injection": last_injection,
             "occurred_at": friendly_occurred_at
@@ -207,7 +208,7 @@ class Treatment(db.Model):
         """ Returns dictionary with year, month, day, time, date and time formatted
             in a friendly way.
         """
-
+        # breakpoint()
         year = date.strftime("%Y")
         month = date.strftime("%m")
         day = date.strftime("%d")

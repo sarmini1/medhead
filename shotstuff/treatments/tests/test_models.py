@@ -156,3 +156,25 @@ class TreatmentModelTestCase(unittest.TestCase):
             None,
             self.t1.last_injection_details
         )
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_friendly_start_date(self):
+        """aslkdfalsdfj"""
+        breakpoint()
+        t2 = TreatmentFactory(
+            start_date=datetime.datetime.now()
+        )
+        breakpoint()
+        friendly_start_date = t2.friendly_start_date
+        expectation = {
+                "year": "2023",
+                "month": "05",
+                "day": "26",
+                "time": "10:30:01",
+                "weekday": "Friday",
+                "full_date_time": "05/26/2023, 10:30:01"
+            }
+        self.assertEqual(
+            friendly_start_date,
+            expectation
+        )
