@@ -67,8 +67,8 @@ class TreatmentModelTestCase(unittest.TestCase):
         """
 
         # Making a new injection will make a new Treatment instance for us
-        i1 = InjectionFactory()
-        next_inj_position = i1.treatment._find_next_injection_position()
+        i2 = InjectionFactory()
+        next_inj_position = i2.treatment._find_next_injection_position()
         self.assertEqual(
             next_inj_position,
             ("left", "lower")
@@ -90,12 +90,12 @@ class TreatmentModelTestCase(unittest.TestCase):
     @freeze_time("2023-05-26 10:30:01")
     def test_next_injection_detail_with_past_injections(self):
         """
-        Test method for updating next injection detail when past injections
+        Test method for calculating next injection detail when past injections
         have occurred.
         """
 
         # Making a new injection will make a new Treatment instance for us
-        i1 = InjectionFactory(
+        i2 = InjectionFactory(
             occurred_at=datetime.datetime.now()
         )
         # Injection factory makes a Treatment instance with inj frequency
@@ -113,7 +113,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         }
         self.assertEqual(
             next_injection_detail,
-            i1.treatment.calculate_next_injection_detail()
+            i2.treatment.calculate_next_injection_detail()
         )
 
     def test_next_injection_detail_no_injections(self):
@@ -122,3 +122,37 @@ class TreatmentModelTestCase(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self.t1.calculate_next_injection_detail()
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_last_injection_detail_with_past_injections(self):
+        """
+        Test accessing the last injection details for a treatment with past
+        injections.
+        """
+        i2 = InjectionFactory(
+            occurred_at=datetime.datetime.now()
+        )
+        last_injection_details = {
+            "injection": i2,
+            "occurred_at": {
+                "year": "2023",
+                "month": "05",
+                "day": "26",
+                "time": "10:30:01",
+                "weekday": "Friday",
+                "full_date_time": "05/26/2023, 10:30:01"
+            }
+        }
+        self.assertEqual(
+            i2.treatment.last_injection_details,
+            last_injection_details
+        )
+
+    def test_last_injection_detail_no_past_injections(self):
+        """Test getting last injection details when no injections have occurred."""
+
+        # Our treatment from the setup doesn't have any injections yet
+        self.assertEqual(
+            None,
+            self.t1.last_injection_details
+        )

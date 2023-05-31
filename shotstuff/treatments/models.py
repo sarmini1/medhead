@@ -113,7 +113,6 @@ class Treatment(db.Model):
             "occurred_at": friendly_occurred_at
         }
 
-    # @property
     def calculate_next_injection_detail(self):
         """
         Based on the date and position of their most recent injection and
