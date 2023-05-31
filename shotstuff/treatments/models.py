@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta, date
-from dateutil.relativedelta import relativedelta
+from datetime import datetime, timedelta
 import calendar
 
 from shotstuff.database import db
@@ -126,14 +125,14 @@ class Treatment(db.Model):
             "time_due": {year, month, day, time, ... },
             "position": ("left", "lower")
         }
+
+        If no injections have occurred for this treatment, raises ValueError.
         """
 
         num_injections_occurred = len(self.injections)
 
-        # TODO: need to handle case when no injections have occurred yet,
-        # this is just an ungraceful placeholder
         if num_injections_occurred == 0:
-            return "No injections added yet!"
+            raise ValueError("No injections yet!")
 
         last_injection = self.injections[num_injections_occurred - 1]
         frequency = self.frequency_in_seconds
