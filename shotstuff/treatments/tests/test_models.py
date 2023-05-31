@@ -88,8 +88,11 @@ class TreatmentModelTestCase(unittest.TestCase):
         )
 
     @freeze_time("2023-05-26 10:30:01")
-    def test_next_injection_detail(self):
-        """Test method for updating next injection detail. """
+    def test_next_injection_detail_with_past_injections(self):
+        """
+        Test method for updating next injection detail when past injections
+        have occurred.
+        """
 
         # Making a new injection will make a new Treatment instance for us
         i1 = InjectionFactory(
@@ -110,5 +113,12 @@ class TreatmentModelTestCase(unittest.TestCase):
         }
         self.assertEqual(
             next_injection_detail,
-            i1.treatment.next_injection_detail
+            i1.treatment.calculate_next_injection_detail()
         )
+
+    def test_next_injection_detail_no_injections(self):
+        """Test that an error is thrown when trying to access this property
+        on a treatment without any injections."""
+
+        with self.assertRaises(ValueError):
+            self.t1.calculate_next_injection_detail()

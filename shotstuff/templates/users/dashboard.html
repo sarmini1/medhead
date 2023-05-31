@@ -48,8 +48,8 @@
           <hr />
           {% endif %}
           <p>Due: {{ inj.full_date }}</p>
-          <p>Position: {{ inj.treatment.next_injection_detail.position[0] }} side,
-            {{inj.treatment.next_injection_detail.position[1]}} quadrant</p>
+          <p>Position: {{ inj.treatment.calculate_next_injection_detail().position[0] }} side,
+            {{inj.treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
           <p>For treatment {{ inj.treatment.medication_regimen.title }}</p>
           <a href="/treatments/{{inj.treatment.id}}/injections">
             <!-- <i class="bi bi-check2-square"></i> -->

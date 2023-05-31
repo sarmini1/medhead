@@ -84,14 +84,16 @@ def display_treatment_detail(treatment_id):
 
     if treatment.medication_regimen.is_for_injectable:
         # if len(treatment.injections) > 0:
-        next_injection_date = treatment.next_injection_detail["time_due"]
-        next_injection_dow = next_injection_date["weekday"]
+
+        next_injection_detail = treatment.calculate_next_injection_detail()
+        next_injection_time = next_injection_detail["time_due"]
+        next_injection_dow = next_injection_time["weekday"]
         # total_injections = len(treatment.injections)
 
         return render_template(
             "treatments/treatment_detail.html",
             treatment=treatment,
-            next_injection_date=next_injection_date,
+            next_injection_date=next_injection_detail,
             next_injection_dow=next_injection_dow
         )
 
