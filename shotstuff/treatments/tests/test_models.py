@@ -73,4 +73,16 @@ class TreatmentModelTestCase(unittest.TestCase):
             ("left", "lower")
         )
 
+    @freeze_time("2023-05-26 10:30:01")
+    def test_update_next_lab_due_date(self):
+        """Test function for updating next lab due date. """
 
+        t2 = TreatmentFactory(
+            next_lab_due_date=datetime.datetime.now()
+        )
+        breakpoint()
+        t2.update_next_lab_due_date()
+        self.assertEqual(
+            t2.next_lab_due_date,
+            "2023-09-30"
+        )

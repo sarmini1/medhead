@@ -26,9 +26,9 @@ class TreatmentFactory(factory.alchemy.SQLAlchemyModelFactory):
     end_date = calculate_date(months_in_future=12)
     frequency_in_seconds = 604800 # 1 week
     requires_labs = True
-    lab_frequency_in_months = 3
+    lab_frequency_in_months = 4
     lab_point_in_cycle = 'peak'
-    # next_lab_due_date
+    next_lab_due_date = calculate_date()
     # clinic_supervising
     medication_regimen = factory.SubFactory(MedicationRegimenFactory)
     user = factory.SubFactory(UserFactory)

@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta, date
+from dateutil.relativedelta import relativedelta
 import calendar
 
 from shotstuff.database import db
 from shotstuff.labs.models import Lab
+from shotstuff.utils import calculate_date
 
 
 class Treatment(db.Model):
@@ -151,13 +153,15 @@ class Treatment(db.Model):
         for current instance. Returns None.
         """
 
-        #TODO: consider better way of converting month frequency to seconds,
-        # considering that months have varying lengths. Being on the more conservative
-        # side for now and just assuming 30 days per month.
-        lab_frequency_in_seconds = self.lab_frequency_in_months * ((60*60)*24)*30
-        self.next_lab_due_date = self.next_lab_due_date + timedelta(
-            seconds=lab_frequency_in_seconds
+        converted_datetime = datetime.strptime(
+            self.next_lab_due_date,
+            '%Y-%m-%d'
         )
+        self.next_lab_due_date = calculate_date(
+            converted_datetime,
+            self.lab_frequency_in_months
+        )
+
         upcoming_lab = Lab(
             treatment_id = self.id,
             requires_fasting = False,
