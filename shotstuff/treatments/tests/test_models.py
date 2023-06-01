@@ -79,12 +79,14 @@ class TreatmentModelTestCase(unittest.TestCase):
         """Test method for updating next lab due date. """
 
         t2 = TreatmentFactory(
+            id=102,
             next_lab_due_date=datetime.datetime.now()
         )
+
         t2.update_next_lab_due_date()
         self.assertEqual(
             t2.next_lab_due_date,
-            "2023-09-30"
+            "2023-09-26"
         )
 
     @freeze_time("2023-05-26 10:30:01")
@@ -158,13 +160,14 @@ class TreatmentModelTestCase(unittest.TestCase):
         )
 
     @freeze_time("2023-05-26 10:30:01")
-    def test_friendly_start_date(self):
-        """aslkdfalsdfj"""
-        breakpoint()
+    def test_friendly_start_date_when_start_date_present(self):
+        """Test that the friendly_start_date property works with a valid date."""
+
         t2 = TreatmentFactory(
+            id=102,
             start_date=datetime.datetime.now()
         )
-        breakpoint()
+
         friendly_start_date = t2.friendly_start_date
         expectation = {
                 "year": "2023",
@@ -177,4 +180,20 @@ class TreatmentModelTestCase(unittest.TestCase):
         self.assertEqual(
             friendly_start_date,
             expectation
+        )
+
+    def test_friendly_start_date_when_start_date_null(self):
+        """
+        Test that the friendly_start_date property returns None when
+        accessed for an instance with an unknown start date. """
+
+        t2 = TreatmentFactory(
+            id=102,
+            start_date=None
+        )
+
+        friendly_start_date = t2.friendly_start_date
+        self.assertEqual(
+            friendly_start_date,
+            None
         )

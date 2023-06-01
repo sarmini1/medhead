@@ -84,8 +84,16 @@ class Treatment(db.Model):
 
     @property
     def friendly_start_date(self):
-        """TBD"""
-        return self.generate_friendly_date_time(self.start_date)
+        """
+        Looks on the instance and generates a dictionary of time data about the
+        current instance's start date.
+        """
+        # TODO: since start date can be null/unknown, assess path forward if
+        # someone tries to access this property on such an instance
+        try:
+            return self.generate_friendly_date_time(self.start_date)
+        except AttributeError:
+            return None
 
     @property
     def last_injection_details(self):
@@ -152,12 +160,13 @@ class Treatment(db.Model):
         for current instance. Returns None.
         """
 
-        converted_datetime = datetime.strptime(
-            self.next_lab_due_date,
-            '%Y-%m-%d'
-        )
+        # converted_datetime = datetime.strptime(
+        #     self.next_lab_due_date,
+        #     '%Y-%m-%d'
+        # )
+        # TODO: decide if we need this string-to-Date obj conversion above
         self.next_lab_due_date = calculate_date(
-            converted_datetime,
+            self.next_lab_due_date,
             self.lab_frequency_in_months
         )
 
@@ -208,7 +217,7 @@ class Treatment(db.Model):
         """ Returns dictionary with year, month, day, time, date and time formatted
             in a friendly way.
         """
-        # breakpoint()
+
         year = date.strftime("%Y")
         month = date.strftime("%m")
         day = date.strftime("%d")

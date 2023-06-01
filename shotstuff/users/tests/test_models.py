@@ -128,9 +128,9 @@ class UserModelTestCase(unittest.TestCase):
             id=2,
             currently_active=False
         )
-
-        db.session.add(t2)
-        db.session.commit()
+        # breakpoint()
+        # db.session.add(t2)
+        # db.session.commit()
 
         u1_active_treatments = (
             Treatment
