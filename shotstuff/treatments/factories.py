@@ -23,7 +23,7 @@ class TreatmentFactory(factory.alchemy.SQLAlchemyModelFactory):
     medication_regimen_id = 1
     currently_active = True
     start_date = factory.LazyFunction(calculate_date)
-    end_date = calculate_date(months_in_future=12)
+    end_date = factory.LazyFunction(lambda: calculate_date(months_in_future=12))
     frequency_in_seconds = 604800 # 1 week
     requires_labs = True
     lab_frequency_in_months = 4

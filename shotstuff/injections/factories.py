@@ -28,5 +28,5 @@ class InjectionFactory(factory.alchemy.SQLAlchemyModelFactory):
     body_region = factory.SubFactory(BodyRegionFactory)
     position_id = 1
     position = factory.SubFactory(PositionFactory)
-    occurred_at = datetime.datetime.now()
+    occurred_at = factory.LazyFunction(datetime.datetime.now)
     notes = "pretty smooth"

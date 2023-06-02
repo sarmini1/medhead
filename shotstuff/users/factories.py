@@ -29,3 +29,4 @@ class UserFactory(factory.alchemy.SQLAlchemyModelFactory):
     # email = factory.LazyAttribute(lambda a: '{}.{}@example.com'.format(a.first_name, a.last_name).lower())
     # TODO: figure out this password stuff cuz this is ugly
     password = DEFAULT_PASSWORD
+

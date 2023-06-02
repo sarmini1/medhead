@@ -197,3 +197,20 @@ class TreatmentModelTestCase(unittest.TestCase):
             friendly_start_date,
             None
         )
+
+    def test_num_injections_property_when_past_injections_present(self):
+        """Tests num_injections property for a user when they have past injections."""
+
+        InjectionFactory()
+        self.assertEqual(
+            self.t1.user.num_injections,
+            1
+        )
+
+    def test_num_injections_property_when_past_injections_not_present(self):
+        """Tests num_injections property for a user when they do not have past injections."""
+
+        self.assertEqual(
+            self.t1.user.num_injections,
+            0
+        )

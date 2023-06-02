@@ -59,9 +59,10 @@ class User(UserMixin, db.Model):
     def on_time_lab_percentage(self):
         """Return stats on completed labs marked on-time."""
 
-        on_time_labs = [l for l in self.labs if l.completed_on_time]
-        percentage = (len(on_time_labs)/len(self.labs)) * 100
-        return f"{percentage}%"
+        if self.labs:
+            on_time_labs = [l for l in self.labs if l.completed_on_time]
+            percentage = (len(on_time_labs)/len(self.labs)) * 100
+            return f"{percentage}%"
 
     @property
     def upcoming_injection_times(self):
