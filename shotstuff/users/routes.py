@@ -18,7 +18,7 @@ def dashboard():
     - logged in: that user's treatments
 
     """
-    # breakpoint()
+    breakpoint()
     # if not current_user.is_authenticated:
     #     flash("Unauthorized")
     #     return redirect(f"/users/{current_user.get_id()}")
