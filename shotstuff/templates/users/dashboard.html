@@ -82,7 +82,9 @@
     <div class="col-12 col-sm-12 col-md-12 dash-item">
       <h3><b>Milestones</b></h3>
       <p>You've done {{current_user.num_injections}} total injections!</p>
-      <p>{{current_user.on_time_labs}} of routine labs completed on time!</p>
+      {% if current_user.on_time_labs %}
+        <p>{{current_user.on_time_labs}} of routine labs completed on time!</p>
+      {% endif %}
     </div>
   </div>
 </section>

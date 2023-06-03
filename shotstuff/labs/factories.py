@@ -23,6 +23,6 @@ class LabFactory(factory.alchemy.SQLAlchemyModelFactory):
     is_routine_lab = True
     is_supplemental_lab = False
     requires_fasting = False
-    occurred_at = datetime.datetime.utcnow()
+    occurred_at = factory.LazyFunction(datetime.datetime.now)
     point_in_cycle_occurred = "peak"
     completed_on_time = True

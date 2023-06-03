@@ -5,22 +5,17 @@ from sqlalchemy.exc import IntegrityError
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.config import DATABASE_URL_TEST
-from shotstuff.utils import calculate_date
 
 from shotstuff.users.factories import UserFactory
 from shotstuff.treatments.factories import TreatmentFactory
 from shotstuff.injections.factories import InjectionFactory
 from shotstuff.labs.factories import LabFactory
-from shotstuff.positions.factories import PositionFactory
-from shotstuff.body_regions.factories import BodyRegionFactory
 
 from shotstuff.users.models import User
 from shotstuff.treatments.models import Treatment
 from shotstuff.medication_regimens.models import MedicationRegimen
 from shotstuff.injections.models import Injection
 from shotstuff.labs.models import Lab
-from shotstuff.body_regions.models import BodyRegion
-from shotstuff.positions.models import Position
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL_TEST
 app.config["TESTING"] = True
@@ -44,11 +39,13 @@ class UserModelTestCase(unittest.TestCase):
         Injection.query.delete()
         User.query.delete()
 
-        # self.u1 = UserFactory()
-        self.t1 = TreatmentFactory()
-        # self.br1 = BodyRegionFactory()
-        # self.p1 = PositionFactory()
+        # InjectionFactory makes a TreatmentFactory instance, which makes
+        # User and MedicationRegimen factory instances under the hood
         self.i1 = InjectionFactory()
+        self.t1 = self.i1.treatment
+        self.u1 = self.i1.treatment.user
+
+        # Same note as above for LabFactory
         self.l1 = LabFactory()
 
     def tearDown(self):
@@ -58,7 +55,7 @@ class UserModelTestCase(unittest.TestCase):
     def test_creating_users(self):
         """Simple test that we can create a new user. """
         u2 = UserFactory(id=2)
-        self.assertEqual([self.t1.user, u2], db.session.query(User).all())
+        self.assertEqual([self.u1, u2], db.session.query(User).all())
 
     def test_signup_valid_data(self):
         """Test User.signup method works successfully with good data."""
@@ -124,7 +121,7 @@ class UserModelTestCase(unittest.TestCase):
         """Test active treatments property."""
 
         # make inactive treatment
-        t2 = TreatmentFactory(
+        inactive_treatment = TreatmentFactory(
             id=102,
             currently_active=False
         )
@@ -133,22 +130,22 @@ class UserModelTestCase(unittest.TestCase):
             Treatment
             .query
             .filter_by(
-                user_id=self.t1.user_id,
+                user_id=self.u1.id,
                 currently_active=True
             )
             .all()
         )
 
         self.assertEqual(
-            self.t1.user.active_treatments,
+            self.u1.active_treatments,
             u1_active_treatments
         )
-        self.assertNotIn(t2, self.t1.user.active_treatments)
+        self.assertNotIn(inactive_treatment, self.u1.active_treatments)
 
     def test_upcoming_injection_times_all_within_2_weeks(self):
         """Test upcoming injection times method works in positive case"""
 
-        u1_upcoming_injections = self.t1.user.upcoming_injection_times
+        u1_upcoming_injections = self.u1.upcoming_injection_times
         inj_days = self.t1.frequency_in_seconds/86400
         inj_date = self.i1.occurred_at + datetime.timedelta(days=inj_days)
 
@@ -180,7 +177,7 @@ class UserModelTestCase(unittest.TestCase):
             treatment_id = t2.id
         )
 
-        u1_upcoming_injections = self.t1.user.upcoming_injection_times
+        u1_upcoming_injections = self.u1.upcoming_injection_times
         inj_days = self.t1.frequency_in_seconds/86400
         inj_date = i2.occurred_at + datetime.timedelta(days=inj_days)
 
@@ -205,7 +202,7 @@ class UserModelTestCase(unittest.TestCase):
             completed_on_time=False
         )
 
-        percentage = self.t1.user.on_time_lab_percentage
+        percentage = self.u1.on_time_lab_percentage
         self.assertEqual(
             percentage,
             "50.0%"

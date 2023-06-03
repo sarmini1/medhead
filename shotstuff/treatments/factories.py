@@ -20,7 +20,7 @@ class TreatmentFactory(factory.alchemy.SQLAlchemyModelFactory):
 
     id = 101
     user_id = 101
-    medication_regimen_id = 1
+    medication_regimen_id = 101
     currently_active = True
     start_date = factory.LazyFunction(calculate_date)
     end_date = factory.LazyFunction(lambda: calculate_date(months_in_future=12))

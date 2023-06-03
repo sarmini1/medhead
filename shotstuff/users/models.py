@@ -9,6 +9,7 @@ from shotstuff.database import db
 
 bcrypt = Bcrypt()
 
+
 class User(UserMixin, db.Model):
     """User."""
 

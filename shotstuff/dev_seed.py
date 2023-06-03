@@ -117,13 +117,13 @@ first_regimen = MedicationRegimen.query.first()
 t1_inj = Treatment(
     user_id = u1.id,
     medication_regimen_id = inj_test_mr.id,
-    frequency_in_seconds = 864000,
+    frequency_in_seconds = 691200,
     requires_labs = True,
     lab_frequency_in_months = 3,
     lab_point_in_cycle = "peak",
-    next_lab_due_date = "2022-06-16",
+    next_lab_due_date = "2023-08-16",
     clinic_supervising = "UCSF",
-    start_date = "2022-02-16",
+    start_date = "2023-05-27",
     currently_active = True
 )
 
@@ -135,9 +135,9 @@ t2 = Treatment(
     requires_labs = True,
     lab_frequency_in_months = 3,
     lab_point_in_cycle = "trough",
-    next_lab_due_date = "2022-06-16",
+    next_lab_due_date = "2023-08-16",
     clinic_supervising = "One Medical",
-    start_date = "2022-08-27",
+    start_date = "2023-05-27",
     currently_active = True
 )
 
@@ -224,12 +224,12 @@ db.session.add_all(
 )
 db.session.commit()
 
-i1 = Injection(
-    treatment_id = t1_inj.id,
-    method = "subcutaneous",
-    body_region_id = br1.id,
-    position_id = p1.id
-)
+# i1 = Injection(
+#     treatment_id = t1_inj.id,
+#     method = "subcutaneous",
+#     body_region_id = br1.id,
+#     position_id = p1.id
+# )
 
 i2 = Injection(
     treatment_id = t1_inj.id,
@@ -246,5 +246,5 @@ i3 = Injection(
     position_id = p2.id
 )
 
-db.session.add_all([i1, i2, i3])
+db.session.add_all([i2, i3])
 db.session.commit()

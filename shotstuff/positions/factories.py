@@ -5,7 +5,7 @@ from shotstuff.database import db
 from shotstuff.positions.models import Position
 
 class PositionFactory(factory.alchemy.SQLAlchemyModelFactory):
-    """Factory to create a User instance for testing."""
+    """Factory to create a Position instance for testing."""
 
     class Meta:
         model = Position

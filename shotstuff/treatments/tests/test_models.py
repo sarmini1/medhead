@@ -24,7 +24,6 @@ class TreatmentModelTestCase(unittest.TestCase):
 
     def setUp(self):
         self.t1 = TreatmentFactory()
-        # self.i1 = InjectionFactory()
 
     def tearDown(self):
         # Rollback the session => no changes to the database
@@ -66,7 +65,9 @@ class TreatmentModelTestCase(unittest.TestCase):
         next correct injection position.
         """
 
-        # Making a new injection will make a new Treatment instance for us
+        # Making a new injection will make a new Treatment instance for us or
+        # be associated with the default TreatmentFactory instance, if it already
+        # exists
         i2 = InjectionFactory()
         next_inj_position = i2.treatment._find_next_injection_position()
         self.assertEqual(
@@ -96,7 +97,6 @@ class TreatmentModelTestCase(unittest.TestCase):
         have occurred.
         """
 
-        # Making a new injection will make a new Treatment instance for us
         i2 = InjectionFactory(
             occurred_at=datetime.datetime.now()
         )
@@ -122,7 +122,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         """Test that an error is thrown when trying to access this property
         on a treatment without any injections."""
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(AttributeError):
             self.t1.calculate_next_injection_detail()
 
     @freeze_time("2023-05-26 10:30:01")

@@ -95,7 +95,7 @@ class Treatment(db.Model):
         except AttributeError:
             return None
 
-    @property
+    @property #TODO: probably just make this an instance method rather than a property
     def last_injection_details(self):
         """Determines the last injection that occurred for a treatment.
 
@@ -140,7 +140,7 @@ class Treatment(db.Model):
         num_injections_occurred = len(self.injections)
 
         if num_injections_occurred == 0:
-            raise ValueError("No injections yet!")
+            raise AttributeError("No injections yet!")
 
         last_injection = self.injections[num_injections_occurred - 1]
         frequency = self.frequency_in_seconds
@@ -212,7 +212,7 @@ class Treatment(db.Model):
             "medication_regimen_id": self.medication_regimen_id,
         }
 
-    # TODO: assess how to break this method out to be more generic
+    # TODO: break this method out to be more generic
     def generate_friendly_date_time(self, date):
         """ Returns dictionary with year, month, day, time, date and time formatted
             in a friendly way.

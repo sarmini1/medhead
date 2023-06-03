@@ -29,7 +29,7 @@ class MedicationRegimenModelTestCase(unittest.TestCase):
 
     def test_creating_med_regimens(self):
         """TODO: Not sure if keeping this"""
-        mr2 = MedicationRegimenFactory(id=2, title='fuck')
+        mr2 = MedicationRegimenFactory(id=2, title='med title')
         self.assertEqual(
             [self.mr1, mr2],
             db.session.query(MedicationRegimen).all()

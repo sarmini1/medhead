@@ -5,6 +5,7 @@ from shotstuff.database import db
 from shotstuff.medication_regimens.models import MedicationRegimen
 from shotstuff.medications.factories import MedicationFactory
 
+
 class MedicationRegimenFactory(factory.alchemy.SQLAlchemyModelFactory):
     """Factory to create a MedicationRegimen instance for testing."""
 
@@ -15,7 +16,7 @@ class MedicationRegimenFactory(factory.alchemy.SQLAlchemyModelFactory):
             'id',
         )
 
-    id = 1
+    id = 101
     title = 'Testosterone for HRT'
     is_for_injectable = True
     route = 'subcutaneous'
