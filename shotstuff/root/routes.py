@@ -51,13 +51,13 @@ def login():
             flash(f"Hello, {user.username}!", "success")
 
             # TODO: figure out this next business
-            # next = request.args.get('next')
+            next = request.args.get('next')
 
-            # if not is_safe_url(next, {"localhost:5000"}):
-            #     breakpoint()
-            #     return abort(400)
+            if not is_safe_url(next, {"localhost:5000"}):
+                # breakpoint()
+                return abort(400)
 
-            return redirect("/")
+            return redirect(next or url_for('/users/dashboard'))
 
         flash("Invalid credentials.", 'danger')
 

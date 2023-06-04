@@ -32,6 +32,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
+    breakpoint()
     return User.query.get(user_id)
 
 # TODO: figure out if this is really the best place for this decorator
