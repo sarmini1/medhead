@@ -6,7 +6,8 @@ from shotstuff.users.models import User
 users = Blueprint(
     "users",
     __name__,
-    template_folder='templates')
+    template_folder='templates'
+)
 
 # TODO: need to customize unauthorized handler for when login_required fails
 @users.route('/dashboard')
@@ -18,7 +19,7 @@ def dashboard():
     - logged in: that user's treatments
 
     """
-    breakpoint()
+    # breakpoint()
     # if not current_user.is_authenticated:
     #     flash("Unauthorized")
     #     return redirect(f"/users/{current_user.get_id()}")
