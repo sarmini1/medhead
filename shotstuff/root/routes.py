@@ -29,6 +29,7 @@ def homepage():
     """
     # Note to self: we get this current_user object from flask-login, which seems
     # to be accessible in every template and in every subsequent request??
+    breakpoint()
     if current_user.is_authenticated:
         #returning a redirect for now but ideally should consolidate the
         # treatment listing page to this?
@@ -39,7 +40,12 @@ def homepage():
 
 @root.route('/login', methods=["GET", "POST"])
 def login():
-    """Handle user login."""
+    """Handle user login.
+
+    If GET, renders form to login.
+
+    If POST, validates form and redirects to next location, if safe.
+    """
 
     form = LoginForm()
 
@@ -50,7 +56,6 @@ def login():
             login_user(user)
             flash(f"Hello, {user.username}!", "success")
 
-            # TODO: figure out this next business
             next = request.args.get('next')
 
             if not is_safe_url(next, {"localhost:5000"}):

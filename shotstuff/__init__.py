@@ -1,13 +1,15 @@
 import os
-from flask import Flask, g
+from flask import Flask, g, session
 from flask_login import LoginManager
 
 from shotstuff.config import DATABASE_URL
 from shotstuff.database import connect_db
+
 from shotstuff.root.routes import root
 from shotstuff.users.routes import users
 from shotstuff.treatments.routes import treatments
 from shotstuff.labs.routes import labs
+
 from shotstuff.users.models import User
 # from shotstuff.treatments.models import Treatment
 from shotstuff.medication_regimens.models import MedicationRegimen
@@ -16,6 +18,7 @@ from shotstuff.medication_regimens.models import MedicationRegimen
 from shotstuff.body_regions.models import BodyRegion
 from shotstuff.positions.models import Position
 from shotstuff.medications.models import Medication
+
 from shotstuff.generic_forms import CSRFProtection
 
 # NOTE: should investigate why we get an error when removing seemingly unused
@@ -32,8 +35,18 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    breakpoint()
+    # breakpoint()
+    print("USER LOADER RAN")
     return User.query.get(user_id)
+
+@login_manager.request_loader
+def load_user_from_request(request):
+    breakpoint()
+    print("REQUEST LOADER RAN")
+    user_id = session.get("_user_id")
+    if user_id:
+        return User.query.get(user_id)
+
 
 # TODO: figure out if this is really the best place for this decorator
 @app.before_request
