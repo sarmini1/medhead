@@ -15,7 +15,8 @@
     </a>
     <div class="row">
       <div class="treatment-description col-4">
-        <h4>Fill Info</h4>
+        <h4>Last Fill Info</h4>
+        <hr width="50%">
         {% if treatment.is_refill_needed %}
           <b>You're within 10 days of your last fill running out!</b>
         {% endif %}
@@ -23,6 +24,7 @@
           <p><b>Notes:</b> {{treatment.last_fill.notes }}</p>
         {% endif %}
         <p><b>Last fill date:</b> {{ treatment.last_fill.occurred_at }}</p>
+        <p><b>Pharmacy filled:</b> {{ treatment.last_fill.filled_by }}</p>
         <p><b>Lasts until:</b> {{treatment.run_out_date_last_fill }}</p>
         <p><b>Days supply from last fill:</b> {{treatment.last_fill.days_supply }}</p>
       </div>

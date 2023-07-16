@@ -28,6 +28,10 @@ class Fill(db.Model):
         db.ForeignKey("treatments.id", ondelete="cascade"),
         nullable=False
     )
+    filled_by = db.Column(
+        db.Text,
+        nullable=False
+    )
     days_supply = db.Column(
         db.Integer,
         nullable=False

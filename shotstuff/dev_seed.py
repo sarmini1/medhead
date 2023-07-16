@@ -253,6 +253,7 @@ i3 = Injection(
 
 f1 = Fill(
     treatment_id = t1_inj.id,
+    filled_by = "Alto",
     occurred_at = datetime.utcnow() - timedelta(days=10),
     days_supply = 32,
     notes = "Something something",
@@ -260,6 +261,7 @@ f1 = Fill(
 
 f2 = Fill(
     treatment_id = t2.id,
+    filled_by = "CVS",
     occurred_at = datetime.utcnow() - timedelta(days=10),
     days_supply = 30
 )
