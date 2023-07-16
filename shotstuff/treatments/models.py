@@ -281,13 +281,17 @@ class Treatment(db.Model):
         month = date.strftime("%m")
         day = date.strftime("%d")
         time = date.strftime("%H:%M:%S")
+        formatted_date = date.strftime("%m/%d/%Y")
         full_date_time = date.strftime("%m/%d/%Y, %H:%M:%S")
 
+        # Note: this version of this method now has date in the return, whereas
+        # others don't-- seriously need to break this out next time I work on this
         return {
             "year": year,
             "month": month,
             "day": day,
             "time": time,
+            "date": formatted_date,
             "weekday": calendar.day_name[date.weekday()],
             "full_date_time": full_date_time
         }

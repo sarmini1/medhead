@@ -88,13 +88,15 @@ def display_treatment_detail(treatment_id):
         next_injection_detail = treatment.calculate_next_injection_detail()
         next_injection_time = next_injection_detail["time_due"]
         next_injection_dow = next_injection_time["weekday"]
+        next_injection_date = next_injection_time["date"]
         # total_injections = len(treatment.injections)
 
         return render_template(
             "treatments/treatment_detail.html",
             treatment=treatment,
-            next_injection_date=next_injection_detail,
-            next_injection_dow=next_injection_dow
+            next_injection_time=next_injection_time,
+            next_injection_dow=next_injection_dow,
+            next_injection_date=next_injection_date
         )
 
     #TODO: rendering the same template with slightly different stuff is ugly-- fix this

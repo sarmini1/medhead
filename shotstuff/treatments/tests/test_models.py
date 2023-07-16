@@ -54,6 +54,7 @@ class TreatmentModelTestCase(unittest.TestCase):
                 'month': '05',
                 'day': '26',
                 'time': '10:30:01',
+                "date": "05/26/2023",
                 'weekday': 'Friday',
                 'full_date_time': '05/26/2023, 10:30:01'
             }
@@ -108,6 +109,7 @@ class TreatmentModelTestCase(unittest.TestCase):
                 "month": "06",
                 "day": "02",
                 "time": "10:30:01",
+                "date": "06/02/2023",
                 "weekday": "Friday",
                 "full_date_time": "06/02/2023, 10:30:01"
             },
@@ -141,6 +143,7 @@ class TreatmentModelTestCase(unittest.TestCase):
                 "month": "05",
                 "day": "26",
                 "time": "10:30:01",
+                "date": "05/26/2023",
                 "weekday": "Friday",
                 "full_date_time": "05/26/2023, 10:30:01"
             }
@@ -174,6 +177,7 @@ class TreatmentModelTestCase(unittest.TestCase):
                 "month": "05",
                 "day": "26",
                 "time": "10:30:01",
+                "date": "05/26/2023",
                 "weekday": "Friday",
                 "full_date_time": "05/26/2023, 10:30:01"
             }
