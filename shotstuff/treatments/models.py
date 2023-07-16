@@ -3,6 +3,7 @@ import calendar
 
 from shotstuff.database import db
 from shotstuff.labs.models import Lab
+from shotstuff.injections.models import Injection
 from shotstuff.utils import calculate_date
 
 
@@ -82,6 +83,11 @@ class Treatment(db.Model):
         backref="treatment"
     )
 
+    fills = db.relationship(
+        'Fill',
+        backref="treatment"
+    )
+
     @property
     def friendly_start_date(self):
         """
@@ -122,6 +128,50 @@ class Treatment(db.Model):
             "occurred_at": friendly_occurred_at
         }
 
+    def _fetch_last_fill_details(self):
+        """Determines when the most recent fill occurred for a treatment and
+        returns that Fill instance or None if none have occurred.
+        """
+
+        num_fills_occurred = len(self.fills)
+
+        if num_fills_occurred == 0:
+            return None
+        last_fill = self.fills[num_fills_occurred - 1]
+
+        return last_fill
+
+    @property
+    def is_refill_needed(self):
+        """
+        Returns boolean depending on if we're 10 days or fewer out from the date
+        when their most-recent fill should run out, based on their last dose and
+        that fill's days supply.
+        """
+
+        # find last fill and save to variable
+        # find the most recent dose/injection from their last fill
+        # query injections/doses for this treatment where occurred at is
+        # after fill date, order by asc and select the first record
+
+        # add the days supply from the fill to that most recent dose date to
+        # figure out when that fill may run out
+        # if we are within 1 week of that date, return True
+        # else, return False
+
+        last_fill = self._fetch_last_fill_details()
+
+        most_recent_dose = Injection.query.filter(
+            Injection.occurred_at < datetime.utcnow()
+        ).order_by(
+            Injection.occurred_at.asc()
+        ).first()
+
+        run_out_date = most_recent_dose.occurred_at + timedelta(days=last_fill.days_supply)
+        run_out_date_minus_10_days = run_out_date - timedelta(days=10)
+
+        return datetime.utcnow() >= run_out_date_minus_10_days
+
     def calculate_next_injection_detail(self):
         """
         Based on the date and position of their most recent injection and
@@ -153,31 +203,6 @@ class Treatment(db.Model):
             "position": next_inj_position
         }
 
-    def update_next_lab_due_date(self):
-        """
-        Looks on current instance's next_lab_due_date time and updates
-        according to routine lab frequency. Generates new upcoming lab instance
-        for current instance. Returns None.
-        """
-
-        # converted_datetime = datetime.strptime(
-        #     self.next_lab_due_date,
-        #     '%Y-%m-%d'
-        # )
-        # TODO: decide if we need this string-to-Date obj conversion above
-        self.next_lab_due_date = calculate_date(
-            self.next_lab_due_date,
-            self.lab_frequency_in_months
-        )
-
-        upcoming_lab = Lab(
-            treatment_id = self.id,
-            requires_fasting = False,
-            occurred_at = None,
-            point_in_cycle_occurred = None
-        )
-        db.session.add(upcoming_lab)
-
     def _find_next_injection_position(self):
         """
         Looks at the most recent injection and returns the placement, a tuple like
@@ -202,6 +227,31 @@ class Treatment(db.Model):
 
         next_position = ordered_positions[next_position_idx]
         return next_position
+
+    def update_next_lab_due_date(self):
+        """
+        Looks on current instance's next_lab_due_date time and updates
+        according to routine lab frequency. Generates new upcoming lab instance
+        for current instance. Returns None.
+        """
+
+        # converted_datetime = datetime.strptime(
+        #     self.next_lab_due_date,
+        #     '%Y-%m-%d'
+        # )
+        # TODO: decide if we need this string-to-Date obj conversion above
+        self.next_lab_due_date = calculate_date(
+            self.next_lab_due_date,
+            self.lab_frequency_in_months
+        )
+
+        upcoming_lab = Lab(
+            treatment_id = self.id,
+            requires_fasting = False,
+            occurred_at = None,
+            point_in_cycle_occurred = None
+        )
+        db.session.add(upcoming_lab)
 
     def to_dict(self):
         """Serialize to a dict of regimen info."""

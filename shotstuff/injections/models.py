@@ -15,7 +15,7 @@ class Injection(db.Model):
         nullable=False
     )
 
-    # Treatment model has a 'treatment' backref
+    # Treatment model has an 'injections' relationship with a 'treatment' backref
 
     # medication_id = db.Column(
     #     db.Integer,

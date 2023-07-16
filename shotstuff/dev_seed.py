@@ -1,10 +1,13 @@
 # To run from ipython: %run shotstuff/dev_seed.py
 
+from datetime import datetime, timedelta
+
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.users.models import User
 from shotstuff.treatments.models import Treatment
 from shotstuff.injections.models import Injection
+from shotstuff.fills.models import Fill
 from shotstuff.labs.models import Lab
 from shotstuff.medications.models import Medication
 from shotstuff.medication_regimens.models import MedicationRegimen
@@ -248,5 +251,18 @@ i3 = Injection(
     position_id = p2.id
 )
 
-db.session.add_all([i2, i3])
+f1 = Fill(
+    treatment_id = t1_inj.id,
+    occurred_at = datetime.utcnow() - timedelta(days=10),
+    days_supply = 32,
+    notes = "Something something",
+)
+
+f2 = Fill(
+    treatment_id = t2.id,
+    occurred_at = datetime.utcnow() - timedelta(days=10),
+    days_supply = 30
+)
+
+db.session.add_all([i2, i3, f1, f2])
 db.session.commit()
