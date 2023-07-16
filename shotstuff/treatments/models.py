@@ -128,7 +128,46 @@ class Treatment(db.Model):
             "occurred_at": friendly_occurred_at
         }
 
-    def _fetch_last_fill_details(self):
+    @property
+    def is_refill_needed(self):
+        """
+        Returns boolean depending on if we're 10 days or fewer out from the date
+        when their most-recent fill should run out, based on their last dose and
+        that fill's days supply.
+        """
+
+        # figure out when that fill may run out
+        # if we are within 1 week of that date, return True
+        # else, return False
+
+        run_out_date_minus_10_days = self.run_out_date - timedelta(days=10)
+
+        return datetime.utcnow() >= run_out_date_minus_10_days
+
+    @property
+    def run_out_date_last_fill(self):
+        """
+        Returns the date by which the most recent fill, with its days supply,
+        will run out.
+        """
+
+        # find the most recent dose/injection from their last fill
+            # query injections/doses for this treatment where occurred at is
+            # after fill date, order by asc and select the first record
+
+        # add the days supply from the fill to that most recent dose date
+
+        most_recent_dose = Injection.query.filter(
+            Injection.occurred_at < datetime.utcnow()
+        ).order_by(
+            Injection.occurred_at.asc()
+        ).first()
+
+        run_out_date = most_recent_dose.occurred_at + timedelta(days=self.last_fill.days_supply)
+        return run_out_date
+
+    @property
+    def last_fill(self):
         """Determines when the most recent fill occurred for a treatment and
         returns that Fill instance or None if none have occurred.
         """
@@ -140,37 +179,7 @@ class Treatment(db.Model):
         last_fill = self.fills[num_fills_occurred - 1]
 
         return last_fill
-
-    @property
-    def is_refill_needed(self):
-        """
-        Returns boolean depending on if we're 10 days or fewer out from the date
-        when their most-recent fill should run out, based on their last dose and
-        that fill's days supply.
-        """
-
-        # find last fill and save to variable
-        # find the most recent dose/injection from their last fill
-        # query injections/doses for this treatment where occurred at is
-        # after fill date, order by asc and select the first record
-
-        # add the days supply from the fill to that most recent dose date to
-        # figure out when that fill may run out
-        # if we are within 1 week of that date, return True
-        # else, return False
-
-        last_fill = self._fetch_last_fill_details()
-
-        most_recent_dose = Injection.query.filter(
-            Injection.occurred_at < datetime.utcnow()
-        ).order_by(
-            Injection.occurred_at.asc()
-        ).first()
-
-        run_out_date = most_recent_dose.occurred_at + timedelta(days=last_fill.days_supply)
-        run_out_date_minus_10_days = run_out_date - timedelta(days=10)
-
-        return datetime.utcnow() >= run_out_date_minus_10_days
+        # return self.generate_friendly_date_time(last_fill)
 
     def calculate_next_injection_detail(self):
         """

@@ -14,9 +14,21 @@
       <i class="fa-solid fa-pencil"></i>
     </a>
     <div class="row">
+      <div class="treatment-description col-4">
+        <h4>Fill Info</h4>
+        {% if treatment.is_refill_needed %}
+          <b>You're within 10 days of your last fill running out!</b>
+        {% endif %}
+        {% if treatment.last_fill.notes %}
+          <p><b>Notes:</b> {{treatment.last_fill.notes }}</p>
+        {% endif %}
+        <p><b>Last fill date:</b> {{ treatment.last_fill.occurred_at }}</p>
+        <p><b>Lasts until:</b> {{treatment.run_out_date_last_fill }}</p>
+        <p><b>Days supply from last fill:</b> {{treatment.last_fill.days_supply }}</p>
+      </div>
       {% if treatment.requires_labs %}
-      <div class="lab-card col-6">
-        <h4>Lab Information</h4>
+      <div class="lab-card col-4">
+        <h4>Lab Info</h4>
         <hr width="50%">
         <p>
           Treatment id for dev purposes: {{treatment.id}}
@@ -48,44 +60,44 @@
       </div>
       {% endif %}
       <!-- <div class="pt-1"> -->
-        {% if treatment.injections|length > 0 %}
-        <div class="treatment-description col-6">
-          {% if treatment.last_injection_details.injection.notes %}
-          <p>
-            <b>Notes from last injection:</b>
-            {{ treatment.last_injection_details.injection.notes }}
-          </p>
+      {% if treatment.injections|length > 0 %}
+      <div class="treatment-description col-4">
+        {% if treatment.last_injection_details.injection.notes %}
+        <p>
+          <b>Notes from last injection:</b>
+          {{ treatment.last_injection_details.injection.notes }}
+        </p>
+        <hr width="50%">
+        {% endif %}
+        </hr>
+        <h4>Injection Info</h4>
+        <hr width="50%">
+        <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.full_date_time }}</p>
+        <p><b>Next injection date:</b> {{ treatment.calculate_next_injection_detail().time_due.full_date_time }}</p>
+        <p><b>Next injection position:</b> {{ treatment.calculate_next_injection_detail().position[0] }} side,
+          {{treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
+        <p><b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days </p>
+        <p>
+          <b>Total injections:</b> {{ treatment.injections|length }}
+        </p>
+        <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.full_date_time }}</p>
+        {% elif treatment.medication_regimen.is_for_injectable %}
+        <h2> No injections yet!</h2>
+        {% else %}
+        <div class="treatment-description col-4">
+          <h4>Dose Information</h4>
           <hr width="50%">
-          {% endif %}
           </hr>
-          <h4>Injection Information</h4>
-          <hr width="50%">
-          <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.full_date_time }}</p>
-          <p><b>Next injection date:</b> {{ treatment.calculate_next_injection_detail().time_due.full_date_time }}</p>
-          <p><b>Next injection position:</b> {{ treatment.calculate_next_injection_detail().position[0] }} side,
-            {{treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
-          <p><b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days </p>
           <p>
-            <b>Total injections:</b> {{ treatment.injections|length }}
+            <b>Route:</b> {{ treatment.medication_regimen.route }}
+            <br>
+            <b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days
+            <br>
+            <b>Since:</b> {{ treatment.start_date }}
           </p>
-          <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.full_date_time }}</p>
-          {% elif treatment.medication_regimen.is_for_injectable %}
-          <h2> No injections yet!</h2>
-          {% else %}
-          <div class="treatment-description col-6">
-            <h4>Dose Information</h4>
-            <hr width="50%">
-            </hr>
-            <p>
-              <b>Route:</b> {{ treatment.medication_regimen.route }}
-              <br>
-              <b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days
-              <br>
-              <b>Since:</b> {{ treatment.start_date }}
-            </p>
-          </div>
-          {% endif %}
         </div>
+        {% endif %}
+      </div>
       <!-- </div> -->
     </div>
   </li>
