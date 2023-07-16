@@ -90,6 +90,15 @@ class User(UserMixin, db.Model):
                     )
         return upcoming_injection_times
 
+    @property
+    def treatments_needing_refills(self):
+        """
+        Return list of all treatments where a refill is needed within the next
+        10 days.
+        """
+
+        return [t for t in self.treatments if t.is_refill_needed == True]
+
     @classmethod
     def signup(cls, username, password, first_name):
         """Sign up user.

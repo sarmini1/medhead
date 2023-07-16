@@ -3,14 +3,33 @@
 <section class="container">
   <h1 class="title">{{ current_user.first_name }}'s Dashboard</h1>
   <div class="row">
-    <div class="col-12 col-sm-4 col-md-4 dash-item">
+    <!-- Note: remember, bootstrap assumes mobile-first design! -->
+    <div class="col-12 col-sm-4 dash-item">
       <h3>
         <b>Overview</b>
       </h3>
-      <p>
-        You're currently on {{ current_user.active_treatments|length }} active
-        treatments.
-      </p>
+
+      <h4>
+        Refills Due
+      </h4>
+
+      {% for t in current_user.treatments_needing_refills %}
+      <li class="list-group-item">
+        <a href="/treatments/{{ t.id }}">
+          <h5>
+            {{ t.medication_regimen.title }}
+          </h5>
+        </a>
+        <p>
+          Fill due: {{ t.run_out_date_last_fill }}
+        </p>
+      </li>
+      {% endfor %}
+
+
+      <h4>
+        Active Treatments
+      </h4>
       {% for t in current_user.active_treatments %}
       <li class="list-group-item">
         <a href="/treatments/{{ t.id }}">
@@ -28,7 +47,7 @@
       </li>
       {% endfor %}
     </div>
-    <div class="col-12 col-sm-4 col-md-4 dash-item">
+    <div class="col-12 col-sm-4 dash-item">
       <h3>
         <b>Upcoming Injections</b>
         <i class="fa-solid fa-syringe"></i>
@@ -61,7 +80,7 @@
       </li>
       {% endfor %}
     </div>
-    <div class="col-12 col-sm-4 col-md-4 dash-item">
+    <div class="col-12 col-sm-4 dash-item">
       <h3>
         <b>Upcoming Labs</b>
         <i class="fa-solid fa-vials"></i>
@@ -79,7 +98,7 @@
       </li>
       {% endfor %}
     </div>
-    <div class="col-12 col-sm-12 col-md-12 dash-item">
+    <div class="col-12 col-sm-12 dash-item">
       <h3><b>Milestones</b></h3>
       <p>You've done {{current_user.num_injections}} total injections!</p>
       {% if current_user.on_time_labs %}

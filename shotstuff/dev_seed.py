@@ -241,7 +241,8 @@ i2 = Injection(
     method = "subcutaenous",
     body_region_id = br1.id,
     position_id = p2.id,
-    notes = "Used second to last injection needle"
+    notes = "Used second to last injection needle",
+    occurred_at = datetime.utcnow() - timedelta(days=29),
 )
 
 i3 = Injection(
@@ -254,7 +255,7 @@ i3 = Injection(
 f1 = Fill(
     treatment_id = t1_inj.id,
     filled_by = "Alto",
-    occurred_at = datetime.utcnow() - timedelta(days=10),
+    occurred_at = datetime.utcnow() - timedelta(days=30),
     days_supply = 32,
     notes = "Something something",
 )
