@@ -41,7 +41,7 @@ def load_user(user_id):
 
 @login_manager.request_loader
 def load_user_from_request(request):
-    breakpoint()
+    # breakpoint()
     print("REQUEST LOADER RAN")
     user_id = session.get("_user_id")
     if user_id:

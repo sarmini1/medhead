@@ -29,7 +29,7 @@ def homepage():
     """
     # Note to self: we get this current_user object from flask-login, which seems
     # to be accessible in every template and in every subsequent request??
-    breakpoint()
+
     if current_user.is_authenticated:
         #returning a redirect for now but ideally should consolidate the
         # treatment listing page to this?
