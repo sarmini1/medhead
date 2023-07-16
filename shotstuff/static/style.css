@@ -70,7 +70,7 @@ body {
 }
 
 .lab-card{
-  position: absolute;
+  position: relative;
   right: 0;
   padding: 0.5rem 1rem;
   color: rgb(76, 75, 75);
@@ -91,8 +91,8 @@ body {
   background-color: #dbeefb;
   border: 2px solid #f9f5ef;
   border-radius: 10px;
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
+  /* margin-bottom: 0.5rem; */
+  margin-top: 0.75rem;
 }
 
 .title {

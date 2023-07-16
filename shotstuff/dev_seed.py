@@ -1,3 +1,5 @@
+# To run from ipython: %run shotstuff/dev_seed.py
+
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.users.models import User
