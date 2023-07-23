@@ -153,12 +153,20 @@ class Treatment(db.Model):
         if not self.last_fill:
             return False
 
-        run_out_date_minus_10_days = self.run_out_date_last_fill - timedelta(days=10)
+        run_out_date_minus_10_days = self.calculate_run_out_date_last_fill() - timedelta(days=10)
 
         return datetime.utcnow() >= run_out_date_minus_10_days
 
     @property
-    def run_out_date_last_fill(self):
+    def friendly_run_out_date(self):
+        """
+        Converts
+        """
+        run_out_date = self.calculate_run_out_date_last_fill()
+        friendly = generate_friendly_date_time(run_out_date)
+        return friendly
+
+    def calculate_run_out_date_last_fill(self):
         """
         Returns the date by which the most recent fill, with its days supply,
         will run out.
