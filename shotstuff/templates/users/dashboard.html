@@ -23,6 +23,14 @@
         <p>
           Fill due: {{ t.friendly_run_out_date.date }}
         </p>
+          <br>
+          <a href="/treatments/{{t.id}}/fills">
+            <!-- <i class="bi bi-check2-square"></i> -->
+            <button class="btn btn-primary btn-sm dash-inj-btn">
+              Mark complete
+            </button>
+          </a>
+
       </li>
       {% endfor %}
 
