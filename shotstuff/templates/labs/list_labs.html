@@ -29,7 +29,7 @@
             <p><b>Point in cycle due:</b> {{ lab.treatment.lab_point_in_cycle }}</p>
             <p>
               <b>Due date:</b>
-              {{ lab.treatment.generate_friendly_date_time(lab.treatment.next_lab_due_date).full_date_time }}
+              {{ lab.treatment.friendly_next_lab_due_date.full_date_time }}
             </p>
             <a class="btn btn-outline-primary rounded-button"
               href="/labs/users/{{current_user.id}}/{{lab.id}}">

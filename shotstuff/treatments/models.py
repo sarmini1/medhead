@@ -4,7 +4,7 @@ import calendar
 from shotstuff.database import db
 from shotstuff.labs.models import Lab
 from shotstuff.injections.models import Injection
-from shotstuff.utils import calculate_date
+from shotstuff.utils import calculate_date, generate_friendly_date_time
 
 
 class Treatment(db.Model):
@@ -97,7 +97,20 @@ class Treatment(db.Model):
         # TODO: since start date can be null/unknown, assess path forward if
         # someone tries to access this property on such an instance
         try:
-            return self.generate_friendly_date_time(self.start_date)
+            # return self.generate_friendly_date_time(self.start_date)
+            return generate_friendly_date_time(self.start_date)
+        except AttributeError:
+            return None
+
+    @property
+    def friendly_next_lab_due_date(self):
+        """
+        Looks on the instance and generates a dictionary of time data about the
+        current instance's next lab due date.
+        """
+
+        try:
+            return generate_friendly_date_time(self.next_lab_due_date)
         except AttributeError:
             return None
 
@@ -119,7 +132,7 @@ class Treatment(db.Model):
         if num_injections_occurred == 0:
             return None
         last_injection = self.injections[num_injections_occurred - 1]
-        friendly_occurred_at = self.generate_friendly_date_time(
+        friendly_occurred_at = generate_friendly_date_time(
                 last_injection.occurred_at
         )
 
@@ -210,7 +223,7 @@ class Treatment(db.Model):
         next_inj_position = self._find_next_injection_position()
 
         return {
-            "time_due": self.generate_friendly_date_time(next_inj_date),
+            "time_due": generate_friendly_date_time(next_inj_date),
             "position": next_inj_position
         }
 
@@ -274,26 +287,26 @@ class Treatment(db.Model):
         }
 
     # TODO: break this method out to be more generic
-    def generate_friendly_date_time(self, date):
-        """ Returns dictionary with year, month, day, time, date and time formatted
-            in a friendly way.
-        """
+    # def generate_friendly_date_time(self, date):
+    #     """ Returns dictionary with year, month, day, time, date and time formatted
+    #         in a friendly way.
+    #     """
 
-        year = date.strftime("%Y")
-        month = date.strftime("%m")
-        day = date.strftime("%d")
-        time = date.strftime("%H:%M:%S")
-        formatted_date = date.strftime("%m/%d/%Y")
-        full_date_time = date.strftime("%m/%d/%Y, %H:%M:%S")
+    #     year = date.strftime("%Y")
+    #     month = date.strftime("%m")
+    #     day = date.strftime("%d")
+    #     time = date.strftime("%H:%M:%S")
+    #     formatted_date = date.strftime("%m/%d/%Y")
+    #     full_date_time = date.strftime("%m/%d/%Y, %H:%M:%S")
 
-        # Note: this version of this method now has date in the return, whereas
-        # others don't-- seriously need to break this out next time I work on this
-        return {
-            "year": year,
-            "month": month,
-            "day": day,
-            "time": time,
-            "date": formatted_date,
-            "weekday": calendar.day_name[date.weekday()],
-            "full_date_time": full_date_time
-        }
+    #     # Note: this version of this method now has date in the return, whereas
+    #     # others don't-- seriously need to break this out next time I work on this
+    #     return {
+    #         "year": year,
+    #         "month": month,
+    #         "day": day,
+    #         "time": time,
+    #         "date": formatted_date,
+    #         "weekday": calendar.day_name[date.weekday()],
+    #         "full_date_time": full_date_time
+    #     }
