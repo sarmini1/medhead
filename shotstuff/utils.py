@@ -35,3 +35,25 @@ def generate_friendly_date_time(date):
             "weekday": calendar.day_name[date.weekday()],
             "full_date_time": full_date_time
         }
+
+# NOTE: leftover test from treatment models tests:
+
+#     @freeze_time("2023-05-26 10:30:01")
+    # def test_generate_friendly_date_time(self):
+    #     """Test that a treatment instance can give back helpful time data."""
+
+    #     t2 = TreatmentFactory()
+    #     generated = t2.generate_friendly_date_time(datetime.datetime.now())
+
+    #     self.assertEqual(
+    #         generated,
+    #         {
+    #             'year': '2023',
+    #             'month': '05',
+    #             'day': '26',
+    #             'time': '10:30:01',
+    #             "date": "05/26/2023",
+    #             'weekday': 'Friday',
+    #             'full_date_time': '05/26/2023, 10:30:01'
+    #         }
+    #     )

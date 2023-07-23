@@ -50,11 +50,11 @@ class InjectionModelTestCase(unittest.TestCase):
         )
 
     @freeze_time("2023-05-26 10:30:01")
-    def test_generate_friendly_injection_time(self):
+    def test_friendly_injection_time(self):
         """Test that an injection instance can hand back nice time data."""
 
         i2 = InjectionFactory(occurred_at = datetime.datetime.now())
-        generated = i2.generate_friendly_injection_time()
+        generated = i2.friendly_injection_time
 
         self.assertEqual(
             generated,
@@ -63,6 +63,8 @@ class InjectionModelTestCase(unittest.TestCase):
                 'month': '05',
                 'day': '26',
                 'time': '10:30:01',
+                "date": '05/26/2023',
+                "weekday": 'Friday',
                 'full_date_time': '05/26/2023, 10:30:01'
             }
         )

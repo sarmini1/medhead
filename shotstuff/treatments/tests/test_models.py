@@ -40,26 +40,6 @@ class TreatmentModelTestCase(unittest.TestCase):
             db.session.query(Treatment).all()
         )
 
-    @freeze_time("2023-05-26 10:30:01")
-    def test_generate_friendly_date_time(self):
-        """Test that a treatment instance can give back helpful time data."""
-
-        t2 = TreatmentFactory()
-        generated = t2.generate_friendly_date_time(datetime.datetime.now())
-
-        self.assertEqual(
-            generated,
-            {
-                'year': '2023',
-                'month': '05',
-                'day': '26',
-                'time': '10:30:01',
-                "date": "05/26/2023",
-                'weekday': 'Friday',
-                'full_date_time': '05/26/2023, 10:30:01'
-            }
-        )
-
     def test_find_next_inj_position(self):
         """
         For an active treatment with past injections, test that we can find the
@@ -197,6 +177,45 @@ class TreatmentModelTestCase(unittest.TestCase):
         )
 
         friendly_start_date = t2.friendly_start_date
+        self.assertEqual(
+            friendly_start_date,
+            None
+        )
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_friendly_next_lab_date_when_next_lab_date_present(self):
+        """Test that the friendly_next_lab_date property works with a valid date."""
+
+        t2 = TreatmentFactory(
+            id=102,
+            next_lab_due_date=datetime.datetime.now()
+        )
+
+        friendly_start_date = t2.friendly_next_lab_due_date
+        expectation = {
+                "year": "2023",
+                "month": "05",
+                "day": "26",
+                "time": "10:30:01",
+                "date": "05/26/2023",
+                "weekday": "Friday",
+                "full_date_time": "05/26/2023, 10:30:01"
+            }
+        self.assertEqual(
+            friendly_start_date,
+            expectation
+        )
+
+    def test_friendly_next_lab_date_when_next_lab_date_null(self):
+        """
+        Test that the friendly_next_lab_due_date property returns None when
+        accessed for an instance with an unknown next lab date. """
+
+        t2 = TreatmentFactory(
+            id=102,
+        )
+
+        friendly_start_date = t2.friendly_next_lab_due_date
         self.assertEqual(
             friendly_start_date,
             None
