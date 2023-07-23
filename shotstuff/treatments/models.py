@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import calendar
 
 from shotstuff.database import db
 from shotstuff.labs.models import Lab
@@ -97,7 +96,6 @@ class Treatment(db.Model):
         # TODO: since start date can be null/unknown, assess path forward if
         # someone tries to access this property on such an instance
         try:
-            # return self.generate_friendly_date_time(self.start_date)
             return generate_friendly_date_time(self.start_date)
         except AttributeError:
             return None
@@ -194,7 +192,6 @@ class Treatment(db.Model):
         last_fill = self.fills[num_fills_occurred - 1]
 
         return last_fill
-        # return self.generate_friendly_date_time(last_fill)
 
     def calculate_next_injection_detail(self):
         """
@@ -285,28 +282,3 @@ class Treatment(db.Model):
             "user_id": self.user_id,
             "medication_regimen_id": self.medication_regimen_id,
         }
-
-    # TODO: break this method out to be more generic
-    # def generate_friendly_date_time(self, date):
-    #     """ Returns dictionary with year, month, day, time, date and time formatted
-    #         in a friendly way.
-    #     """
-
-    #     year = date.strftime("%Y")
-    #     month = date.strftime("%m")
-    #     day = date.strftime("%d")
-    #     time = date.strftime("%H:%M:%S")
-    #     formatted_date = date.strftime("%m/%d/%Y")
-    #     full_date_time = date.strftime("%m/%d/%Y, %H:%M:%S")
-
-    #     # Note: this version of this method now has date in the return, whereas
-    #     # others don't-- seriously need to break this out next time I work on this
-    #     return {
-    #         "year": year,
-    #         "month": month,
-    #         "day": day,
-    #         "time": time,
-    #         "date": formatted_date,
-    #         "weekday": calendar.day_name[date.weekday()],
-    #         "full_date_time": full_date_time
-    #     }

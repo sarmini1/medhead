@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from shotstuff.database import db
+from shotstuff.utils import generate_friendly_date_time
 
 
 class Injection(db.Model):
@@ -60,22 +61,11 @@ class Injection(db.Model):
             "occurred_at": self.occurred_at
         }
 
-    def generate_friendly_injection_time(self):
+    @property
+    def friendly_injection_time(self):
         """
         Returns dictionary with year, month, day, time, date and time formatted
         in a friendly way.
         """
 
-        year = self.occurred_at.strftime("%Y")
-        month = self.occurred_at.strftime("%m")
-        day = self.occurred_at.strftime("%d")
-        time = self.occurred_at.strftime("%H:%M:%S")
-        full_date_time = self.occurred_at.strftime("%m/%d/%Y, %H:%M:%S")
-
-        return {
-            "year": year,
-            "month": month,
-            "day": day,
-            "time": time,
-            "full_date_time": full_date_time
-        }
+        return generate_friendly_date_time(self.occurred_at)
