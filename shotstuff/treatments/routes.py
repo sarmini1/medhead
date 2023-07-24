@@ -5,9 +5,11 @@ from datetime import date
 from shotstuff.database import db
 from shotstuff.treatments.models import Treatment
 from shotstuff.injections.models import Injection
+from shotstuff.fills.models import Fill
+from shotstuff.medication_regimens.models import MedicationRegimen
 from shotstuff.treatments.forms import TreatmentAddForm, TreatmentEditForm
 from shotstuff.injections.forms import InjectionAddForm
-from shotstuff.medication_regimens.models import MedicationRegimen
+from shotstuff.fills.forms import FillAddForm
 
 treatments = Blueprint(
     "treatments",
@@ -165,6 +167,35 @@ def add_injection(treatment_id):
 
     return render_template(
         "injections/add_injection_form.html",
+        form=form,
+        treatment=treatment
+    )
+
+
+@treatments.route("/<int:treatment_id>/fills", methods=['GET', 'POST'])
+def add_fill(treatment_id):
+    """Add a fill. Display form if GET, otherwise validate and add message."""
+
+    form = FillAddForm()
+    treatment = Treatment.query.get_or_404(treatment_id)
+
+    if form.validate_on_submit():
+        fill = Fill(
+            treatment_id = treatment_id,
+            filled_by = form.filled_by.data,
+            days_supply = form.days_supply.data,
+            occurred_at = form.occurred_at.data,
+            notes = form.notes.data
+        )
+        db.session.add(fill)
+        db.session.commit()
+
+        flash("Fill added!")
+
+        return redirect(f"/treatments/{treatment_id}")
+
+    return render_template(
+        "fills/add_fill_form.html",
         form=form,
         treatment=treatment
     )

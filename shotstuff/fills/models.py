@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta
-import calendar
+from datetime import datetime
 
 from shotstuff.database import db
 from shotstuff.utils import calculate_date
