@@ -8,7 +8,7 @@
     <p>
       {% if treatment.medication_regimen.is_for_injectable %}
       <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/injections">
-          Add an injection
+        Add an injection
       </a>
       {% endif %}
       <a class="btn btn-outline-primary" href="/treatments/{{treatment.id}}/update">
@@ -20,10 +20,13 @@
     <div class="treatment-description">
       <p>Start date: {{ treatment.friendly_start_date.full_date_time }}</p>
       <p>Frequency: every {{ treatment.frequency_in_seconds / 86400 }} days </p>
+      <p>Last fill: {{treatment.friendly_last_fill_date.date}}</p>
+      <p>Next fill due by: {{ treatment.friendly_run_out_date.date }}</p>
       <p>Route: {{ treatment.medication_regimen.route }}</p>
       {% if treatment.medication_regimen.is_for_injectable %}
       <p>Next injection date: {{ next_injection_dow }}, {{ next_injection_date }}</p>
-      <p>Next injection position: {{ treatment.calculate_next_injection_detail().position[0] }} side, {{treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
+      <p>Next injection position: {{ treatment.calculate_next_injection_detail().position[0] }} side,
+        {{treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
       <p>Injections:</p>
       {% for injection in treatment.injections %}
       <ul id="treatment-injections-list">

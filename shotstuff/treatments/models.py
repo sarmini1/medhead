@@ -112,6 +112,18 @@ class Treatment(db.Model):
         except AttributeError:
             return None
 
+    @property
+    def friendly_last_fill_date(self):
+        """
+        Looks on the instance and generates a dictionary of time data about the
+        current instance's next lab due date.
+        """
+
+        try:
+            return generate_friendly_date_time(self.last_fill.occurred_at)
+        except AttributeError:
+            return None
+
     @property #TODO: probably just make this an instance method rather than a property
     def last_injection_details(self):
         """Determines the last injection that occurred for a treatment.
