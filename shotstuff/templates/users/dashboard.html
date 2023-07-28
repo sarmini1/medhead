@@ -95,13 +95,22 @@
       <p>You have {{ current_user.labs|length }} upcoming labs.</p>
       {% for lab in current_user.labs %}
       <li class="list-group-item">
-        <p>Due: {{ lab.treatment.next_lab_due_date }}</p>
-        <p>For treatment {{ lab.treatment.medication_regimen.title }}</p>
-        Routine? {{ lab.is_routine_lab }}
-        <br />
-        Requires fasting? {{ lab.requires_fasting }}
-        <br />
-        Location: {{ lab.treatment.clinic_supervising }}
+        <p>Due: {{ lab.treatment.friendly_next_lab_due_date.date }}</p>
+        <p>
+          For treatment {{ lab.treatment.medication_regimen.title }}
+          Location: {{ lab.treatment.clinic_supervising }}
+        </p>
+        <p>
+          {% if lab.is_routine_lab %}
+          **Routine**
+          {% else %}
+          **Supplemental**
+          {% endif %}
+          <br>
+          {% if lab.requires_fasting %}
+          **Fasting required**
+          {% endif %}
+        </p>
       </li>
       {% endfor %}
     </div>

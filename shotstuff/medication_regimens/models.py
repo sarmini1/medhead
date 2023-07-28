@@ -1,8 +1,6 @@
 from shotstuff.database import db
 
-#TODO: this was made after the injection regimen model was made-- idea is that
-# a user taking a medication shouldn't have to be injectable for it to be
-# considered a treatment
+
 class MedicationRegimen(db.Model):
     """Medication Regimen."""
 

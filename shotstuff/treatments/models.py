@@ -124,7 +124,7 @@ class Treatment(db.Model):
         except AttributeError:
             return None
 
-    @property #TODO: probably just make this an instance method rather than a property
+    @property
     def last_injection_details(self):
         """Determines the last injection that occurred for a treatment.
 

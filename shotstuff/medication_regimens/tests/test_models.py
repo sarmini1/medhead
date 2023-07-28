@@ -14,6 +14,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.drop_all()
 db.create_all()
 
+
 class MedicationRegimenModelTestCase(unittest.TestCase):
 
     def setUp(self):

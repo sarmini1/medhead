@@ -30,9 +30,9 @@ def add_treatment():
 
     all_med_regimens = MedicationRegimen.query.all()
     #TODO: consider putting the med regimen title in the tuple instead of med name
-    med_reg_tuples = [(med.id, med.medication.name) for med in all_med_regimens]
+    med_reg_tuples = [(mr.id, mr.medication.name) for mr in all_med_regimens]
     form.medication_regimen_id.choices = med_reg_tuples
-    # breakpoint()
+
     if form.validate_on_submit():
         treatment = Treatment(
             user_id = current_user.id,
