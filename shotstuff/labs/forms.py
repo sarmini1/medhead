@@ -1,15 +1,11 @@
 from flask_wtf import FlaskForm
 from wtforms import (
   StringField,
-  IntegerField,
   SelectField,
-  DateTimeField,
-  PasswordField,
   BooleanField,
-  FloatField,
   DateField
 )
-from wtforms.validators import DataRequired, NumberRange, Optional
+from wtforms.validators import Optional
 
 
 class LabEditForm(FlaskForm):
