@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-6 form-card">
+    <h2 class="pb-2">Add lab for {{ current_user.username }}</h2>
+
+    <form id="inj-add-form" class="p-1" method="POST">
+      {{ form.hidden_tag() }}
+      <!--add type=hidden form fields -->
+
+      {% for field in form
+      if field.widget.input_type != 'hidden' %}
+
+      <p>
+        {{ field.label }}
+
+        {% if field.type == "BooleanField" %}
+
+        {{ field(class="form-check-input") }}
+
+        {% elif field.type == "SelectField" %}
+
+        {{ field(class="form-select") }}
+
+        {% else %}
+
+        {{ field(class="form-control") }}
+
+        {% endif %}
+
+        {% for error in field.errors %}
+        {{ error }}
+        {% endfor %}
+      </p>
+
+      {% endfor %}
+
+      <button class="btn btn-outline-primary" type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from shotstuff.database import db
 from shotstuff.labs.models import Lab
 from shotstuff.injections.models import Injection
-from shotstuff.labs.forms import LabEditForm
+from shotstuff.labs.forms import LabEditForm, LabAddForm
 
 labs = Blueprint(
     "labs",
@@ -73,4 +73,39 @@ def mark_lab_complete(user_id, lab_id):
         "labs/edit_lab_form.html",
         form=form,
         lab=lab
+    )
+
+@labs.route("/users/<int:user_id>/new", methods=['GET', 'POST'])
+@login_required
+def add_lab(user_id):
+    """
+    If GET, display form to add new lab for logged-in user.
+
+    If POST, adds new lab for the user.
+    """
+
+    form = LabAddForm()
+
+    treatment_tuples = [(t.id, t.medication_regimen.title) for t in current_user.active_treatments]
+    form.treatment_id.choices = treatment_tuples
+
+    if form.validate_on_submit():
+        lab = Lab(
+            treatment_id = form.treatment_id.data,
+            is_routine_lab = form.is_routine_lab.data,
+            is_supplemental_lab = form.is_supplemental_lab.data,
+            requires_fasting = form.requires_fasting.data,
+            occurred_at = form.occurred_at.data or None,
+            point_in_cycle_occurred = form.point_in_cycle_occurred.data or None
+        )
+        db.session.add(lab)
+        db.session.commit()
+
+        flash("New lab added!")
+
+        return redirect(f"/labs/users/{current_user.get_id()}")
+
+    return render_template(
+        "labs/add_lab_form.html",
+        form=form,
     )

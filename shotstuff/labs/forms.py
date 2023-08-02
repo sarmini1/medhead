@@ -9,7 +9,7 @@ from wtforms import (
   FloatField,
   DateField
 )
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import DataRequired, NumberRange, Optional
 
 
 class LabEditForm(FlaskForm):
@@ -24,5 +24,32 @@ class LabEditForm(FlaskForm):
       ]
     )
 
+
 class LabAddForm(FlaskForm):
     """Form for adding a lab."""
+
+    treatment_id = SelectField(
+      'Which treatment is this for?',
+    )
+
+    is_routine_lab = BooleanField(
+        "This is a routine lab."
+    )
+
+    is_supplemental_lab = BooleanField(
+        "This is a supplmental lab."
+    )
+
+    requires_fasting = BooleanField(
+        "Fasting is required."
+    )
+
+    occurred_at = DateField(
+      'If already completed, date completed.',
+      validators=[Optional()]
+    )
+
+    point_in_cycle_occurred = StringField(
+        "What point in your cycle did this lab occur?",
+        validators=[Optional()]
+    )
