@@ -170,17 +170,22 @@ class Treatment(db.Model):
         return datetime.utcnow() >= run_out_date_minus_10_days
 
     @property
-    def friendly_run_out_date(self):
+    def friendly_run_out_date_info(self):
         """
-        Converts
+        Returns dictionary with friendly run out date and boolean telling us
+        if that date is past the current date.
         """
         run_out_date = self.calculate_run_out_date_last_fill()
-        friendly = generate_friendly_date_time(run_out_date)
-        return friendly
+        friendly_date = generate_friendly_date_time(run_out_date)
+
+        return {
+            "friendly_date": friendly_date,
+            "is_overdue": run_out_date < datetime.utcnow()
+        }
 
     def calculate_run_out_date_last_fill(self):
         """
-        Returns the date by which the most recent fill, with its days supply,
+        Returns the date by which the most recent fill, with its days supply
         will run out.
         """
 
@@ -198,6 +203,7 @@ class Treatment(db.Model):
 
         run_out_date = most_recent_dose.occurred_at + timedelta(days=self.last_fill.days_supply)
         return run_out_date
+        # return (run_out_date, run_out_date > datetime.utcnow())
 
     @property
     def last_fill(self):

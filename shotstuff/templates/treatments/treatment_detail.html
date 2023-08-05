@@ -21,7 +21,7 @@
       <p>Start date: {{ treatment.friendly_start_date.full_date_time }}</p>
       <p>Frequency: every {{ treatment.frequency_in_seconds / 86400 }} days </p>
       <p>Last fill: {{treatment.friendly_last_fill_date.date}}</p>
-      <p>Next fill due by: {{ treatment.friendly_run_out_date.date }}</p>
+      <p>Next fill due by: {{ treatment.friendly_run_out_date_info.friendly_date.date }}</p>
       <p>Route: {{ treatment.medication_regimen.route }}</p>
       {% if treatment.medication_regimen.is_for_injectable %}
       <p>Next injection date: {{ next_injection_dow }}, {{ next_injection_date }}</p>
