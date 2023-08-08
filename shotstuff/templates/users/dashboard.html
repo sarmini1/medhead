@@ -13,21 +13,23 @@
         Refills Due
       </h4>
 
-      {% for t in current_user.treatments_needing_refills %}
-      <li class="list-group-item">
-        <a href="/treatments/{{ t.id }}">
-          <h5>
-            {{ t.medication_regimen.title }}
-          </h5>
-        </a>
-        {% if t.friendly_run_out_date_info.is_overdue %}
-        <p>
+      {% if current_user.treatments_needing_refills|length %}
+
+        {% for t in current_user.treatments_needing_refills %}
+        <li class="list-group-item">
+          <a href="/treatments/{{ t.id }}">
+            <h5>
+              {{ t.medication_regimen.title }}
+            </h5>
+          </a>
+          {% if t.friendly_run_out_date_info.is_overdue %}
+          <p>
             This fill is overdue!
-        </p>
-        {% endif %}
-        <p>
-          Fill due: {{ t.friendly_run_out_date_info.friendly_date.date }}
-        </p>
+          </p>
+          {% endif %}
+          <p>
+            Fill due: {{ t.friendly_run_out_date_info.friendly_date.date }}
+          </p>
           <a href="/treatments/{{t.id}}/fills">
             <!-- <i class="bi bi-check2-square"></i> -->
             <button class="btn btn-primary btn-sm dash-inj-btn">
@@ -35,8 +37,16 @@
             </button>
           </a>
 
-      </li>
-      {% endfor %}
+        </li>
+        {% endfor %}
+
+      {% else %}
+
+        <li class="list-group-item">
+          <p>No refills due-- you're caught up!</p>
+        </li>
+
+      {% endif %}
 
 
       <h4>
@@ -78,10 +88,16 @@
           </p>
           <hr />
           {% endif %}
-          <p>Due: {{ inj.full_date }}</p>
-          <p>Position: {{ inj.treatment.calculate_next_injection_detail().position[0] }} side,
-            {{inj.treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
-          <p>For treatment {{ inj.treatment.medication_regimen.title }}</p>
+          <p>
+            Due: {{ inj.full_date }}
+            <br>
+            Route: {{ inj.treatment.medication_regimen.route }}
+            <br>
+            Position: {{ inj.treatment.calculate_next_injection_detail().position[0] }} side,
+            {{inj.treatment.calculate_next_injection_detail().position[1]}} quadrant
+            <br>
+            For treatment: {{ inj.treatment.medication_regimen.title }}
+          </p>
           <a href="/treatments/{{inj.treatment.id}}/injections">
             <!-- <i class="bi bi-check2-square"></i> -->
             <button class="btn btn-primary dash-inj-btn">
@@ -98,11 +114,11 @@
         <i class="fa-solid fa-vials"></i>
       </h3>
       <p>You have {{ current_user.labs|length }} upcoming labs.</p>
-      {% for lab in current_user.labs %}
+      {% for lab in current_user.upcoming_labs %}
       <li class="list-group-item">
         <p>Due: {{ lab.treatment.friendly_next_lab_due_date.date }}</p>
         <p>
-          For treatment {{ lab.treatment.medication_regimen.title }}
+          For treatment: {{ lab.treatment.medication_regimen.title }}
           Location: {{ lab.treatment.clinic_supervising }}
         </p>
         <p>
@@ -123,7 +139,7 @@
       <h3><b>Milestones</b></h3>
       <p>You've done {{current_user.num_injections}} total injections!</p>
       {% if current_user.on_time_labs %}
-        <p>{{current_user.on_time_labs}} of routine labs completed on time!</p>
+      <p>{{current_user.on_time_labs}} of routine labs completed on time!</p>
       {% endif %}
     </div>
   </div>

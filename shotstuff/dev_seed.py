@@ -19,8 +19,8 @@ db.drop_all(app=app)
 db.create_all(app=app)
 
 u1 = User.signup(
-    first_name="test first1",
-    username="test_user1",
+    first_name="Spencer",
+    username="spencer",
     password="password"
 )
 
@@ -85,27 +85,27 @@ body_region = BodyRegion.query.first()
 position = Position.query.first()
 
 inj_test_mr = MedicationRegimen(
-    title = "testosterone for hrt",
+    title = "Testosterone for HRT",
     is_for_injectable=True,
     route="subcutaneous",
     medication_id = med_t.id
 )
 
 prep_mr = MedicationRegimen(
-    title = "truvada for prep",
+    title = "Truvada for PrEP",
     is_for_injectable=False,
     route="oral",
     medication_id = med_prep.id
 )
 
 finasteride_mr = MedicationRegimen(
-    title = "finasteride for hair",
+    title = "Finasteride for hair",
     is_for_injectable=False,
     route="oral",
     medication_id = med_finast.id
 )
 inj_estra_mr = MedicationRegimen(
-    title = "estradiol for fun",
+    title = "Another injectable",
     is_for_injectable=True,
     route="intramuscular",
     medication_id = med_estro.id
@@ -126,7 +126,7 @@ t1_inj = Treatment(
     requires_labs = True,
     lab_frequency_in_months = 3,
     lab_point_in_cycle = "peak",
-    next_lab_due_date = "2023-08-16",
+    next_lab_due_date = "2023-08-30",
     clinic_supervising = "UCSF",
     start_date = "2023-05-27",
     currently_active = True
@@ -191,7 +191,7 @@ correct_past_lab_t1_inj = Lab(
     occurred_at = None,
     point_in_cycle_occurred = "peak",
     # is_upcoming = False,
-    requires_fasting = True
+    requires_fasting = False
 )
 
 correct_past_lab_t5_inj = Lab(
@@ -242,7 +242,7 @@ i2 = Injection(
     body_region_id = br1.id,
     position_id = p2.id,
     notes = "Used second to last injection needle",
-    occurred_at = datetime.utcnow() - timedelta(days=29),
+    occurred_at = datetime.utcnow() - timedelta(days=8),
 )
 
 i3 = Injection(
