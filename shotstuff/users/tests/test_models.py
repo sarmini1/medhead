@@ -16,6 +16,7 @@ from shotstuff.treatments.models import Treatment
 from shotstuff.medication_regimens.models import MedicationRegimen
 from shotstuff.injections.models import Injection
 from shotstuff.labs.models import Lab
+from shotstuff.utils import generate_friendly_date_time
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL_TEST
 app.config["TESTING"] = True
@@ -149,11 +150,14 @@ class UserModelTestCase(unittest.TestCase):
         inj_days = self.t1.frequency_in_seconds/86400
         inj_date = self.i1.occurred_at + datetime.timedelta(days=inj_days)
 
+        # TODO: decide if having generate_friendly_date_time called here is the
+        # right move
         self.assertEqual(
             u1_upcoming_injections,
             [
                 {
-                    "full_date": inj_date.strftime('%m/%d/%Y'),
+                    "full_date_time": generate_friendly_date_time(inj_date),
+                    "formatted_date": inj_date.strftime('%m/%d/%Y'),
                     "treatment": self.t1
                 }
             ]
@@ -185,7 +189,8 @@ class UserModelTestCase(unittest.TestCase):
             u1_upcoming_injections,
             [
                 {
-                    "full_date": inj_date.strftime('%m/%d/%Y'),
+                    "full_date_time": generate_friendly_date_time(inj_date),
+                    "formatted_date": inj_date.strftime('%m/%d/%Y'),
                     "treatment": self.t1
                 }
             ]
