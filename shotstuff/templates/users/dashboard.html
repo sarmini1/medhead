@@ -89,7 +89,7 @@
           <hr />
           {% endif %}
           <p>
-            Due: {{ inj.full_date }}
+            Due: {{ inj.full_date_time.weekday }}, {{ inj.formatted_date }}
             <br>
             Route: {{ inj.treatment.medication_regimen.route }}
             <br>

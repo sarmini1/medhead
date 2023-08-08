@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 
 from shotstuff.database import db
+from shotstuff.utils import generate_friendly_date_time
 # from shotstuff.treatments.models import Treatment
 
 bcrypt = Bcrypt()
@@ -79,12 +80,13 @@ class User(UserMixin, db.Model):
         for t in self.active_treatments:
             if len(t.injections) > 0:
                 next_inj = t.calculate_next_injection_detail()
-                full_date = next_inj["time_due"]["full_date_time"].split(",")[0]
-                date = datetime.strptime(full_date, '%m/%d/%Y')
+                formatted_date = next_inj["time_due"]["full_date_time"].split(",")[0]
+                date = datetime.strptime(formatted_date, '%m/%d/%Y')
                 if date < two_weeks_time:
                     upcoming_injection_times.append(
                         {
-                            "full_date": full_date,
+                            "full_date_time": next_inj["time_due"],
+                            "formatted_date": formatted_date,
                             "treatment": t
                         }
                     )
