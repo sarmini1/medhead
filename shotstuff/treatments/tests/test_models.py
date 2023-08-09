@@ -125,10 +125,10 @@ class TreatmentModelTestCase(unittest.TestCase):
                 "year": "2023",
                 "month": "05",
                 "day": "26",
-                "time": "10:30:01",
+                "time": "03:30:01",
                 "date": "05/26/2023",
                 "weekday": "Friday",
-                "full_date_time": "05/26/2023, 10:30:01"
+                "full_date_time": "05/26/2023, 03:30:01"
             }
         }
         self.assertEqual(

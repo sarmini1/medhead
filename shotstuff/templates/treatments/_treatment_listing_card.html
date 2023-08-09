@@ -47,13 +47,13 @@
           <b>
             Lab point in cycle:
           </b>
-          <!-- {{ treatment.lab_point_in_cycle }} -->
+          {{ treatment.lab_point_in_cycle }}
         </p>
         <p>
           <b>
             Next labs due:
           </b>
-          {{ treatment.friendly_next_lab_due_date.full_date_time }}
+          {{ treatment.friendly_next_lab_due_date.date }}
         </p>
         <p>
           <b>
@@ -76,8 +76,8 @@
         </hr>
         <h4>Injection Info</h4>
         <hr width="50%">
-        <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.full_date_time }}</p>
-        <p><b>Next injection date:</b> {{ treatment.calculate_next_injection_detail().time_due.full_date_time }}</p>
+        <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.date }}</p>
+        <p><b>Next injection date:</b> {{ treatment.calculate_next_injection_detail().time_due.date }}</p>
         <p><b>Next injection position:</b> {{ treatment.calculate_next_injection_detail().position[0] }} side,
           {{treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
         <p><b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days </p>

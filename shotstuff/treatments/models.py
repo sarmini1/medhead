@@ -6,7 +6,7 @@ from shotstuff.injections.models import Injection
 from shotstuff.utils import (
     calculate_date,
     generate_friendly_date_time,
-    convert_date_to_pst
+    convert_date_to_tz
 )
 
 
@@ -146,13 +146,18 @@ class Treatment(db.Model):
         if num_injections_occurred == 0:
             return None
         last_injection = self.injections[num_injections_occurred - 1]
-        friendly_occurred_at = generate_friendly_date_time(
-                last_injection.occurred_at
+
+        occurred_at_with_tz = convert_date_to_tz(
+            last_injection.occurred_at,
+            self.user.timezone_location
+        )
+        friendly_occurred_at_with_tz = generate_friendly_date_time(
+                occurred_at_with_tz
         )
 
         return {
             "injection": last_injection,
-            "occurred_at": friendly_occurred_at
+            "occurred_at": friendly_occurred_at_with_tz
         }
 
     @property
@@ -180,8 +185,11 @@ class Treatment(db.Model):
         if that date is past the current date.
         """
         run_out_date_utc = self.calculate_run_out_date_last_fill()
-        run_out_date_pst = convert_date_to_pst(run_out_date_utc)
-        friendly_date = generate_friendly_date_time(run_out_date_pst)
+        run_out_date_with_tz = convert_date_to_tz(
+            run_out_date_utc,
+            self.user.timezone_location
+        )
+        friendly_date = generate_friendly_date_time(run_out_date_with_tz)
 
         return {
             "friendly_date": friendly_date,
@@ -248,7 +256,10 @@ class Treatment(db.Model):
         frequency = self.frequency_in_seconds
 
         next_inj_date_utc = last_injection.occurred_at + timedelta(seconds=frequency)
-        next_inj_date_tz = convert_date_to_pst(next_inj_date_utc)
+        next_inj_date_tz = convert_date_to_tz(
+            next_inj_date_utc,
+            self.user.timezone_location
+        )
         next_inj_position = self._find_next_injection_position()
 
         return {

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from shotstuff.database import db
-from shotstuff.utils import generate_friendly_date_time, convert_date_to_pst
+from shotstuff.utils import generate_friendly_date_time, convert_date_to_tz
 
 
 class Fill(db.Model):
@@ -50,7 +50,10 @@ class Fill(db.Model):
     def friendly_occurred_at(self):
         """
         Returns complete dictionary of time data for a fill's occurred_at time,
-        converted to PST.
+        converted to the timezone associated with the user.
         """
-        occurred_at_pst = convert_date_to_pst(self.occurred_at)
-        return generate_friendly_date_time(occurred_at_pst)
+        occurred_at_with_tz = convert_date_to_tz(
+            self.occurred_at,
+            self.treatment.user.timezone_location
+        )
+        return generate_friendly_date_time(occurred_at_with_tz)

@@ -5,7 +5,7 @@ from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 
 from shotstuff.database import db
-from shotstuff.utils import generate_friendly_date_time, convert_date_to_pst
+# from shotstuff.utils import generate_friendly_date_time, convert_date_to_tz
 # from shotstuff.treatments.models import Treatment
 
 bcrypt = Bcrypt()
@@ -20,11 +20,17 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.Text, nullable=False)
     first_name = db.Column(db.Text, nullable=False)
-    treatments = db.relationship('Treatment',
-                                  backref='user')
-    labs = db.relationship('Lab',
-                            secondary="treatments",
-                            backref='user')
+    timezone_location = db.Column(
+        db.Text,
+        nullable=False,
+        default='US/Pacific'
+    )
+    treatments = db.relationship('Treatment', backref='user')
+    labs = db.relationship(
+        'Lab',
+        secondary="treatments",
+        backref='user'
+    )
 
     @property
     def num_injections(self):

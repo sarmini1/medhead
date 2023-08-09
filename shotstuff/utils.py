@@ -4,15 +4,15 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 
-def convert_date_to_pst(date):
+def convert_date_to_tz(date, timezone_id):
     """
     Converts datetime object to pacific datetime object.
     """
     aware = timezone('UTC').localize(date)
-    pacific_tz = timezone("US/Pacific")
-    pacific_date = aware.astimezone(pacific_tz)
+    desired_tz = timezone(timezone_id)
+    converted_date = aware.astimezone(desired_tz)
 
-    return pacific_date
+    return converted_date
 
 def calculate_date(start_date=datetime.utcnow(), months_in_future=0):
     """
