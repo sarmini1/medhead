@@ -150,6 +150,7 @@ def add_injection(treatment_id):
     treatment = Treatment.query.get_or_404(treatment_id)
 
     if form.validate_on_submit():
+        # breakpoint()
         injection = Injection(
             treatment_id = treatment_id,
             method = form.method.data,
@@ -161,9 +162,9 @@ def add_injection(treatment_id):
         db.session.add(injection)
         db.session.commit()
 
-        flash("Nice job taking care of yourself!")
+        flash("Injection added.")
 
-        return redirect(f"/treatments/{treatment_id}")
+        return redirect(f"/treatments/users/{current_user.id}")
 
     return render_template(
         "injections/add_injection_form.html",

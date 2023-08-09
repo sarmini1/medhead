@@ -70,7 +70,10 @@
 
 
     {% for message in get_flashed_messages(with_categories=False) %}
-      <div class="alert ">{{ message }}</div>
+      <div class="alert alert-dismissible alert-info">
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="alert"></button> -->
+        <strong>Well done!</strong> {{ message }}
+      </div>
     {% endfor %}
 
     <div class="row">

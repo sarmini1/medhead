@@ -1,15 +1,11 @@
 from flask_wtf import FlaskForm
 from wtforms import (
   StringField,
-  IntegerField,
   SelectField,
-  DateTimeField,
-  PasswordField,
-  BooleanField,
-  FloatField,
-  DateField
+  DateTimeLocalField,
 )
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import InputRequired
+
 
 class InjectionAddForm(FlaskForm):
     """Form for adding an injection."""
@@ -31,5 +27,9 @@ class InjectionAddForm(FlaskForm):
         ('4','Left, lower'),
       ]
     )
-    occurred_at = DateField('Date of Injection')
+    occurred_at = DateTimeLocalField(
+      'Date and time injection occurred',
+      format='%Y-%m-%dT%H:%M',
+      validators=[InputRequired()]
+    )
     notes = StringField("Notes?")
