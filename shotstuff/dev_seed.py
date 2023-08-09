@@ -25,7 +25,7 @@ u1 = User.signup(
 )
 
 u2 = User.signup(
-    first_name="test first2",
+    first_name="test first2_u1_o",
     username="test_user2",
     password="password"
 )
@@ -119,7 +119,7 @@ db.session.commit()
 first_regimen = MedicationRegimen.query.first()
 
 # test injectable testosterone treatment
-t1_inj = Treatment(
+t1_u1_inj = Treatment(
     user_id = u1.id,
     medication_regimen_id = inj_test_mr.id,
     frequency_in_seconds = 691200,
@@ -133,7 +133,7 @@ t1_inj = Treatment(
 )
 
 # prep
-t2 = Treatment(
+t2_u1_o = Treatment(
     user_id = u1.id,
     medication_regimen_id = prep_mr.id,
     frequency_in_seconds = 86400,
@@ -156,7 +156,7 @@ t3 = Treatment(
 )
 
 # finasteride
-mt4 = Treatment(
+t3_u1_o = Treatment(
     user_id = u1.id,
     medication_regimen_id = finasteride_mr.id,
     frequency_in_seconds= 86400,
@@ -167,7 +167,7 @@ mt4 = Treatment(
 )
 
 #estradiol
-t5_inj = Treatment(
+t4_u1_inj = Treatment(
     user_id = u1.id,
     medication_regimen_id = inj_estra_mr.id,
     frequency_in_seconds = 864000,
@@ -181,12 +181,12 @@ t5_inj = Treatment(
 
 )
 
-db.session.add_all([t1_inj, t2, t3, mt4, t5_inj])
+db.session.add_all([t1_u1_inj, t2_u1_o, t3, t3_u1_o, t4_u1_inj])
 db.session.commit()
 
 # lab that has already occurred that was done correctly
-correct_past_lab_t1_inj = Lab(
-    treatment_id = t1_inj.id,
+correct_past_lab_t1_u1_inj = Lab(
+    treatment_id = t1_u1_inj.id,
     # user_id = u1.id,
     occurred_at = None,
     point_in_cycle_occurred = "peak",
@@ -194,8 +194,8 @@ correct_past_lab_t1_inj = Lab(
     requires_fasting = False
 )
 
-correct_past_lab_t5_inj = Lab(
-    treatment_id = t5_inj.id,
+correct_past_lab_t4_u1_inj = Lab(
+    treatment_id = t4_u1_inj.id,
     # user_id = u1.id,
     occurred_at = None,
     point_in_cycle_occurred = "peak",
@@ -204,7 +204,7 @@ correct_past_lab_t5_inj = Lab(
 )
 
 upcoming_lab = Lab(
-    treatment_id = t2.id,
+    treatment_id = t2_u1_o.id,
     # occurred_at = None,
     # point_in_cycle_occurred = "peak",
     # is_upcoming = True,
@@ -212,7 +212,7 @@ upcoming_lab = Lab(
 )
 
 incorrect_past_lab = Lab(
-    treatment_id = t1_inj.id,
+    treatment_id = t1_u1_inj.id,
     occurred_at = None,
     point_in_cycle_occurred = "trough",
     # is_upcoming = False,
@@ -221,8 +221,8 @@ incorrect_past_lab = Lab(
 
 db.session.add_all(
     [
-        correct_past_lab_t1_inj,
-        correct_past_lab_t5_inj,
+        correct_past_lab_t1_u1_inj,
+        correct_past_lab_t4_u1_inj,
         upcoming_lab,
         incorrect_past_lab
     ]
@@ -230,14 +230,14 @@ db.session.add_all(
 db.session.commit()
 
 # i1 = Injection(
-#     treatment_id = t1_inj.id,
+#     treatment_id = t1_u1_inj.id,
 #     method = "subcutaneous",
 #     body_region_id = br1.id,
 #     position_id = p1.id
 # )
 
 i2 = Injection(
-    treatment_id = t1_inj.id,
+    treatment_id = t1_u1_inj.id,
     method = "subcutaenous",
     body_region_id = br1.id,
     position_id = p2.id,
@@ -246,7 +246,7 @@ i2 = Injection(
 )
 
 i3 = Injection(
-    treatment_id = t1_inj.id,
+    treatment_id = t1_u1_inj.id,
     method = "subcutaenous",
     body_region_id = br1.id,
     position_id = p3.id,
@@ -255,7 +255,7 @@ i3 = Injection(
 )
 
 i4 = Injection(
-    treatment_id = t1_inj.id,
+    treatment_id = t1_u1_inj.id,
     method = "subcutaenous",
     body_region_id = br1.id,
     position_id = p4.id,
@@ -264,14 +264,14 @@ i4 = Injection(
 )
 
 i5 = Injection(
-    treatment_id = t5_inj.id,
+    treatment_id = t4_u1_inj.id,
     method = "intramuscular",
     body_region_id = br2.id,
     position_id = p2.id
 )
 
 f1 = Fill(
-    treatment_id = t1_inj.id,
+    treatment_id = t1_u1_inj.id,
     filled_by = "Alto",
     occurred_at = datetime.utcnow() - timedelta(days=45),
     days_supply = 32,
@@ -279,11 +279,18 @@ f1 = Fill(
 )
 
 f2 = Fill(
-    treatment_id = t2.id,
+    treatment_id = t2_u1_o.id,
     filled_by = "CVS",
     occurred_at = datetime.utcnow() - timedelta(days=10),
     days_supply = 30
 )
 
-db.session.add_all([i2, i3, i4, i5, f1, f2])
+f3 = Fill(
+    treatment_id = t4_u1_inj.id,
+    filled_by = "CVS",
+    occurred_at = datetime.utcnow() - timedelta(days=10),
+    days_supply = 30
+)
+
+db.session.add_all([i2, i3, i4, i5, f1, f2, f3])
 db.session.commit()
