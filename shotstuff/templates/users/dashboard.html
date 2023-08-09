@@ -84,7 +84,7 @@
       </h3>
       <p>
         You have {{ current_user.upcoming_injection_times|length }} upcoming
-        injections.
+        injections in the next two weeks.
       </p>
       {% for inj in current_user.upcoming_injection_times %}
       <li class="list-group-item">
@@ -128,18 +128,27 @@
         <p>
           For treatment: {{ lab.treatment.medication_regimen.title }}
           Location: {{ lab.treatment.clinic_supervising }}
+          <br>
+          {% if lab.treatment.lab_point_in_cycle %}
+          Point in cycle due: {{ lab.treatment.lab_point_in_cycle }}
+          {% endif %}
         </p>
         <p>
           {% if lab.is_routine_lab %}
-          **Routine**
+            **Routine**
           {% else %}
-          **Supplemental**
+            **Supplemental**
           {% endif %}
           <br>
           {% if lab.requires_fasting %}
           **Fasting required**
           {% endif %}
         </p>
+        <a href="/labs/users/{{current_user.id}}/{{lab.id}}">
+          <button class="btn btn-primary dash-inj-btn">
+            Mark complete
+          </button>
+        </a>
       </li>
       {% endfor %}
     </div>
