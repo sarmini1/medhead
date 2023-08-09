@@ -160,7 +160,7 @@ class Treatment(db.Model):
         """
 
         # figure out when that fill may run out
-        # if we are within 1 week of that date, return True
+        # if we are within 10 days of that date, return True
         # else, return False
         if not self.last_fill:
             return False

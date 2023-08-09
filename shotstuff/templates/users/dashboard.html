@@ -15,36 +15,44 @@
 
       {% if current_user.treatments_needing_refills|length %}
 
-        {% for t in current_user.treatments_needing_refills %}
-        <li class="list-group-item">
-          <a href="/treatments/{{ t.id }}">
-            <h5>
-              {{ t.medication_regimen.title }}
-            </h5>
-          </a>
-          {% if t.friendly_run_out_date_info.is_overdue %}
-          <p>
-            This fill is overdue!
-          </p>
-          {% endif %}
-          <p>
-            Fill due: {{ t.friendly_run_out_date_info.friendly_date.date }}
-          </p>
-          <a href="/treatments/{{t.id}}/fills">
-            <!-- <i class="bi bi-check2-square"></i> -->
-            <button class="btn btn-primary btn-sm dash-inj-btn">
-              Mark filled
-            </button>
-          </a>
+      {% for t in current_user.treatments_needing_refills %}
+      <li class="list-group-item">
+        {% if t.last_fill.notes %}
+        <p>
+          <b>Notes from last fill:</b>
+          {{ t.last_fill.notes }}
+        </p>
+        <hr />
+        {% endif %}
+        <a href="/treatments/{{ t.id }}">
+          <h5>
+            {{ t.medication_regimen.title }}
+          </h5>
+        </a>
 
-        </li>
-        {% endfor %}
+        {% if t.friendly_run_out_date_info.is_overdue %}
+        <p>
+          This fill is overdue!
+        </p>
+        {% endif %}
+        <p>
+          Fill due: {{ t.friendly_run_out_date_info.friendly_date.date }}
+        </p>
+        <a href="/treatments/{{t.id}}/fills">
+          <!-- <i class="bi bi-check2-square"></i> -->
+          <button class="btn btn-primary btn-sm dash-inj-btn">
+            Mark filled
+          </button>
+        </a>
+
+      </li>
+      {% endfor %}
 
       {% else %}
 
-        <li class="list-group-item">
-          <h5>You're caught up!</h5>
-        </li>
+      <li class="list-group-item">
+        <h5>You're caught up!</h5>
+      </li>
 
       {% endif %}
 
@@ -89,14 +97,14 @@
           <hr />
           {% endif %}
           <p>
+            For treatment: {{ inj.treatment.medication_regimen.title }}
+            <br>
             Due: {{ inj.full_date_time.weekday }}, {{ inj.formatted_date }}
             <br>
             Route: {{ inj.treatment.medication_regimen.route }}
             <br>
             Position: {{ inj.treatment.calculate_next_injection_detail().position[0] }} side,
             {{inj.treatment.calculate_next_injection_detail().position[1]}} quadrant
-            <br>
-            For treatment: {{ inj.treatment.medication_regimen.title }}
           </p>
           <a href="/treatments/{{inj.treatment.id}}/injections">
             <!-- <i class="bi bi-check2-square"></i> -->

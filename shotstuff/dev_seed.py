@@ -241,11 +241,29 @@ i2 = Injection(
     method = "subcutaenous",
     body_region_id = br1.id,
     position_id = p2.id,
+    notes = "Used fourth to last injection needle",
+    occurred_at = datetime.utcnow() - timedelta(days=24),
+)
+
+i3 = Injection(
+    treatment_id = t1_inj.id,
+    method = "subcutaenous",
+    body_region_id = br1.id,
+    position_id = p3.id,
+    notes = "Used third to last injection needle",
+    occurred_at = datetime.utcnow() - timedelta(days=16),
+)
+
+i4 = Injection(
+    treatment_id = t1_inj.id,
+    method = "subcutaenous",
+    body_region_id = br1.id,
+    position_id = p4.id,
     notes = "Used second to last injection needle",
     occurred_at = datetime.utcnow() - timedelta(days=8),
 )
 
-i3 = Injection(
+i5 = Injection(
     treatment_id = t5_inj.id,
     method = "intramuscular",
     body_region_id = br2.id,
@@ -255,9 +273,9 @@ i3 = Injection(
 f1 = Fill(
     treatment_id = t1_inj.id,
     filled_by = "Alto",
-    occurred_at = datetime.utcnow() - timedelta(days=30),
+    occurred_at = datetime.utcnow() - timedelta(days=45),
     days_supply = 32,
-    notes = "Something something",
+    notes = "Med is on backorder, start the process asap!",
 )
 
 f2 = Fill(
@@ -267,5 +285,5 @@ f2 = Fill(
     days_supply = 30
 )
 
-db.session.add_all([i2, i3, f1, f2])
+db.session.add_all([i2, i3, i4, i5, f1, f2])
 db.session.commit()
