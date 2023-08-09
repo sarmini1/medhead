@@ -208,15 +208,18 @@ class Treatment(db.Model):
 
         # add the days supply from the fill to that most recent dose date
 
-        most_recent_dose = Injection.query.filter(
-            Injection.occurred_at < datetime.utcnow()
-        ).order_by(
-            Injection.occurred_at.asc()
-        ).first()
+        if self.medication_regimen.is_for_injectable:
+            most_recent_dose = Injection.query.filter(
+                Injection.occurred_at < datetime.utcnow()
+            ).order_by(
+                Injection.occurred_at.asc()
+            ).first()
 
-        run_out_date = most_recent_dose.occurred_at + timedelta(days=self.last_fill.days_supply)
+            run_out_date = most_recent_dose.occurred_at + timedelta(days=self.last_fill.days_supply)
+        else:
+            run_out_date = self.last_fill.occurred_at + timedelta(days=self.last_fill.days_supply)
+
         return run_out_date
-        # return (run_out_date, run_out_date > datetime.utcnow())
 
     @property
     def last_fill(self):

@@ -127,7 +127,7 @@ t1_u1_inj = Treatment(
     lab_point_in_cycle = "peak",
     next_lab_due_date = "2023-08-30",
     clinic_supervising = "UCSF",
-    start_date = "2023-05-27",
+    start_date = datetime.utcnow() - timedelta(days=24),
     currently_active = True
 )
 
@@ -141,7 +141,7 @@ t2_u1_o = Treatment(
     # lab_point_in_cycle = None,
     next_lab_due_date = "2023-08-16",
     clinic_supervising = "One Medical",
-    start_date = "2023-05-27",
+    start_date = datetime.utcnow() - timedelta(days=48),
     currently_active = True
 )
 
@@ -175,7 +175,7 @@ t4_u1_inj = Treatment(
     lab_point_in_cycle = "peak",
     next_lab_due_date = "2023-10-16",
     clinic_supervising = "UCSF",
-    start_date = "2023-07-16",
+    start_date = datetime.utcnow() - timedelta(days=48),
     currently_active = True
 
 )

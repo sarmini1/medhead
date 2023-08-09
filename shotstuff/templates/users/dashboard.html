@@ -127,6 +127,7 @@
         <p>Due: {{ lab.treatment.friendly_next_lab_due_date.date }}</p>
         <p>
           For treatment: {{ lab.treatment.medication_regimen.title }}
+          <br>
           Location: {{ lab.treatment.clinic_supervising }}
           <br>
           {% if lab.treatment.lab_point_in_cycle %}

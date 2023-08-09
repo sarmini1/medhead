@@ -84,7 +84,7 @@
         <p>
           <b>Total injections:</b> {{ treatment.injections|length }}
         </p>
-        <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.full_date_time }}</p>
+        <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.date }}</p>
         {% elif treatment.medication_regimen.is_for_injectable %}
         <h2> No injections yet!</h2>
         {% else %}
@@ -97,7 +97,7 @@
             <br>
             <b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days
             <br>
-            <b>Since:</b> {{ treatment.start_date }}
+            <b>Since:</b> {{ treatment.friendly_start_date.date }}
           </p>
         </div>
         {% endif %}
