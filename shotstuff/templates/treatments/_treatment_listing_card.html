@@ -19,8 +19,8 @@
         <h4>Last Fill Info</h4>
         <hr width="50%">
         {% if treatment.is_refill_needed %}
-          <b>You're within 10 days of your last fill running out!</b>
-          <br>
+          <p><b>You're within 10 days of your last fill running out!</b></p>
+
         {% endif %}
         {% if treatment.last_fill.notes %}
           <p><b>Notes:</b> {{treatment.last_fill.notes }}</p>

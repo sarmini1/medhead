@@ -83,15 +83,18 @@ class TreatmentModelTestCase(unittest.TestCase):
         )
         # Injection factory makes a Treatment instance with inj frequency
         # every 7 days, so next injection time is predictable
+
+        # TODO: decide if manually converting this to PST to account for time
+        # zone stuff is the right call
         next_injection_detail = {
             "time_due": {
                 "year": "2023",
                 "month": "06",
                 "day": "02",
-                "time": "10:30:01",
+                "time": "03:30:01",
                 "date": "06/02/2023",
                 "weekday": "Friday",
-                "full_date_time": "06/02/2023, 10:30:01"
+                "full_date_time": "06/02/2023, 03:30:01"
             },
             "position": ("left", "lower")
         }

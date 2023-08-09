@@ -1,6 +1,18 @@
-from datetime import datetime
 import calendar
+from pytz import timezone
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
+
+
+def convert_date_to_pst(date):
+    """
+    Converts datetime object to pacific datetime object.
+    """
+    aware = timezone('UTC').localize(date)
+    pacific_tz = timezone("US/Pacific")
+    pacific_date = aware.astimezone(pacific_tz)
+
+    return pacific_date
 
 def calculate_date(start_date=datetime.utcnow(), months_in_future=0):
     """
@@ -10,7 +22,6 @@ def calculate_date(start_date=datetime.utcnow(), months_in_future=0):
     full_time = start_date + relativedelta(months=months_in_future)
     future_date = full_time.strftime("%Y-%m-%d")
     return future_date
-
 
 def generate_friendly_date_time(date):
         """ Returns dictionary with year, month, day, time, date and time formatted

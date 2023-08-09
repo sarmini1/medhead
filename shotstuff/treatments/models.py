@@ -3,7 +3,11 @@ from datetime import datetime, timedelta
 from shotstuff.database import db
 from shotstuff.labs.models import Lab
 from shotstuff.injections.models import Injection
-from shotstuff.utils import calculate_date, generate_friendly_date_time
+from shotstuff.utils import (
+    calculate_date,
+    generate_friendly_date_time,
+    convert_date_to_pst
+)
 
 
 class Treatment(db.Model):
@@ -175,12 +179,13 @@ class Treatment(db.Model):
         Returns dictionary with friendly run out date and boolean telling us
         if that date is past the current date.
         """
-        run_out_date = self.calculate_run_out_date_last_fill()
-        friendly_date = generate_friendly_date_time(run_out_date)
+        run_out_date_utc = self.calculate_run_out_date_last_fill()
+        run_out_date_pst = convert_date_to_pst(run_out_date_utc)
+        friendly_date = generate_friendly_date_time(run_out_date_pst)
 
         return {
             "friendly_date": friendly_date,
-            "is_overdue": run_out_date < datetime.utcnow()
+            "is_overdue": run_out_date_utc < datetime.utcnow()
         }
 
     def calculate_run_out_date_last_fill(self):
@@ -242,11 +247,12 @@ class Treatment(db.Model):
         last_injection = self.injections[num_injections_occurred - 1]
         frequency = self.frequency_in_seconds
 
-        next_inj_date = last_injection.occurred_at + timedelta(seconds=frequency)
+        next_inj_date_utc = last_injection.occurred_at + timedelta(seconds=frequency)
+        next_inj_date_tz = convert_date_to_pst(next_inj_date_utc)
         next_inj_position = self._find_next_injection_position()
 
         return {
-            "time_due": generate_friendly_date_time(next_inj_date),
+            "time_due": generate_friendly_date_time(next_inj_date_tz),
             "position": next_inj_position
         }
 

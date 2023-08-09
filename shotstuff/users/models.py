@@ -5,7 +5,7 @@ from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 
 from shotstuff.database import db
-from shotstuff.utils import generate_friendly_date_time
+from shotstuff.utils import generate_friendly_date_time, convert_date_to_pst
 # from shotstuff.treatments.models import Treatment
 
 bcrypt = Bcrypt()
