@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from shotstuff.database import db
-from shotstuff.utils import calculate_date
+from shotstuff.utils import generate_friendly_date_time, convert_date_to_pst
 
 
 class Fill(db.Model):
@@ -45,3 +45,12 @@ class Fill(db.Model):
         db.Text,
         nullable=True
     )
+
+    @property
+    def friendly_occurred_at(self):
+        """
+        Returns complete dictionary of time data for a fill's occurred_at time,
+        converted to PST.
+        """
+        occurred_at_pst = convert_date_to_pst(self.occurred_at)
+        return generate_friendly_date_time(occurred_at_pst)
