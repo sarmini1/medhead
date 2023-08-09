@@ -174,9 +174,9 @@ t5_inj = Treatment(
     requires_labs = True,
     lab_frequency_in_months = 3,
     lab_point_in_cycle = "peak",
-    next_lab_due_date = "2022-06-16",
+    next_lab_due_date = "2023-10-16",
     clinic_supervising = "UCSF",
-    start_date = "2022-02-16",
+    start_date = "2023-07-16",
     currently_active = True
 
 )
