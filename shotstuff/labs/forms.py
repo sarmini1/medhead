@@ -15,6 +15,7 @@ class LabEditForm(FlaskForm):
     point_in_cycle_occurred = SelectField(
       'What point did the lab occur in your cycle?',
       choices=[
+        (None, 'N/A'),
         ('peak', 'Peak'),
         ('trough','Trough'),
       ]
@@ -29,15 +30,15 @@ class LabAddForm(FlaskForm):
     )
 
     is_routine_lab = BooleanField(
-        "This is a routine lab."
+        "This is a routine lab. "
     )
 
     is_supplemental_lab = BooleanField(
-        "This is a supplmental lab."
+        "This is a supplmental lab. "
     )
 
     requires_fasting = BooleanField(
-        "Fasting is required."
+        "Fasting is required. "
     )
 
     occurred_at = DateField(
@@ -45,7 +46,11 @@ class LabAddForm(FlaskForm):
       validators=[Optional()]
     )
 
-    point_in_cycle_occurred = StringField(
-        "What point in your cycle did this lab occur?",
-        validators=[Optional()]
+    point_in_cycle_occurred = SelectField(
+      'What point did the lab occur in your cycle?',
+      choices=[
+        (None, 'N/A'),
+        ('peak', 'Peak'),
+        ('trough','Trough'),
+      ]
     )
