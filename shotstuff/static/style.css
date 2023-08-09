@@ -15,7 +15,8 @@ body {
 .bg-primary {
   --bs-bg-opacity: 1;
   /**background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;*/
-  background-color: rgb(219, 146, 220) !important;
+  /* background-color: rgb(219, 146, 220) !important; */
+  background-color: rgb(229, 163, 229) !important;
 }
 
 .list-group-item {
@@ -108,7 +109,7 @@ body {
 
 .dash-item {
   border: 1px solid rgb(87, 80, 94);
-  background-color: rgb(231, 174, 231);
+  background-color: rgb(229, 163, 229);
   /* background-color: #f9f5ef; */
   border-radius:10px;
   padding: 0.5rem 1rem;
