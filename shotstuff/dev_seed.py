@@ -80,7 +80,6 @@ db.session.add_all(
 db.session.commit()
 
 first_user = User.query.first()
-# med = Medication.query.first()
 body_region = BodyRegion.query.first()
 position = Position.query.first()
 
@@ -139,7 +138,7 @@ t2_u1_o = Treatment(
     frequency_in_seconds = 86400,
     requires_labs = True,
     lab_frequency_in_months = 3,
-    lab_point_in_cycle = "trough",
+    # lab_point_in_cycle = None,
     next_lab_due_date = "2023-08-16",
     clinic_supervising = "One Medical",
     start_date = "2023-05-27",
@@ -244,6 +243,7 @@ i2 = Injection(
     notes = "Used fourth to last injection needle",
     occurred_at = datetime.utcnow() - timedelta(days=24),
 )
+#
 
 i3 = Injection(
     treatment_id = t1_u1_inj.id,
