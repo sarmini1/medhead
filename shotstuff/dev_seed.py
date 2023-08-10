@@ -184,7 +184,7 @@ db.session.add_all([t1_u1_inj, t2_u1_o, t3, t3_u1_o, t4_u1_inj])
 db.session.commit()
 
 # lab that has already occurred that was done correctly
-correct_past_lab_t1_u1_inj = Lab(
+upcoming_lab_t1_u1_inj = Lab(
     treatment_id = t1_u1_inj.id,
     # user_id = u1.id,
     occurred_at = None,
@@ -196,7 +196,7 @@ correct_past_lab_t1_u1_inj = Lab(
 correct_past_lab_t4_u1_inj = Lab(
     treatment_id = t4_u1_inj.id,
     # user_id = u1.id,
-    occurred_at = None,
+    occurred_at = datetime.utcnow() - timedelta(days=48),
     point_in_cycle_occurred = "peak",
     # is_upcoming = False,
     requires_fasting = True
@@ -212,7 +212,7 @@ upcoming_lab = Lab(
 
 incorrect_past_lab = Lab(
     treatment_id = t1_u1_inj.id,
-    occurred_at = None,
+    occurred_at = datetime.utcnow() - timedelta(days=90),
     point_in_cycle_occurred = "trough",
     # is_upcoming = False,
     requires_fasting = False
@@ -220,7 +220,7 @@ incorrect_past_lab = Lab(
 
 db.session.add_all(
     [
-        correct_past_lab_t1_u1_inj,
+        upcoming_lab_t1_u1_inj,
         correct_past_lab_t4_u1_inj,
         upcoming_lab,
         incorrect_past_lab
