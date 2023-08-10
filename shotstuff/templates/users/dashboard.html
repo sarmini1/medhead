@@ -8,10 +8,44 @@
       <h3>
         <b>Overview</b>
       </h3>
+      <p>
+        You're currently on {{ current_user.active_treatments|length }}
+        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          active treatments.
+        </a>
+        <div class="collapse atc" id="collapseExample">
+          <div>
+            {% for t in current_user.active_treatments %}
+            <li class="list-group-item">
+              <a href="/treatments/{{ t.id }}">
+                <h5>
+                  {{ t.medication_regimen.title }}
+                </h5>
+              </a>
+              <p>
+                {% if t.frequency_in_seconds == 86400 %}
+                Frequency: daily
+                {% else %}
+                Frequency: every {{ (t.frequency_in_seconds / 86400) | int }} days
+                {% endif %}
+                <br />
+                Route: {{ t.medication_regimen.route }}
+                <br>
+                Start date: {{ t.friendly_start_date.date }}
+              </p>
+            </li>
+            {% endfor %}
+          </div>
+        </div>
+      </p>
 
       <h4>
         Refills Due
       </h4>
+      <p>
+        You have {{ current_user.treatments_needing_refills | length }} refills
+        due in the next 10 days.
+      </p>
 
       {% if current_user.treatments_needing_refills|length %}
 
@@ -56,26 +90,6 @@
 
       {% endif %}
 
-
-      <h4>
-        Active Treatments
-      </h4>
-      {% for t in current_user.active_treatments %}
-      <li class="list-group-item">
-        <a href="/treatments/{{ t.id }}">
-          <h5>
-            {{ t.medication_regimen.title }}
-          </h5>
-        </a>
-        <p>
-          Frequency: every {{ (t.frequency_in_seconds / 86400) | int }} days
-          <br />
-          Route: {{ t.medication_regimen.route }}
-          <!-- <br />
-          Started: {{t.friendly_start_date.full_date_time}} -->
-        </p>
-      </li>
-      {% endfor %}
     </div>
     <div class="col-12 col-sm-4 dash-item">
       <h3>
@@ -99,7 +113,7 @@
           <p>
             For treatment: {{ inj.treatment.medication_regimen.title }}
             <br>
-            Due: {{ inj.full_date_time.weekday }}, {{ inj.formatted_date }}
+            Due on: {{ inj.full_date_time.weekday }}, {{ inj.formatted_date }}
             <br>
             Route: {{ inj.treatment.medication_regimen.route }}
             <br>
@@ -121,12 +135,12 @@
         <b>Upcoming Labs</b>
         <i class="fa-solid fa-vials"></i>
       </h3>
-      <p>You have {{ current_user.labs|length }} upcoming labs.</p>
+      <p>You have {{ current_user.upcoming_labs|length }} upcoming labs.</p>
       {% for lab in current_user.upcoming_labs %}
       <li class="list-group-item">
-        <p>Due: {{ lab.treatment.friendly_next_lab_due_date.date }}</p>
+        <p>For treatment: {{ lab.treatment.medication_regimen.title }}</p>
         <p>
-          For treatment: {{ lab.treatment.medication_regimen.title }}
+          Due by: {{ lab.treatment.friendly_next_lab_due_date.date }}
           <br>
           Location: {{ lab.treatment.clinic_supervising }}
           <br>
@@ -155,10 +169,11 @@
     </div>
     <div class="col-12 col-sm-12 dash-item">
       <h3><b>Milestones</b></h3>
-      <p>You've done {{current_user.num_injections}} total injections!</p>
+      <p>TODO: load this with progress data!</p>
+      <!-- <p>You've done {{current_user.num_injections}} total injections!</p>
       {% if current_user.on_time_labs %}
-      <p>{{current_user.on_time_labs}} of routine labs completed on time!</p>
-      {% endif %}
+        <p>{{current_user.on_time_labs}} of routine labs completed on time!</p>
+      {% endif %} -->
     </div>
   </div>
 </section>

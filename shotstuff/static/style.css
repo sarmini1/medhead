@@ -107,6 +107,14 @@ body {
   /* border-radius:25%; */
 }
 
+.list-group-item:last-child {
+  border-radius: 10px;
+}
+
+.list-group-item:first-child {
+  border-radius: 10px;
+}
+
 .dash-item {
   border: 1px solid rgb(87, 80, 94);
   background-color: rgb(229, 163, 229);
@@ -119,12 +127,6 @@ body {
   /* position: absolute; */
   right:0;
   margin-right: 0.5rem;
-}
-
-.dash-inj-btn {
-  /* position: absolute;
-  right:0;
-  margin-right: 0.5rem; */
 }
 
 .rounded-button {
