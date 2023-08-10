@@ -34,9 +34,9 @@
       <div class="lab-card col-12 col-md-4">
         <h4>Lab Info</h4>
         <hr width="50%">
-        <p>
+        <!-- <p>
           Treatment id for dev purposes: {{treatment.id}}
-        </p>
+        </p> -->
         <p>
           <b>
             Labs every:
@@ -66,6 +66,9 @@
 
       {% if treatment.injections|length > 0 %}
       <div class="treatment-description col-12 col-md-4">
+        <!-- </hr> -->
+        <h4>Injection Info</h4>
+        <hr width="50%">
         {% if treatment.last_injection_details.injection.notes %}
         <p>
           <b>Notes from last injection:</b>
@@ -73,9 +76,6 @@
         </p>
         <hr width="50%">
         {% endif %}
-        </hr>
-        <h4>Injection Info</h4>
-        <hr width="50%">
         <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.date }}</p>
         <p><b>Next injection date:</b> {{ treatment.calculate_next_injection_detail().time_due.date }}</p>
         <p><b>Next injection position:</b> {{ treatment.calculate_next_injection_detail().position[0] }} side,
