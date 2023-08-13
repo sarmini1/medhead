@@ -11,10 +11,6 @@ from shotstuff.treatments.routes import treatments
 from shotstuff.labs.routes import labs
 
 from shotstuff.users.models import User
-# from shotstuff.treatments.models import Treatment
-from shotstuff.medication_regimens.models import MedicationRegimen
-from shotstuff.fills.models import Fill
-# from shotstuff.labs.models import Lab
 from shotstuff.body_regions.models import BodyRegion
 from shotstuff.positions.models import Position
 from shotstuff.medications.models import Medication
@@ -35,20 +31,9 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    # breakpoint()
-    print("USER LOADER RAN")
+
     return User.query.get(user_id)
 
-@login_manager.request_loader
-def load_user_from_request(request):
-    # breakpoint()
-    print("REQUEST LOADER RAN")
-    user_id = session.get("_user_id")
-    if user_id:
-        return User.query.get(user_id)
-
-
-# TODO: figure out if this is really the best place for this decorator
 @app.before_request
 def add_csrf_only_form():
     """Add a CSRF-only form so that every route can use it"""
