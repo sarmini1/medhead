@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, render_template, redirect, session
+from flask import Blueprint, flash, redirect, render_template
 from flask_login import current_user, login_required
 
 from shotstuff.users.models import User
@@ -20,8 +20,8 @@ def dashboard():
 
     """
     # breakpoint()
-    # if not current_user.is_authenticated:
-    #     flash("Unauthorized")
-    #     return redirect("/")
+    if not current_user.is_authenticated:
+        flash("Unauthorized")
+        return redirect("/")
 
     return render_template('users/dashboard.html')

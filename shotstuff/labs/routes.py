@@ -86,7 +86,9 @@ def add_lab(user_id):
 
     form = LabAddForm()
 
-    treatment_tuples = [(t.id, t.medication_regimen.title) for t in current_user.active_treatments]
+    treatment_tuples = [
+        (t.id, t.medication_regimen.title) for t in current_user.active_treatments
+    ]
     form.treatment_id.choices = treatment_tuples
 
     if form.validate_on_submit():

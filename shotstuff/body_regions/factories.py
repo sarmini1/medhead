@@ -4,6 +4,7 @@ from shotstuff import app
 from shotstuff.database import db
 from shotstuff.body_regions.models import BodyRegion
 
+
 class BodyRegionFactory(factory.alchemy.SQLAlchemyModelFactory):
     """Factory to create a BodyRegion instance for testing."""
 

@@ -1,12 +1,9 @@
 """Models for injection tracker app."""
 from datetime import datetime, timedelta
-# import calendar
 from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 
 from shotstuff.database import db
-# from shotstuff.utils import generate_friendly_date_time, convert_date_to_tz
-# from shotstuff.treatments.models import Treatment
 
 bcrypt = Bcrypt()
 

@@ -1,5 +1,6 @@
 from shotstuff.database import db
 
+
 class Medication(db.Model):
     """Medication."""
 

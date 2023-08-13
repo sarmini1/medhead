@@ -1,5 +1,6 @@
 from shotstuff.database import db
 
+
 class BodyRegion(db.Model):
     """Region of body."""
 
