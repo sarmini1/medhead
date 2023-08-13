@@ -35,20 +35,15 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    # breakpoint()
-    print("USER LOADER RAN")
     return User.query.get(user_id)
 
-@login_manager.request_loader
-def load_user_from_request(request):
-    # breakpoint()
-    print("REQUEST LOADER RAN")
-    user_id = session.get("_user_id")
-    if user_id:
-        return User.query.get(user_id)
+# @login_manager.request_loader
+# def load_user_from_request(request):
+#     print("REQUEST LOADER RAN")
+#     user_id = session.get("_user_id")
+#     if user_id:
+#         return User.query.get(user_id)
 
-
-# TODO: figure out if this is really the best place for this decorator
 @app.before_request
 def add_csrf_only_form():
     """Add a CSRF-only form so that every route can use it"""
