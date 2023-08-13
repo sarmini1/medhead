@@ -10,8 +10,9 @@ from flask import (
 from flask_login import login_user, current_user, login_required, logout_user
 from is_safe_url import is_safe_url
 
+from shotstuff.database import db
 from shotstuff.users.models import User
-from shotstuff.root.forms import LoginForm
+from shotstuff.root.forms import LoginForm, RegisterForm
 from shotstuff.generic_forms import CSRFProtection
 
 root = Blueprint(
@@ -50,8 +51,10 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        user = User.authenticate(form.username.data,
-                                 form.password.data)
+        user = User.authenticate(
+            form.username.data,
+            form.password.data
+        )
         if user:
             login_user(user)
             flash(f"Hello, {user.username}!", "success")
@@ -67,6 +70,40 @@ def login():
         flash("Invalid credentials.", 'danger')
 
     return render_template('users/login.html', form=form)
+
+@root.route('/signup', methods=["GET", "POST"])
+def signup():
+    """Handle user registration.
+
+    If GET, renders form to register.
+
+    If POST, validates form and redirects to next location, if safe.
+    """
+
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        user = User.signup(
+            form.username.data,
+            form.password.data,
+            form.first_name.data
+        )
+        if user:
+            db.session.commit()
+            login_user(user)
+            flash(f"Hello, {user.username}!", "success")
+
+            next = request.args.get('next')
+
+            if not is_safe_url(next, {"localhost:5000"}):
+                # breakpoint()
+                return abort(400)
+
+            return redirect(next or url_for('/users/dashboard'))
+
+        flash("Invalid credentials.", 'danger')
+
+    return render_template('users/signup.html', form=form)
 
 @root.route("/logout", methods=["POST"])
 @login_required
