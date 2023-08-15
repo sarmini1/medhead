@@ -14,7 +14,8 @@ from shotstuff.fills.forms import FillAddForm
 treatments = Blueprint(
     "treatments",
     __name__,
-    template_folder='templates')
+    template_folder='templates'
+)
 
 
 @treatments.route("/", methods=['GET', 'POST'])

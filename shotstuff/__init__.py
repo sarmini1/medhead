@@ -30,9 +30,16 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 @login_manager.user_loader
-def load_user(user_id):
-
+def load_user_from_session(user_id):
     return User.query.get(user_id)
+
+@login_manager.request_loader
+def load_user_from_request(request):
+    print("REQUEST LOADER RAN")
+    breakpoint()
+    user_id = session.get("_user_id")
+    if user_id:
+        return User.query.get(user_id)
 
 @app.before_request
 def add_csrf_only_form():

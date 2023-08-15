@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../../../')
+
 from freezegun import freeze_time
 import unittest
 import datetime

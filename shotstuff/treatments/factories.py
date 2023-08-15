@@ -2,9 +2,10 @@ import factory
 
 from shotstuff import app
 from shotstuff.database import db
-from shotstuff.treatments.models import Treatment
 from shotstuff.medication_regimens.factories import MedicationRegimenFactory
 from shotstuff.users.factories import UserFactory
+from shotstuff.fills.factories import FillFactory
+from shotstuff.treatments.models import Treatment
 from shotstuff.utils import calculate_date
 
 
@@ -32,3 +33,4 @@ class TreatmentFactory(factory.alchemy.SQLAlchemyModelFactory):
     # clinic_supervising
     medication_regimen = factory.SubFactory(MedicationRegimenFactory)
     user = factory.SubFactory(UserFactory)
+    # last_fill = factory.SubFactory(FillFactory)

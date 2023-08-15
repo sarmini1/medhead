@@ -9,7 +9,8 @@ from shotstuff.labs.forms import LabEditForm, LabAddForm
 labs = Blueprint(
     "labs",
     __name__,
-    template_folder='templates')
+    template_folder='templates'
+)
 
 #TODO: need to decide what these endpoints should actually look like and
 # make sure they're consistent with the other modules (treatments, etc)
