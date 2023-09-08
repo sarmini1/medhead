@@ -107,10 +107,10 @@ class TreatmentModelTestCase(unittest.TestCase):
         )
 
     def test_next_injection_detail_no_injections(self):
-        """Test that an error is thrown when trying to access this property
+        """Test that a ValueError is thrown when trying to access this property
         on a treatment without any injections."""
 
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(ValueError):
             self.t1.calculate_next_injection_detail()
 
     @freeze_time("2023-05-26 10:30:01")
