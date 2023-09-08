@@ -13,8 +13,6 @@ from shotstuff.utils import (
 class Treatment(db.Model):
     """Treatment."""
 
-    # This table is meant to connect users and injection regimens
-
     __tablename__ = "treatments"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -32,7 +30,7 @@ class Treatment(db.Model):
         db.ForeignKey("medication_regimens.id"),
         nullable=True
     )
-    # storing currently_active status so that we can store deprecated
+    # Storing currently_active status so that we can store deprecated
     # treatments
     currently_active = db.Column(
         db.Boolean,
@@ -71,9 +69,9 @@ class Treatment(db.Model):
         db.Date,
         nullable=True
     )
-    # below column could be a foreign key to a clinics table, but that would
+    # Below column could be a foreign key to a clinics table, but that would
     # require me to create a clinics table, which maybe implies a doctors table,
-    # and there isn't really a reason for that info yet? users probably just
+    # and there isn't really a reason for that info yet. Users probably just
     # need to be reminded of which clinic to go to or call about a treatment/lab
     clinic_supervising = db.Column(
         db.Text,
@@ -97,8 +95,7 @@ class Treatment(db.Model):
         Looks on the instance and generates a dictionary of time data about the
         current instance's start date.
         """
-        # TODO: since start date can be null/unknown, assess path forward if
-        # someone tries to access this property on such an instance
+
         try:
             return generate_friendly_date_time(self.start_date)
         except AttributeError:
@@ -120,7 +117,7 @@ class Treatment(db.Model):
     def friendly_last_fill_date(self):
         """
         Looks on the instance and generates a dictionary of time data about the
-        current instance's next lab due date.
+        current instance's last fill date.
         """
 
         try:
@@ -137,9 +134,13 @@ class Treatment(db.Model):
             last_injection: Injection,
             occurred_at: {year, month, day, time, full_date_time }
          }
+
+         If called on a treatment instance for a non-injectable, raises
+         AttributeError.
         """
-        # TODO: consider adding error handling if we try to call this method
-        # for a non-injectable treatment to match other method below.
+
+        if not self.medication_regimen.is_for_injectable:
+            raise AttributeError("This treatment is not for an injectable medication.")
 
         num_injections_occurred = len(self.injections)
 
@@ -163,15 +164,19 @@ class Treatment(db.Model):
     @property
     def is_refill_needed(self):
         """
-        Returns boolean depending on if we're 10 days or fewer out from the date
+        Returns boolean:
+
+        True if we're 10 days or fewer out from the date
         when their most-recent fill should run out, based on their last dose and
         that fill's days supply.
+
+        False if they've never had a fill or haven't started the treatment.
         """
 
-        # figure out when that fill may run out
-        # if we are within 10 days of that date, return True
-        # else, return False
-        if not self.last_fill:
+        # Figure out when that fill may run out
+        # If we are within 10 days of that date, return True
+        # Else, return False
+        if not self.last_fill or not self.start_date:
             return False
 
         run_out_date_minus_10_days = self.calculate_run_out_date_last_fill() - timedelta(days=10)
@@ -201,12 +206,6 @@ class Treatment(db.Model):
         Returns the date by which the most recent fill, with its days supply
         will run out.
         """
-
-        # find the most recent dose/injection from their last fill
-            # query injections/doses for this treatment where occurred at is
-            # after fill date, order by asc and select the first record
-
-        # add the days supply from the fill to that most recent dose date
 
         if self.medication_regimen.is_for_injectable:
             most_recent_dose = Injection.query.filter(
@@ -253,7 +252,7 @@ class Treatment(db.Model):
         num_injections_occurred = len(self.injections)
 
         if num_injections_occurred == 0:
-            raise AttributeError("No injections yet!")
+            raise ValueError("No injections yet!")
 
         last_injection = self.injections[num_injections_occurred - 1]
         frequency = self.frequency_in_seconds
@@ -302,11 +301,6 @@ class Treatment(db.Model):
         for current instance. Returns None.
         """
 
-        # converted_datetime = datetime.strptime(
-        #     self.next_lab_due_date,
-        #     '%Y-%m-%d'
-        # )
-        # TODO: decide if we need this string-to-Date obj conversion above
         self.next_lab_due_date = calculate_date(
             self.next_lab_due_date,
             self.lab_frequency_in_months
@@ -320,11 +314,11 @@ class Treatment(db.Model):
         )
         db.session.add(upcoming_lab)
 
-    def to_dict(self):
-        """Serialize to a dict of regimen info."""
+    # def to_dict(self):
+    #     """Serialize to a dict of regimen info."""
 
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "medication_regimen_id": self.medication_regimen_id,
-        }
+    #     return {
+    #         "id": self.id,
+    #         "user_id": self.user_id,
+    #         "medication_regimen_id": self.medication_regimen_id,
+    #     }
