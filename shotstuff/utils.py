@@ -6,7 +6,8 @@ from dateutil.relativedelta import relativedelta
 
 def convert_date_to_tz(date, timezone_id):
     """
-    Converts datetime object to pacific datetime object.
+    Converts datetime object to datetime object within the timezone specified
+    from the timezone_id parameter.
     """
     aware = timezone('UTC').localize(date)
     desired_tz = timezone(timezone_id)
@@ -24,8 +25,9 @@ def calculate_date(start_date=datetime.utcnow(), months_in_future=0):
     return future_date
 
 def generate_friendly_date_time(date):
-        """ Returns dictionary with year, month, day, time, date and time formatted
-            in a friendly way.
+        """
+        Returns dictionary with year, month, day, time, date and time formatted
+        in a friendly way.
         """
 
         year = date.strftime("%Y")
