@@ -40,6 +40,17 @@ From the top-level directory, enter ipython and run the dev_seed.py file with:
 
 - `%run shotstuff/dev_seed.py`
 
+Starting the App
+================
+
+If you want to run on port 5000, from the top-level directory, run:
+
+ - `flask run`
+
+If port 5000 is already taken by another process, run on the port of your choosing with:
+
+ - `flask run -p [port number here]`
+
 Running Tests
 =============
 
