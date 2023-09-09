@@ -9,7 +9,8 @@ Add a `.env` file in the top level directory and include the following:
   SECRET_KEY=whatever-you-want
 ```
 
-You'll need Python3 and PostgreSQL:
+You'll need Python3 and PostgreSQL installed globally. Then, create a virtual environment,
+activte it, and install the dependencies:
 
  - `python3 -m venv venv`
  - `source venv/bin/activate`
@@ -18,7 +19,7 @@ You'll need Python3 and PostgreSQL:
  - `createdb medhead`
  - `createdb medhead_test`
 
-Install shotstuff as a python package in the top level directory:
+Install shotstuff as a Python package in the top level directory:
 
  - `pip install -e .`
 
