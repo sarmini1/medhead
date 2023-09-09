@@ -33,6 +33,13 @@ requirements.txt like this:
 
  - `pip freeze | grep -v github.com > requirements.txt`
 
+Seeding the Database
+====================
+
+From the top-level directory, enter ipython and run the dev_seed.py file with:
+
+- `%run shotstuff/dev_seed.py`
+
 Running Tests
 =============
 
