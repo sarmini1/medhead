@@ -313,12 +313,3 @@ class Treatment(db.Model):
             point_in_cycle_occurred = None
         )
         db.session.add(upcoming_lab)
-
-    # def to_dict(self):
-    #     """Serialize to a dict of regimen info."""
-
-    #     return {
-    #         "id": self.id,
-    #         "user_id": self.user_id,
-    #         "medication_regimen_id": self.medication_regimen_id,
-    #     }
