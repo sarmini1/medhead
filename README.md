@@ -1,3 +1,7 @@
+
+A server-side app for tracking details and timing for injections, labs, and
+medication refills for HRT and general medications.
+
 Development Environment Setup
 =============================
 
