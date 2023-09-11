@@ -56,7 +56,7 @@ If port 5000 is already taken by another process, run on the port of your choosi
  - `flask run -p [port number here]`
 
 From here, visit `localhost:[port-number-here]/` and you can either sign up as a new user, or, if you
-want to login to an account with substantial dummy date already generated, use the following credentials:
+want to login to an account with substantial dummy data already generated, use the following credentials:
 
 ```
 username: spencer
