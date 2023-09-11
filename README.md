@@ -14,7 +14,7 @@ Add a `.env` file in the top level directory and include the following:
 ```
 
 You'll need Python3 and PostgreSQL installed globally. Then, create a virtual environment,
-activte it, and install the dependencies:
+activate it, and install the dependencies:
 
  - `python3 -m venv venv`
  - `source venv/bin/activate`
