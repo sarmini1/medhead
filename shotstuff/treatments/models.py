@@ -206,8 +206,8 @@ class Treatment(db.Model):
 
     def calculate_run_out_date_last_fill(self):
         """
-        Returns the date by which the most recent fill, with its days supply
-        will run out.
+        Returns the datetime object, in UTC, by which the most recent fill,
+        with its days supply will run out.
         """
 
         if self.medication_regimen.is_for_injectable:
