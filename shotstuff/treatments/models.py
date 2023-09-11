@@ -77,7 +77,10 @@ class Treatment(db.Model):
         db.Text,
         nullable=True
     )
-    medication_regimen = db.relationship('MedicationRegimen')
+    medication_regimen = db.relationship(
+        'MedicationRegimen',
+        backref="treatments"
+    )
 
     injections = db.relationship(
         'Injection',
