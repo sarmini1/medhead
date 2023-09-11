@@ -43,7 +43,7 @@ med_finast = Medication(
 )
 
 med_estro = Medication(
-    name = "estradiol alsdkfjsld"
+    name = "estradiol"
 )
 
 br1 = BodyRegion(
