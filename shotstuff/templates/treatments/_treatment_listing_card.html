@@ -25,10 +25,15 @@
         {% if treatment.last_fill.notes %}
           <p><b>Notes:</b> {{treatment.last_fill.notes }}</p>
         {% endif %}
-        <p><b>Last fill date:</b> {{ treatment.last_fill.friendly_occurred_at.date }}</p>
-        <p><b>Pharmacy filled:</b> {{ treatment.last_fill.filled_by }}</p>
-        <p><b>Lasts until:</b> {{ treatment.friendly_run_out_date_info.friendly_date.date }}</p>
-        <p><b>Days supply from last fill:</b> {{treatment.last_fill.days_supply }}</p>
+        {% if treatment.last_fill %}
+          <p><b>Last fill date:</b> {{ treatment.last_fill.friendly_occurred_at.date }}</p>
+          <p><b>Pharmacy filled:</b> {{ treatment.last_fill.filled_by }}</p>
+          <p><b>Lasts until:</b> {{ treatment.friendly_run_out_date_info.friendly_date.date }}</p>
+          <p><b>Days supply from last fill:</b> {{treatment.last_fill.days_supply }}</p>
+
+        {% else %}
+        <p>No fills yet!</p>
+        {% endif %}
       </div>
       {% if treatment.requires_labs %}
       <div class="lab-card col-12 col-md-4">
@@ -64,31 +69,34 @@
       </div>
       {% endif %}
 
-      {% if treatment.injections|length > 0 %}
       <div class="treatment-description col-12 col-md-4">
-        <!-- </hr> -->
-        <h4>Injection Info</h4>
-        <hr width="50%">
-        {% if treatment.last_injection_details.injection.notes %}
-        <p>
-          <b>Notes from last injection:</b>
-          {{ treatment.last_injection_details.injection.notes }}
-        </p>
-        <hr width="50%">
-        {% endif %}
-        <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.date }}</p>
-        <p><b>Next injection date:</b> {{ treatment.calculate_next_injection_detail().time_due.date }}</p>
-        <p><b>Next injection position:</b> {{ treatment.calculate_next_injection_detail().position[0] }} side,
-          {{treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
-        <p><b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days </p>
-        <p>
-          <b>Total injections:</b> {{ treatment.injections|length }}
-        </p>
-        <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.date }}</p>
-        {% elif treatment.medication_regimen.is_for_injectable %}
-        <h2> No injections yet!</h2>
+        {% if treatment.medication_regimen.is_for_injectable %}
+
+          {% if treatment.injections|length > 0 %}
+          <!-- </hr> -->
+          <h4>Injection Info</h4>
+          <hr width="50%">
+            {% if treatment.last_injection_details.injection.notes %}
+            <p>
+              <b>Notes from last injection:</b>
+              {{ treatment.last_injection_details.injection.notes }}
+            </p>
+            <hr width="50%">
+            {% endif %}
+          <p><b>Most recent injection date:</b> {{ treatment.last_injection_details.occurred_at.date }}</p>
+          <p><b>Next injection date:</b> {{ treatment.calculate_next_injection_detail().time_due.date }}</p>
+          <p><b>Next injection position:</b> {{ treatment.calculate_next_injection_detail().position[0] }} side,
+            {{treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
+          <p><b>Frequency:</b> every {{ treatment.frequency_in_seconds / 86400 }} days </p>
+          <p>
+            <b>Total injections:</b> {{ treatment.injections|length }}
+          </p>
+          <p><b>Starting injection date: </b> {{ treatment.friendly_start_date.date }}</p>
+          {% else %}
+          <h2> No injections yet!</h2>
+          {% endif %}
+
         {% else %}
-        <div class="treatment-description col-12 col-md-4">
           <h4>Dose Information</h4>
           <hr width="50%">
           </hr>
@@ -99,7 +107,6 @@
             <br>
             <b>Since:</b> {{ treatment.friendly_start_date.date }}
           </p>
-        </div>
         {% endif %}
       </div>
     </div>
