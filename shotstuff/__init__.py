@@ -35,8 +35,7 @@ def load_user_from_session(user_id):
 
 @login_manager.request_loader
 def load_user_from_request(request):
-    print("REQUEST LOADER RAN")
-    breakpoint()
+    print("request loader ran")
     user_id = session.get("_user_id")
     if user_id:
         return User.query.get(user_id)
