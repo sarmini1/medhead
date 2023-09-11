@@ -48,7 +48,7 @@ class TreatmentRouteTestCase(unittest.TestCase):
         """Tests that active treatments are listed appropriately."""
 
         user = User.query.first()
-        breakpoint()
+
         # app.test_client_class = FlaskLoginClient
         with app.test_client(user=user, fresh_login=True) as client:
 
