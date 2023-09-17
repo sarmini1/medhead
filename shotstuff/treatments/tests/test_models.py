@@ -173,8 +173,8 @@ class TreatmentModelTestCase(unittest.TestCase):
 
         try:
             oral_treatment.last_injection_details
-            # We shouldn't get here, so create a failure if we do
-            self.assertEqual(True, False)
+            # We shouldn't get here, so raise an error if we do
+            raise RuntimeError("Shouldn't have gotten here")
         except AttributeError:
             self.assertEqual(True, True)
 
@@ -472,7 +472,8 @@ class TreatmentModelTestCase(unittest.TestCase):
             occurred_at=datetime.datetime.utcnow()
         )
 
-        # Default user will be in US/Pacific time, so it'll be behind the mocked time.
+        # Default user will be in US/Pacific time, so it'll be behind the mocked time
+        # as that's in UTC.
         expected_info = {
                 "year": "2023",
                 "month": "06",
