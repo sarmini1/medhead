@@ -70,7 +70,7 @@ class TreatmentModelTestCase(unittest.TestCase):
 
         t2 = TreatmentFactory(
             id=102,
-            next_lab_due_date=datetime.datetime.now()
+            next_lab_due_date=datetime.datetime.utcnow()
         )
 
         t2.update_next_lab_due_date()
@@ -87,7 +87,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         """
 
         i2 = InjectionFactory(
-            occurred_at=datetime.datetime.now()
+            occurred_at=datetime.datetime.utcnow()
         )
         # Injection factory makes a Treatment instance with inj frequency
         # every 7 days, so next injection time is predictable
@@ -125,7 +125,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         injections.
         """
         i2 = InjectionFactory(
-            occurred_at=datetime.datetime.now()
+            occurred_at=datetime.datetime.utcnow()
         )
         last_injection_details = {
             "injection": i2,
@@ -184,7 +184,7 @@ class TreatmentModelTestCase(unittest.TestCase):
 
         t2 = TreatmentFactory(
             id=102,
-            start_date=datetime.datetime.now()
+            start_date=datetime.datetime.utcnow()
         )
 
         friendly_start_date = t2.friendly_start_date
@@ -224,7 +224,7 @@ class TreatmentModelTestCase(unittest.TestCase):
 
         t2 = TreatmentFactory(
             id=102,
-            next_lab_due_date=datetime.datetime.now()
+            next_lab_due_date=datetime.datetime.utcnow()
         )
 
         friendly_start_date = t2.friendly_next_lab_due_date
@@ -266,7 +266,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         )
         FillFactory(
             treatment_id=102,
-            occurred_at=datetime.datetime.now()
+            occurred_at=datetime.datetime.utcnow()
         )
 
         friendly_last_fill_date= t2.friendly_last_fill_date
@@ -334,7 +334,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         # By default, fill factory instances have a 32 days supply.
         FillFactory(
             treatment_id=102,
-            occurred_at=datetime.datetime.now()
+            occurred_at=datetime.datetime.utcnow()
         )
 
         self.assertFalse(oral_treatment.is_refill_needed)
@@ -361,7 +361,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         FillFactory(
             treatment_id=102,
             days_supply=2,
-            occurred_at=datetime.datetime.now()
+            occurred_at=datetime.datetime.utcnow()
         )
 
         self.assertTrue(oral_treatment.is_refill_needed)
@@ -409,7 +409,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         # Maybe we've gotten a fill but just haven't started yet.
         FillFactory(
             treatment_id=102,
-            occurred_at=datetime.datetime.now()
+            occurred_at=datetime.datetime.utcnow()
         )
 
         self.assertFalse(oral_treatment.is_refill_needed)
@@ -436,7 +436,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         # By default, fill factory instances have a 32 days supply.
         FillFactory(
             treatment_id=102,
-            occurred_at=datetime.datetime.now()
+            occurred_at=datetime.datetime.utcnow()
         )
 
         run_out_date = oral_treatment.calculate_run_out_date_last_fill()
@@ -445,4 +445,47 @@ class TreatmentModelTestCase(unittest.TestCase):
         self.assertEqual(
             run_out_date,
             expected_date
+        )
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_friendly_run_out_date_info_for_non_injectable(self):
+        """
+        Tests that this property returns the proper date, in terms of the user's
+        timezone, when accessed on a treatment for a non-injectable med.
+        """
+
+        oral_medication_regimen = MedicationRegimenFactory(
+            id=102,
+            title="Truvada for PrEP",
+            route="oral",
+            is_for_injectable=False
+        )
+
+        oral_treatment = TreatmentFactory(
+            id=102,
+            medication_regimen=oral_medication_regimen
+        )
+
+        # By default, fill factory instances have a 32 days supply.
+        FillFactory(
+            treatment_id=102,
+            occurred_at=datetime.datetime.utcnow()
+        )
+
+        # Default user will be in US/Pacific time, so it'll be behind the mocked time.
+        expected_info = {
+                "year": "2023",
+                "month": "06",
+                "day": "27",
+                "time": "03:30:01",
+                "date": "06/27/2023",
+                "weekday": "Tuesday",
+                "full_date_time": "06/27/2023, 03:30:01"
+            }
+        self.assertEqual(
+            oral_treatment.friendly_run_out_date_info,
+            {
+                "friendly_date": expected_info,
+                "is_overdue": False,
+            }
         )
