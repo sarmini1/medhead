@@ -97,6 +97,8 @@ class Treatment(db.Model):
         """
         Looks on the instance and generates a dictionary of time data about the
         current instance's start date.
+
+        Returns None if an AttributeError occurs.
         """
 
         try:
@@ -109,6 +111,8 @@ class Treatment(db.Model):
         """
         Looks on the instance and generates a dictionary of time data about the
         current instance's next lab due date.
+
+        Returns None if an AttributeError occurs.
         """
 
         try:
@@ -121,6 +125,8 @@ class Treatment(db.Model):
         """
         Looks on the instance and generates a dictionary of time data about the
         current instance's last fill date.
+
+        Returns None if an AttributeError occurs.
         """
 
         try:
