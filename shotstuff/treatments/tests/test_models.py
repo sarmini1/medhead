@@ -11,6 +11,7 @@ from shotstuff.config import DATABASE_URL_TEST
 from shotstuff.treatments.factories import TreatmentFactory
 from shotstuff.medication_regimens.factories import MedicationRegimenFactory
 from shotstuff.injections.factories import InjectionFactory
+from shotstuff.fills.factories import FillFactory
 
 from shotstuff.treatments.models import Treatment
 
@@ -27,6 +28,7 @@ class TreatmentModelTestCase(unittest.TestCase):
 
     def setUp(self):
         self.t1 = TreatmentFactory()
+        # self.f1 = FillFactory()
 
     def tearDown(self):
         # Rollback the session => no changes to the database
@@ -148,6 +150,31 @@ class TreatmentModelTestCase(unittest.TestCase):
             self.t1.last_injection_details
         )
 
+    def test_last_injection_detail_treatment_not_for_injectable(self):
+        """
+        Test getting last injection details when treatment is not for an
+        injectable medication. Should raise an AttributeError.
+        """
+
+        oral_medication_regimen = MedicationRegimenFactory(
+            id=102,
+            title="Truvada for PrEP",
+            route="oral",
+            is_for_injectable=False
+        )
+
+        t2 = TreatmentFactory(
+            id=102,
+            medication_regimen=oral_medication_regimen
+        )
+
+        try:
+            t2.last_injection_details
+            # We shouldn't get here, so create a failure if we do
+            self.assertEqual(True, False)
+        except AttributeError:
+            self.assertEqual(True, True)
+
     @freeze_time("2023-05-26 10:30:01")
     def test_friendly_start_date_when_start_date_present(self):
         """Test that the friendly_start_date property works with a valid date."""
@@ -224,6 +251,44 @@ class TreatmentModelTestCase(unittest.TestCase):
         friendly_start_date = t2.friendly_next_lab_due_date
         self.assertEqual(
             friendly_start_date,
+            None
+        )
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_friendly_last_fill_date_when_last_fill_present(self):
+        """Test that the friendly_last_fill_date property works with a valid date."""
+
+        t2 = TreatmentFactory(
+            id=102,
+        )
+        FillFactory(
+            treatment_id=102,
+            occurred_at=datetime.datetime.now()
+        )
+
+        friendly_last_fill_date= t2.friendly_last_fill_date
+        expectation = {
+                "year": "2023",
+                "month": "05",
+                "day": "26",
+                "time": "10:30:01",
+                "date": "05/26/2023",
+                "weekday": "Friday",
+                "full_date_time": "05/26/2023, 10:30:01"
+            }
+        self.assertEqual(
+            friendly_last_fill_date,
+            expectation
+        )
+
+    def test_friendly_last_fill_date_when_last_fill_not_present(self):
+        """
+        Test that the friendly_last_fill_date property returns None when no
+        last fill present.
+        """
+
+        self.assertEqual(
+            self.t1.friendly_last_fill_date,
             None
         )
 
