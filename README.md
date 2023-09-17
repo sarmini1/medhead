@@ -73,5 +73,5 @@ Run a specific set of tests:
 - `python3 -m unittest -v` (from within a /tests directory)
 
 Run all tests and generate a coverage report:
-- `python -m coverage run -m unittest` (from highest level)
-- `python -m coverage report`
+- `coverage run -m unittest discover` (from highest level)
+- `coverage report -m` or `coverage html` then open htmlcov/index.html in your browser
