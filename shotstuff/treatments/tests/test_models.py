@@ -30,6 +30,9 @@ class TreatmentModelTestCase(unittest.TestCase):
         self.t1 = TreatmentFactory()
         # self.f1 = FillFactory()
 
+        # TODO: investigate moving more treatment factory instantiations in here
+        # if we're able to mock with freeze_time in the setup method as well
+
     def tearDown(self):
         # Rollback the session => no changes to the database
         db.session.rollback()
@@ -163,13 +166,13 @@ class TreatmentModelTestCase(unittest.TestCase):
             is_for_injectable=False
         )
 
-        t2 = TreatmentFactory(
+        oral_treatment = TreatmentFactory(
             id=102,
             medication_regimen=oral_medication_regimen
         )
 
         try:
-            t2.last_injection_details
+            oral_treatment.last_injection_details
             # We shouldn't get here, so create a failure if we do
             self.assertEqual(True, False)
         except AttributeError:
@@ -307,4 +310,139 @@ class TreatmentModelTestCase(unittest.TestCase):
         self.assertEqual(
             self.t1.user.num_injections,
             0
+        )
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_is_refill_needed_for_non_injectable_false_when_too_soon(self):
+        """
+        Tests that this method returns False when it's more than 10 days away
+        from their run out date.
+        """
+
+        oral_medication_regimen = MedicationRegimenFactory(
+            id=102,
+            title="Truvada for PrEP",
+            route="oral",
+            is_for_injectable=False
+        )
+
+        oral_treatment = TreatmentFactory(
+            id=102,
+            medication_regimen=oral_medication_regimen
+        )
+
+        # By default, fill factory instances have a 32 days supply.
+        FillFactory(
+            treatment_id=102,
+            occurred_at=datetime.datetime.now()
+        )
+
+        self.assertFalse(oral_treatment.is_refill_needed)
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_is_refill_needed_for_non_injectable_true_when_upcoming(self):
+        """
+        Tests that this method returns True when it's within 10 days from
+        their run out date.
+        """
+
+        oral_medication_regimen = MedicationRegimenFactory(
+            id=102,
+            title="Truvada for PrEP",
+            route="oral",
+            is_for_injectable=False
+        )
+
+        oral_treatment = TreatmentFactory(
+            id=102,
+            medication_regimen=oral_medication_regimen
+        )
+
+        FillFactory(
+            treatment_id=102,
+            days_supply=2,
+            occurred_at=datetime.datetime.now()
+        )
+
+        self.assertTrue(oral_treatment.is_refill_needed)
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_is_refill_needed_for_non_injectable_false_when_unfilled(self):
+        """
+        Tests that this method returns False when the treatment has no fills.
+        """
+
+        oral_medication_regimen = MedicationRegimenFactory(
+            id=102,
+            title="Truvada for PrEP",
+            route="oral",
+            is_for_injectable=False
+        )
+
+        oral_treatment = TreatmentFactory(
+            id=102,
+            medication_regimen=oral_medication_regimen
+        )
+
+        self.assertFalse(oral_treatment.is_refill_needed)
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_is_refill_needed_for_non_injectable_false_when_not_started(self):
+        """
+        Tests that this method returns False when the treatment hasn't been
+        started yet.
+        """
+
+        oral_medication_regimen = MedicationRegimenFactory(
+            id=102,
+            title="Truvada for PrEP",
+            route="oral",
+            is_for_injectable=False
+        )
+
+        oral_treatment = TreatmentFactory(
+            id=102,
+            start_date=None,
+            medication_regimen=oral_medication_regimen
+        )
+
+        # Maybe we've gotten a fill but just haven't started yet.
+        FillFactory(
+            treatment_id=102,
+            occurred_at=datetime.datetime.now()
+        )
+
+        self.assertFalse(oral_treatment.is_refill_needed)
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_calculate_run_out_date_last_fill_for_non_injectable(self):
+        """
+        Tests that this method returns the proper date when called on a treatment
+        for a non-injectable med.
+        """
+
+        oral_medication_regimen = MedicationRegimenFactory(
+            id=102,
+            title="Truvada for PrEP",
+            route="oral",
+            is_for_injectable=False
+        )
+
+        oral_treatment = TreatmentFactory(
+            id=102,
+            medication_regimen=oral_medication_regimen
+        )
+
+        # By default, fill factory instances have a 32 days supply.
+        FillFactory(
+            treatment_id=102,
+            occurred_at=datetime.datetime.now()
+        )
+
+        run_out_date = oral_treatment.calculate_run_out_date_last_fill()
+        expected_date = datetime.datetime.now() + datetime.timedelta(days=32)
+
+        self.assertEqual(
+            run_out_date,
+            expected_date
         )
