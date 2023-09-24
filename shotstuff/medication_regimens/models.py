@@ -20,12 +20,3 @@ class MedicationRegimen(db.Model):
         nullable=False
     )
     medication = db.relationship('Medication', backref="used_in_regimens")
-
-    def to_dict(self):
-        """Serialize to a dict of regimen info."""
-
-        return {
-            "id": self.id,
-            "title": self.title,
-            "medication_id": self.medication_id,
-        }
