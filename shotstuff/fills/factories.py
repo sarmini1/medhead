@@ -3,6 +3,7 @@ import factory
 from shotstuff import app
 from shotstuff.database import db
 from shotstuff.fills.models import Fill
+from shotstuff.treatments.factories import TreatmentFactory
 # from shotstuff.medication_regimens.factories import MedicationRegimenFactory
 # from shotstuff.users.factories import UserFactory
 from shotstuff.utils import calculate_date
@@ -20,6 +21,7 @@ class FillFactory(factory.alchemy.SQLAlchemyModelFactory):
 
     id = 101
     treatment_id = 101
+    treatment = factory.SubFactory(TreatmentFactory)
     filled_by = 'Alto'
     days_supply = 32
     # occurred_at has default of now currently

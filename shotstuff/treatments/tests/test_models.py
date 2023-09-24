@@ -266,6 +266,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         )
         FillFactory(
             treatment_id=102,
+            treatment=t2,
             occurred_at=datetime.datetime.utcnow()
         )
 
@@ -360,6 +361,7 @@ class TreatmentModelTestCase(unittest.TestCase):
 
         FillFactory(
             treatment_id=102,
+            treatment=oral_treatment,
             days_supply=2,
             occurred_at=datetime.datetime.utcnow()
         )
@@ -436,6 +438,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         # By default, fill factory instances have a 32 days supply.
         FillFactory(
             treatment_id=102,
+            treatment=oral_treatment,
             occurred_at=datetime.datetime.utcnow()
         )
 
@@ -469,6 +472,7 @@ class TreatmentModelTestCase(unittest.TestCase):
         # By default, fill factory instances have a 32 days supply.
         FillFactory(
             treatment_id=102,
+            treatment=oral_treatment,
             occurred_at=datetime.datetime.utcnow()
         )
 

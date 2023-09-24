@@ -39,3 +39,27 @@ class FillModelTestCase(unittest.TestCase):
     def tearDown(self):
         # Rollback the session to clean up any fouled transactions
         db.session.rollback()
+
+    @freeze_time("2023-05-26 10:30:01")
+    def test_friendly_occurred_at(self):
+        """Test that the friendly_occurred_at property works with a valid date/time."""
+
+        f1 = FillFactory(
+            id=1002,
+            occurred_at=datetime.datetime.utcnow()
+        )
+
+        friendly_occurred_at = f1.friendly_occurred_at
+        expectation = {
+            "year": "2023",
+            "month": "05",
+            "day": "26",
+            "time": "03:30:01",
+            "date": "05/26/2023",
+            "weekday": "Friday",
+            "full_date_time": "05/26/2023, 03:30:01"
+        }
+        self.assertEqual(
+            friendly_occurred_at,
+            expectation
+        )

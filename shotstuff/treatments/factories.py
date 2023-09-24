@@ -4,7 +4,6 @@ from shotstuff import app
 from shotstuff.database import db
 from shotstuff.medication_regimens.factories import MedicationRegimenFactory
 from shotstuff.users.factories import UserFactory
-from shotstuff.fills.factories import FillFactory
 from shotstuff.treatments.models import Treatment
 from shotstuff.utils import calculate_date
 
