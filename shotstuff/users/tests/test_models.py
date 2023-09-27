@@ -44,7 +44,7 @@ class UserModelTestCase(unittest.TestCase):
         # User and MedicationRegimen factory instances under the hood
         self.i1 = InjectionFactory()
         self.t1 = self.i1.treatment
-        self.u1 = self.i1.treatment.user
+        self.u1 = self.t1.user
 
         # Same note as above for LabFactory
         self.l1 = LabFactory()
@@ -177,12 +177,12 @@ class UserModelTestCase(unittest.TestCase):
         # in advance
         t2 = TreatmentFactory(
             id=102,
-            frequency_in_seconds = 1728000,
-            currently_active = True
+            frequency_in_seconds=1728000,
+            currently_active=True
         )
 
         i2 = InjectionFactory(
-            treatment_id = t2.id
+            treatment_id=t2.id
         )
 
         u1_upcoming_injections = self.u1.upcoming_injection_times
@@ -234,4 +234,47 @@ class UserModelTestCase(unittest.TestCase):
         self.assertEqual(
             percentage,
             None
+        )
+
+    def test_upcoming_labs_when_upcoming_labs_present(self):
+        """Test that this property returns a list of only upcoming labs."""
+
+        # Create an upcoming lab for our user
+        l2 = LabFactory(
+            id=102,
+            occurred_at=None
+        )
+
+        self.assertEqual(
+            self.u1.upcoming_labs,
+            [l2]
+        )
+
+    def test_upcoming_labs_when_no_upcoming_labs_present(self):
+        """Test that this property returns an empty list when no upcoming labs exist."""
+
+        # User has a past lab created in setup
+        self.assertEqual(
+            self.u1.upcoming_labs,
+            []
+        )
+
+    def test_past_labs_when_past_labs_present(self):
+        """Test that this property returns a list of only past labs."""
+
+        self.assertEqual(
+            self.u1.past_labs,
+            [self.l1]
+        )
+
+    def test_past_labs_when_no_past_labs_present(self):
+        """Test that this property returns an empty list when no past labs exist."""
+
+        u2 = UserFactory(
+            id=102
+        )
+
+        self.assertEqual(
+            u2.past_labs,
+            []
         )
