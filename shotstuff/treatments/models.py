@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from shotstuff.database import db
 from shotstuff.labs.models import Lab
 from shotstuff.injections.models import Injection
+from shotstuff.doses.models import Dose
 from shotstuff.utils import (
     calculate_date,
     generate_friendly_date_time,
@@ -87,6 +88,11 @@ class Treatment(db.Model):
         backref="treatment"
     )
 
+    doses = db.relationship(
+        'Dose',
+        backref="treatment"
+    )
+
     fills = db.relationship(
         'Fill',
         backref="treatment"
@@ -149,7 +155,8 @@ class Treatment(db.Model):
         """
 
         if not self.medication_regimen.is_for_injectable:
-            raise AttributeError("This treatment is not for an injectable medication.")
+            raise AttributeError(
+                "This treatment is not for an injectable medication.")
 
         num_injections_occurred = len(self.injections)
 
@@ -162,7 +169,7 @@ class Treatment(db.Model):
             self.user.timezone_location
         )
         friendly_occurred_at_with_tz = generate_friendly_date_time(
-                occurred_at_with_tz
+            occurred_at_with_tz
         )
 
         return {
@@ -188,7 +195,8 @@ class Treatment(db.Model):
         if not self.last_fill or not self.start_date:
             return False
 
-        run_out_date_minus_10_days = self.calculate_run_out_date_last_fill() - timedelta(days=10)
+        run_out_date_minus_10_days = self.calculate_run_out_date_last_fill() - \
+            timedelta(days=10)
 
         return datetime.utcnow() >= run_out_date_minus_10_days
 
@@ -210,21 +218,31 @@ class Treatment(db.Model):
             "is_overdue": run_out_date_utc < datetime.utcnow()
         }
 
+    @property
+    def most_recent_dose(self):
+        """
+        Looks on the current Treatment instance for the most recent dose taken
+        and returns that Dose instance.
+        """
+        most_recent_dose = Dose.query.filter(
+            Dose.occurred_at < datetime.utcnow()
+        ).order_by(
+            Dose.occurred_at.asc()
+        ).first()
+
+        return most_recent_dose
+
     def calculate_run_out_date_last_fill(self):
         """
         Returns the datetime object, in UTC, by which the most recent fill,
         with its days supply will run out.
         """
+        # TODO: Re-assess the difference in calculation here and if it's necessary at all
 
         if self.medication_regimen.is_for_injectable:
-            most_recent_dose = Injection.query.filter(
-                Injection.occurred_at < datetime.utcnow()
-            ).order_by(
-                Injection.occurred_at.asc()
-            ).first()
-
-            run_out_date = most_recent_dose.occurred_at + timedelta(days=self.last_fill.days_supply)
+            run_out_date = self.most_recent_dose.occurred_at + timedelta(days=self.last_fill.days_supply)
         else:
+            # This assumes that any non-injectable medication is taken daily
             run_out_date = self.last_fill.occurred_at + timedelta(days=self.last_fill.days_supply)
 
         return run_out_date
@@ -266,7 +284,8 @@ class Treatment(db.Model):
         last_injection = self.injections[num_injections_occurred - 1]
         frequency = self.frequency_in_seconds
 
-        next_inj_date_utc = last_injection.occurred_at + timedelta(seconds=frequency)
+        next_inj_date_utc = last_injection.occurred_at + \
+            timedelta(seconds=frequency)
         next_inj_date_tz = convert_date_to_tz(
             next_inj_date_utc,
             self.user.timezone_location
@@ -316,9 +335,9 @@ class Treatment(db.Model):
         )
 
         upcoming_lab = Lab(
-            treatment_id = self.id,
-            requires_fasting = False,
-            occurred_at = None,
-            point_in_cycle_occurred = None
+            treatment_id=self.id,
+            requires_fasting=False,
+            occurred_at=None,
+            point_in_cycle_occurred=None
         )
         db.session.add(upcoming_lab)
