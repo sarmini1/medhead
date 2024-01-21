@@ -19,30 +19,31 @@
             <i class="fa-solid fa-pencil"></i>
           </a>
         </p>
+        <div class="row">
+          <div class="treatment-description col-12 col-md-6">
+            <p>Start date: {{ treatment.friendly_start_date.full_date_time }}</p>
+            <p>Frequency: every {{ treatment.frequency_in_seconds / 86400 }} days </p>
+            <p>Last fill: {{treatment.friendly_last_fill_date.date}}</p>
+            <p>Next fill due by: {{ treatment.friendly_run_out_date_info.friendly_date.date }}</p>
+            <p>Route: {{ treatment.medication_regimen.route }}</p>
+            {% if treatment.medication_regimen.is_for_injectable %}
+            <p>Next injection date: {{ next_injection_dow }}, {{ next_injection_date }}</p>
+            <p>Next injection position: {{ treatment.calculate_next_injection_detail().position[0] }} side,
+              {{treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
 
-        <div class="treatment-description">
-          <p>Start date: {{ treatment.friendly_start_date.full_date_time }}</p>
-          <p>Frequency: every {{ treatment.frequency_in_seconds / 86400 }} days </p>
-          <p>Last fill: {{treatment.friendly_last_fill_date.date}}</p>
-          <p>Next fill due by: {{ treatment.friendly_run_out_date_info.friendly_date.date }}</p>
-          <p>Route: {{ treatment.medication_regimen.route }}</p>
-          {% if treatment.medication_regimen.is_for_injectable %}
-          <p>Next injection date: {{ next_injection_dow }}, {{ next_injection_date }}</p>
-          <p>Next injection position: {{ treatment.calculate_next_injection_detail().position[0] }} side,
-            {{treatment.calculate_next_injection_detail().position[1]}} quadrant</p>
-          <p>Injections:</p>
-          {% for injection in treatment.injections %}
-          <ul id="treatment-injections-list">
-            <li>
-              <p>Region: {{ injection.body_region.name }}</p>
-              <p>Position: {{injection.position.horizontal }}, {{injection.position.vertical }}</p>
-              <p>Method: {{ injection.method }}</p>
-              <p>Time: {{ injection.friendly_injection_time.full_date_time}}</p>
-              <p>Notes: {{ injection.notes }}</p>
-            </li>
-          </ul>
-          {% endfor %}
-          {% endif %}
+            {% endif %}
+          </div>
+          <div class="treatment-description col-12 col-md-6">
+            {% if treatment.medication_regimen.is_for_injectable %}
+            <p><b>Most recent injection</b></p>
+                <p>Region: {{ treatment.last_injection_details.injection.body_region.name }}</p>
+                <p>Position: {{ treatment.last_injection_details.injection.position.horizontal }},
+                  {{ treatment.last_injection_details.injection.position.vertical }}</p>
+                <p>Method: {{ treatment.last_injection_details.injection.method }}</p>
+                <p>Time: {{ treatment.last_injection_details.injection.friendly_injection_time.full_date_time}}</p>
+                <p>Notes: {{ treatment.last_injection_details.injection.notes }}</p>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
