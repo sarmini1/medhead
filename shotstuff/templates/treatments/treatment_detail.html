@@ -23,7 +23,7 @@
           <div class="treatment-description col-12 col-md-6">
             <p>Start date: {{ treatment.friendly_start_date.full_date_time }}</p>
             <p>Frequency: every {{ treatment.frequency_in_seconds / 86400 }} days </p>
-            {% if treatment.last_fill.occurred_at %}
+            {% if treatment.last_fill %}
               <p>Last fill: {{treatment.friendly_last_fill_date.date}}</p>
               <p>Next fill due by: {{ treatment.friendly_run_out_date_info.friendly_date.date }}</p>
             {% endif %}
