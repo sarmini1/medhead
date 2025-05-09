@@ -2,6 +2,8 @@
 A server-side app for tracking details and timing for injections, labs, and
 medication refills for HRT and general medications.
 
+![medhead-gif](/assets/medhead-optimized.gif)
+
 Development Environment Setup
 =============================
 
